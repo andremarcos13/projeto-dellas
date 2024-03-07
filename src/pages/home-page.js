@@ -1,8 +1,15 @@
-import { VStack, Button, Icon, SimpleGrid, Box } from "@chakra-ui/react";
+import { VStack, Button, Icon, SimpleGrid, Box, Link } from "@chakra-ui/react";
 import { MdEvent, MdDateRange, MdList, MdAssignment } from "react-icons/md";
 import UserDataHome from "../components/user-data-home";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const handleRoute = () => {
+    navigate("/agenda");
+  };
+
   return (
     <>
       <Box>
@@ -15,11 +22,12 @@ const HomePage = () => {
             width="200px"
             height="200px"
             borderRadius="20px"
-            bg="rgba(0, 0, 0, 0.2)"
+            colorScheme="gray"
             fontSize="2xl"
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
             leftIcon={<Icon as={MdEvent} boxSize={8} />}
+            onClick={handleRoute}
           >
             AGENDA
           </Button>

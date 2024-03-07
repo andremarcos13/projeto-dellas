@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import LoginPage from "./pages/login-page";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Importe BrowserRouter e Routes
 import HomePage from "./pages/home-page";
+import AgendaPage from "./pages/agenda-page";
 
 function App() {
   useEffect(() => {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/agenda" element={<AgendaPage />} />
       </Routes>
     </Router>
   );
