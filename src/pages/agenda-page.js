@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import {
@@ -41,6 +41,7 @@ const AgendaPage = () => {
         }
       );
       setAgendaData(response.data);
+      console.log("date", agendaData);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -60,6 +61,11 @@ const AgendaPage = () => {
     setSelectedDate(date);
     setSelectedItem(null); // Limpar selectedItem ao alterar a data
   };
+
+  const handleBackButtonClick = () => {
+    setSelectedItem(null); // Limpar selectedItem ao clicar no botão Voltar
+  };
+
   const calcularPotencialLubTotal = (listaContatos) => {
     return listaContatos.reduce(
       (total, contato) => total + contato.potencialLub,
@@ -67,11 +73,10 @@ const AgendaPage = () => {
     );
   };
 
-  const handleBackButtonClick = () => {
-    setSelectedItem(null); // Limpar selectedItem ao clicar no botão Voltar
-  };
   return (
-    <>
+    <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
+      {" "}
+      {/* Define o plano de fundo e o padding */}
       <Box mt="20px" mb="20px">
         <CalendarioComponent onDateChange={handleDateChange} />
       </Box>
@@ -144,7 +149,7 @@ const AgendaPage = () => {
           )}
         </>
       )}
-    </>
+    </Box>
   );
 };
 
