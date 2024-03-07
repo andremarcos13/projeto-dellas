@@ -9,6 +9,7 @@ import {
   Alert,
   AlertIcon,
   Box,
+  Fade,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function LoginComponent() {
   const [password, setPassword] = useState("");
   const [welcomeText, setWelcomeText] = useState("");
   const [error, setError] = useState("");
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +41,7 @@ function LoginComponent() {
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
       setError("Por favor, preencha todos os campos.");
+      setIsErrorVisible(true);
       return;
     }
     console.log("Email:", email);
@@ -56,12 +59,7 @@ function LoginComponent() {
     <Box>
       <Stack spacing={3} maxW="400px" mx="auto" mt="8">
         <Heading>{welcomeText}</Heading>
-        {error && (
-          <Alert status="error">
-            <AlertIcon />
-            {error}
-          </Alert>
-        )}
+
         <FormControl id="email">
           <FormLabel>Email</FormLabel>
           <Input
@@ -86,6 +84,19 @@ function LoginComponent() {
           Entrar
         </Button>
       </Stack>
+      <Fade in={isErrorVisible}>
+        <Alert
+          status="error"
+          mt="15px"
+          borderRadius="9px"
+          width="405px"
+          ml="23px"
+          transition="opacity 0.3s ease"
+        >
+          <AlertIcon />
+          {error}
+        </Alert>
+      </Fade>
     </Box>
   );
 }
