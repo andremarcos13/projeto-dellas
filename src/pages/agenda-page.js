@@ -94,7 +94,13 @@ const AgendaPage = () => {
               </Thead>
               <Tbody>
                 {agendaData.map((item, index) => (
-                  <Tr key={index} _hover={{ bg: "gray.600" }}>
+                  <Tr
+                    key={index}
+                    _hover={{
+                      bg: "gray.600",
+                      transition: "opacity 0.1s",
+                    }}
+                  >
                     <Td>{item.codLista}</Td>
                     <Td>{item.descLista}</Td>
                     <Td>{item.codOperad}</Td>
