@@ -7,11 +7,13 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom"; // Importe useNavigate em vez de useHistory
 
 function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [welcomeText, setWelcomeText] = useState("");
+  const navigate = useNavigate(); // Use useNavigate para navegar entre as rotas
 
   useEffect(() => {
     const welcomeString = "Bem-vindo!";
@@ -34,6 +36,7 @@ function LoginComponent() {
     // Aqui você pode adicionar lógica para lidar com a autenticação
     console.log("Email:", email);
     console.log("Password:", password);
+    navigate("/home"); // Navegue para a rota "/home" ao clicar no botão "Entrar"
   };
 
   return (
