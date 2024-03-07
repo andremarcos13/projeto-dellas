@@ -9,7 +9,7 @@
 }
 
 .dark-mode .react-calendar .react-calendar__tile--active {
-  background: #4bc96b;
+  background: #68d391;
   color: #fff;
   border-radius: 10px; /* Arredonde as bordas */
 }

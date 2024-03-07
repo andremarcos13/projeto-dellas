@@ -12,14 +12,17 @@ import {
   Flex,
   Box,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import CalendarioComponent from "../components/calendario";
+import ContatosTable from "../components/contatos-tabela-2";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [error, setError] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -49,6 +52,14 @@ const AgendaPage = () => {
     }
   };
 
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedItem(null); // Limpar selectedItem ao alterar a data
+  };
   const calcularPotencialLubTotal = (listaContatos) => {
     return listaContatos.reduce(
       (total, contato) => total + contato.potencialLub,
@@ -56,10 +67,9 @@ const AgendaPage = () => {
     );
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleBackButtonClick = () => {
+    setSelectedItem(null); // Limpar selectedItem ao clicar no botão Voltar
   };
-
   return (
     <>
       <Box mt="20px" mb="20px">
@@ -81,36 +91,56 @@ const AgendaPage = () => {
               <Text>Não há informações disponíveis para esta data.</Text>
             </Box>
           ) : (
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Código Lista</Th>
-                  <Th>Descrição Lista</Th>
-                  <Th>Código Operador</Th>
-                  <Th>Data</Th>
-                  <Th>Quantidade de Contatos</Th>
-                  <Th>Potencial Lub Total</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {agendaData.map((item, index) => (
-                  <Tr
-                    key={index}
-                    _hover={{
-                      bg: "gray.600",
-                      transition: "opacity 0.1s",
-                    }}
+            <>
+              {selectedItem ? (
+                <Box>
+                  <Button
+                    onClick={handleBackButtonClick}
+                    mb="4"
+                    colorScheme="green"
+                    color="white"
                   >
-                    <Td>{item.codLista}</Td>
-                    <Td>{item.descLista}</Td>
-                    <Td>{item.codOperad}</Td>
-                    <Td>{item.data}</Td>
-                    <Td>{item.lista_contatos.length}</Td>
-                    <Td>{calcularPotencialLubTotal(item.lista_contatos)}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+                    Voltar
+                  </Button>
+                  <ContatosTable item={selectedItem} />
+                </Box>
+              ) : (
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Código Lista</Th>
+                      <Th>Descrição Lista</Th>
+                      <Th>Código Operador</Th>
+                      <Th>Data</Th>
+                      <Th>Quantidade de Contatos</Th>
+                      <Th>Potencial Lub Total</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {agendaData.map((item, index) => (
+                      <Tr
+                        key={index}
+                        _hover={{
+                          bg: "gray.600",
+                          transition: "opacity 0.1s",
+                        }}
+                        onClick={() => handleItemClick(item)}
+                        cursor="pointer"
+                      >
+                        <Td>{item.codLista}</Td>
+                        <Td>{item.descLista}</Td>
+                        <Td>{item.codOperad}</Td>
+                        <Td>{item.data}</Td>
+                        <Td>{item.lista_contatos.length}</Td>
+                        <Td>
+                          {calcularPotencialLubTotal(item.lista_contatos)}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              )}
+            </>
           )}
         </>
       )}
