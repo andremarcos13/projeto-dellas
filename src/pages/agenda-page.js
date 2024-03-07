@@ -113,9 +113,7 @@ const AgendaPage = () => {
                 <Table variant="simple">
                   <Thead>
                     <Tr>
-                      <Th>Código Lista</Th>
                       <Th>Descrição Lista</Th>
-                      <Th>Código Operador</Th>
                       <Th>Data</Th>
                       <Th>Quantidade de Contatos</Th>
                       <Th>Potencial Lub Total</Th>
@@ -132,9 +130,7 @@ const AgendaPage = () => {
                         onClick={() => handleItemClick(item)}
                         cursor="pointer"
                       >
-                        <Td>{item.codLista}</Td>
                         <Td>{item.descLista}</Td>
-                        <Td>{item.codOperad}</Td>
                         <Td>{item.data}</Td>
                         <Td>{item.lista_contatos.length}</Td>
                         <Td>
