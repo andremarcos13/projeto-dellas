@@ -6,14 +6,18 @@ import {
   Heading,
   Input,
   Stack,
+  Alert,
+  AlertIcon,
+  Box,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom"; // Importe useNavigate em vez de useHistory
+import { useNavigate } from "react-router-dom";
 
 function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [welcomeText, setWelcomeText] = useState("");
-  const navigate = useNavigate(); // Use useNavigate para navegar entre as rotas
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const welcomeString = "Bem-vindo!";
@@ -27,43 +31,62 @@ function LoginComponent() {
           return prevText;
         }
       });
-    }, 200); // Velocidade de digitação, em milissegundos
+    }, 200);
 
     return () => clearInterval(intervalId);
   }, []);
 
   const handleLogin = () => {
-    // Aqui você pode adicionar lógica para lidar com a autenticação
+    if (!email.trim() || !password.trim()) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
     console.log("Email:", email);
     console.log("Password:", password);
-    navigate("/home"); // Navegue para a rota "/home" ao clicar no botão "Entrar"
+    navigate("/home");
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
   };
 
   return (
-    <Stack spacing={3} maxW="400px" mx="auto" mt="8">
-      <Heading>{welcomeText}</Heading>
-      <FormControl id="email">
-        <FormLabel>Email</FormLabel>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Seu endereço de email"
-        />
-      </FormControl>
-      <FormControl id="password">
-        <FormLabel>Senha</FormLabel>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Sua senha secreta"
-        />
-      </FormControl>
-      <Button colorScheme="green" onClick={handleLogin}>
-        Entrar
-      </Button>
-    </Stack>
+    <Box>
+      <Stack spacing={3} maxW="400px" mx="auto" mt="8">
+        <Heading>{welcomeText}</Heading>
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            {error}
+          </Alert>
+        )}
+        <FormControl id="email">
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Seu endereço de email"
+            onKeyPress={handleKeyPress}
+          />
+        </FormControl>
+        <FormControl id="password">
+          <FormLabel>Senha</FormLabel>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Sua senha secreta"
+            onKeyPress={handleKeyPress}
+          />
+        </FormControl>
+        <Button colorScheme="green" onClick={handleLogin}>
+          Entrar
+        </Button>
+      </Stack>
+    </Box>
   );
 }
 
