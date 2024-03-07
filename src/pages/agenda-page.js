@@ -66,7 +66,7 @@ const AgendaPage = () => {
         <CalendarioComponent onDateChange={handleDateChange} />
       </Box>
       {isLoading ? (
-        <Flex align="center" justify="center" h="100vh">
+        <Flex align="center" justify="center" h="40vh">
           <Spinner size="xl" color="green.500" />
         </Flex>
       ) : (
