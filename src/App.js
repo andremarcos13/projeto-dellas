@@ -11,12 +11,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {" "}
-        {/* Use Routes para definir as rotas */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
-        {/* Defina a rota para a LoginPage */}
-        {/* Adicione outras rotas aqui conforme necessário */}
       </Routes>
     </Router>
   );
