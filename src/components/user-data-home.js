@@ -26,14 +26,14 @@ const UserDataHome = () => {
         bg="rgba(0, 0, 0, 0.2)"
         textAlign="center" // Alinha o texto centralmente dentro do Box
       >
-        <Flex direction="column" alignItems="center" mb="4">
+        {/* <Flex direction="column" alignItems="center" mb="4">
           <Heading as="h2" size="lg" mb="2">
             João Carlos
           </Heading>
           <Text fontSize="md" color="gray.500">
             Dev-Lindo
           </Text>
-        </Flex>
+        </Flex> */}
         <Flex justify="space-between">
           <Box>
             <Icon as={MdPhone} boxSize={8} color="green.500" mb="2" />

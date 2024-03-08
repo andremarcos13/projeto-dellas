@@ -24,7 +24,7 @@ const HomePage = () => {
             height="200px"
             borderRadius="20px"
             colorScheme="gray"
-            fontSize="xl" // Reduzindo o tamanho da fonte para "xl"
+            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -39,7 +39,7 @@ const HomePage = () => {
             height="200px"
             borderRadius="20px"
             colorScheme="gray"
-            fontSize="xl" // Reduzindo o tamanho da fonte para "xl"
+            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -54,7 +54,7 @@ const HomePage = () => {
             height="200px"
             borderRadius="20px"
             colorScheme="gray"
-            fontSize="xl" // Reduzindo o tamanho da fonte para "xl"
+            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -69,7 +69,7 @@ const HomePage = () => {
             height="200px"
             borderRadius="20px"
             colorScheme="gray"
-            fontSize="xl" // Reduzindo o tamanho da fonte para "xl"
+            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -84,7 +84,7 @@ const HomePage = () => {
             height="200px"
             borderRadius="20px"
             colorScheme="gray"
-            fontSize="xl" // Reduzindo o tamanho da fonte para "xl"
+            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
