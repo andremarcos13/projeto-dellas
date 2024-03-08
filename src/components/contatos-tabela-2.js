@@ -23,6 +23,7 @@ import {
   Heading,
   Textarea,
   Input,
+  Select,
 } from "@chakra-ui/react";
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
@@ -35,6 +36,10 @@ import { FaUserTag } from "react-icons/fa6";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdDesignServices } from "react-icons/md";
 import { MdMessage } from "react-icons/md";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
+import { FaTruck } from "react-icons/fa";
+import { FaRoad } from "react-icons/fa6";
+import { FaDollarSign } from "react-icons/fa";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -93,6 +98,20 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
     }
   };
 
+  const tipoFreteOptions = [
+    { value: "C", label: "CIF" },
+    { value: "F", label: "FOB" },
+    { value: "T", label: "Terceiros" },
+    { value: "R", label: "Remetente" },
+    { value: "D", label: "Destinatário" },
+    { value: "S", label: "Sem cobrança de frete" },
+  ];
+
+  const tipoOperacaoOptions = [
+    { value: "1", label: "Faturamento" },
+    { value: "2", label: "Orçamento" },
+    { value: "3", label: "Atendimento" },
+  ];
   return (
     <>
       <Table variant="simple" style={{ overflowX: "auto" }}>
@@ -498,6 +517,69 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         placeholder="dd/mm/aaaa"
                         onChange={handleChangeInputDate}
                         borderColor="white"
+                      />
+                    </Box>
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
+                      </Text>
+                      <Select variant="flushed">
+                        {tipoOperacaoOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </Select>
+
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaRoad} mr={2} /> Tipo Frete:
+                      </Text>
+                      <Select
+                        variant="flushed"
+                        // placeholder="Selecione um frete"
+                      >
+                        {tipoFreteOptions.map((option, index) => (
+                          <option key={index} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </Select>
+
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaTruck} mr={2} /> Transportadora:
+                      </Text>
+                      <Select
+                        variant="flushed"
+                        placeholder="Selecione uma transportadora."
+                      />
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
+                      </Text>
+                      <Select
+                        variant="flushed"
+                        placeholder="Selecione uma condição de pagamento."
                       />
                     </Box>
                   </GridItem>
