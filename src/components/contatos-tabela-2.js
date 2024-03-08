@@ -26,6 +26,8 @@ import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
+import { MdSell } from "react-icons/md";
+import { FaCalendarDays } from "react-icons/fa6";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -281,6 +283,63 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                       ) : (
                         ""
                       )}
+                    </Box>
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={MdSell} mr={2} /> Potencial Lub:
+                      </Text>
+
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.potencialLub}
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaCalendarDays} mr={2} /> Última Compra:
+                      </Text>
+
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        <Box
+                          bg={
+                            selectedItem.diasCompras <= 90
+                              ? "green"
+                              : selectedItem.diasCompras <= 180
+                              ? "yellow"
+                              : "red"
+                          }
+                          color={
+                            selectedItem.diasCompras <= 90
+                              ? "white"
+                              : selectedItem.diasCompras <= 180
+                              ? "black"
+                              : "white"
+                          }
+                          w="90px"
+                          borderRadius="10px"
+                          justifyContent="center"
+                          p={1}
+                        >
+                          {`${selectedItem.diasCompras} ${
+                            selectedItem.diasCompras > 1 ? "dias" : "dia"
+                          }`}
+                        </Box>
+                      </Text>
                     </Box>
                   </GridItem>
                 </Grid>
