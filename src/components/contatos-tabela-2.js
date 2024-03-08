@@ -28,6 +28,8 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
 import { FaCalendarDays } from "react-icons/fa6";
+import { FaBarcode } from "react-icons/fa";
+import { FaUserTag } from "react-icons/fa6";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -228,6 +230,24 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                           ) : (
                             ""
                           )}
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="white"
+                            mb={2}
+                          >
+                            <Icon as={FaUserTag} mr={2} /> Vendedor:
+                          </Text>
+
+                          <Text
+                            ml="30px"
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {selectedItem.vendedor}
+                          </Text>
                         </>
                       )}
                     </Box>
@@ -283,6 +303,36 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                       ) : (
                         ""
                       )}
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaBarcode} mr={2} /> Código Cliente:
+                      </Text>
+
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.codCliente}
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
+                      </Text>
+
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.dataCadastro}
+                      </Text>
                     </Box>
                   </GridItem>
                   <GridItem colSpan={1}>
