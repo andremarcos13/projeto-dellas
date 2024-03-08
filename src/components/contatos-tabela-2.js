@@ -17,8 +17,11 @@ import {
   ModalCloseButton,
   Box,
   Text,
+  GridItem,
+  Grid,
+  Divider,
 } from "@chakra-ui/react";
-import { MdDone } from "react-icons/md";
+import { MdDone, MdPhone } from "react-icons/md";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -123,66 +126,82 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
           <ModalCloseButton />
           <ModalBody>
             {selectedItem && (
-              <Box>
-                <Text fontWeight="bold">Celular:</Text>
-                <Text>{selectedItem.celular}</Text>
-                <Text fontWeight="bold">Código Cliente:</Text>
-                <Text>{selectedItem.codCliente}</Text>
-                <Text fontWeight="bold">Código Grupo Venda:</Text>
-                <Text>{selectedItem.codGrupoVenda}</Text>
-                <Text fontWeight="bold">Código Lista:</Text>
-                <Text>{selectedItem.codLista}</Text>
-                <Text fontWeight="bold">Código Operador:</Text>
-                <Text>{selectedItem.codOperador}</Text>
-                <Text fontWeight="bold">Código Transportadora:</Text>
-                <Text>{selectedItem.codTransp}</Text>
-                <Text fontWeight="bold">Código Usuário:</Text>
-                <Text>{selectedItem.codUsuario}</Text>
-                <Text fontWeight="bold">Contato:</Text>
-                <Text>{selectedItem.selectedItem}</Text>
-                <Text fontWeight="bold">Data Cadastro:</Text>
-                <Text>{selectedItem.dataCadastro}</Text>
-                <Text fontWeight="bold">DDD:</Text>
-                <Text>{selectedItem.ddd}</Text>
-                <Text fontWeight="bold">Dias Compras:</Text>
-                <Text>{selectedItem.diasCompras}</Text>
-                <Text fontWeight="bold">Email Cliente:</Text>
-                <Text>{selectedItem.emailCliente}</Text>
-                <Text fontWeight="bold">Entidade:</Text>
-                <Text>{selectedItem.entidade}</Text>
-                <Text fontWeight="bold">Fax:</Text>
-                <Text>{selectedItem.fax}</Text>
-                <Text fontWeight="bold">Fone:</Text>
-                <Text>{selectedItem.fone}</Text>
-                <Text fontWeight="bold">Fone1:</Text>
-                <Text>{selectedItem.fone1}</Text>
-                <Text fontWeight="bold">Fone2:</Text>
-                <Text>{selectedItem.fone2}</Text>
-                <Text fontWeight="bold">Município:</Text>
-                <Text>{selectedItem.municipio}</Text>
-                <Text fontWeight="bold">Nome Cliente:</Text>
-                <Text>{selectedItem.nomeCliente}</Text>
-                <Text fontWeight="bold">Nome selectedItem:</Text>
-                <Text>{selectedItem.nomeselectedItem}</Text>
-                <Text fontWeight="bold">Nome Fantasia:</Text>
-                <Text>{selectedItem.nomeFantasia}</Text>
-                <Text fontWeight="bold">Nome Operador:</Text>
-                <Text>{selectedItem.nomeOperador}</Text>
-                <Text fontWeight="bold">Observação Cliente:</Text>
-                <Text>{selectedItem.obsCliente}</Text>
-                <Text fontWeight="bold">Potencial Lub:</Text>
-                <Text>{selectedItem.potencialLub}</Text>
-                <Text fontWeight="bold">Venda Qtd Notas Fisicas:</Text>
-                <Text>{selectedItem.venda_qtd_notasFisicas}</Text>
-                <Text fontWeight="bold">Venda Qtd Produtos:</Text>
-                <Text>{selectedItem.venda_qtd_produtos}</Text>
-                <Text fontWeight="bold">Venda Qtd Produtos Distintos:</Text>
-                <Text>{selectedItem.venda_qtd_produtosDistintos}</Text>
-                <Text fontWeight="bold">Venda Total NFS:</Text>
-                <Text>{selectedItem.venda_total_nfs}</Text>
-                <Text fontWeight="bold">Vendedor:</Text>
-                <Text>{selectedItem.vendedor}</Text>
-              </Box>
+              <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <GridItem colSpan={1}>
+                  <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                      <Icon as={MdPhone} mr={2} /> Celular:
+                    </Text>
+
+                    <Text
+                      ml="30px"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                    >
+                      {selectedItem.ddd > 0 && `(${selectedItem.ddd}) `}
+                      {selectedItem.celular}
+                    </Text>
+                    {selectedItem.celular && (
+                      <>
+                        {(selectedItem.fone &&
+                          selectedItem.fone !== selectedItem.celular) ||
+                        (selectedItem.fone1 &&
+                          selectedItem.fone1 !== selectedItem.celular) ||
+                        (selectedItem.fone2 &&
+                          selectedItem.fone2 !== selectedItem.celular) ||
+                        (selectedItem.fax &&
+                          selectedItem.fax !== selectedItem.celular) ? (
+                          <>
+                            <Text
+                              fontSize="lg"
+                              fontWeight="bold"
+                              color="white"
+                              mt={2}
+                              mb={2}
+                            >
+                              <Icon as={MdPhone} mr={2} /> Outros números:
+                            </Text>
+                            <Text ml="30px">
+                              {selectedItem.fone &&
+                                selectedItem.fone !== selectedItem.celular && (
+                                  <>
+                                    {selectedItem.fone}
+                                    <br />
+                                  </>
+                                )}
+                              {selectedItem.fone1 &&
+                                selectedItem.fone1 !== selectedItem.celular &&
+                                selectedItem.fone1 !== selectedItem.fone && (
+                                  <>
+                                    {selectedItem.fone1}
+                                    <br />
+                                  </>
+                                )}
+                              {selectedItem.fone2 &&
+                                selectedItem.fone2 !== selectedItem.celular &&
+                                selectedItem.fone2 !== selectedItem.fone &&
+                                selectedItem.fone2 !== selectedItem.fone1 && (
+                                  <>
+                                    {selectedItem.fone2}
+                                    <br />
+                                  </>
+                                )}
+                              {selectedItem.fax &&
+                                selectedItem.fax !== selectedItem.celular &&
+                                selectedItem.fax !== selectedItem.fone &&
+                                selectedItem.fax !== selectedItem.fone1 &&
+                                selectedItem.fax !== selectedItem.fone2 && (
+                                  <>{selectedItem.fax}</>
+                                )}
+                            </Text>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    )}
+                  </Box>
+                </GridItem>
+              </Grid>
             )}
           </ModalBody>
           <ModalFooter>
