@@ -22,6 +22,7 @@ import {
   Divider,
   Heading,
   Textarea,
+  Input,
 } from "@chakra-ui/react";
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
@@ -32,12 +33,15 @@ import { FaCalendarDays } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
 import { FaUserTag } from "react-icons/fa6";
 import { IoEyeSharp } from "react-icons/io5";
+import { MdDesignServices } from "react-icons/md";
+import { MdMessage } from "react-icons/md";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
   const [hiddenRows, setHiddenRows] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [editedObservations, setEditedObservations] = useState({});
+  const [date, setDate] = useState("");
 
   const capitalizeFirstLetter = (str) => {
     return str.toLowerCase().replace(/(?:^|\s)\w/g, (match) => {
@@ -69,6 +73,24 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   // Função para atualizar a observação do cliente
   const updateObservation = (id, observation) => {
     setEditedObservations({ ...editedObservations, [id]: observation });
+  };
+
+  const handleChangeInputDate = (e) => {
+    let input = e.target.value;
+    // Remove tudo que não for número
+    input = input.replace(/\D/g, "");
+
+    // Verifica se a data possui menos de 8 dígitos
+    if (input.length <= 8) {
+      // Adiciona as barras de acordo com o tamanho da string
+      if (input.length > 2 && input.length <= 4) {
+        input = input.replace(/(\d{2})(\d{2})/, "$1/$2");
+      } else if (input.length > 4) {
+        input = input.replace(/(\d{2})(\d{2})(\d{4})/, "$1/$2/$3");
+      }
+      // Atualiza o estado
+      setDate(input);
+    }
   };
 
   return (
@@ -416,6 +438,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         color="white"
                         border="1px"
                         resize="none"
+                        focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
                         _placeholder={{ color: "gray.400" }}
                         onChange={(e) => {
                           setSelectedItem({
@@ -423,6 +446,55 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                             obsCliente: e.target.value,
                           });
                         }}
+                      />
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={MdDesignServices} mr={2} /> Observação
+                        Atendimento:
+                      </Text>
+                      <Textarea
+                        bg="#1A202C"
+                        color="white"
+                        border="1px"
+                        resize="none"
+                        focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                        _placeholder={{ color: "gray.400" }}
+                      />
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={MdMessage} mr={2} /> Msg para Nota:
+                      </Text>
+                      <Textarea
+                        bg="#1A202C"
+                        color="white"
+                        border="1px"
+                        resize="none"
+                        focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                        _placeholder={{ color: "gray.400" }}
+                      />
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
+                      </Text>
+                      <Input
+                        focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                        type="text"
+                        value={date}
+                        placeholder="dd/mm/aaaa"
+                        onChange={handleChangeInputDate}
+                        borderColor="white"
                       />
                     </Box>
                   </GridItem>
