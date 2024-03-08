@@ -21,6 +21,7 @@ import {
   Grid,
   Divider,
   Heading,
+  Textarea,
 } from "@chakra-ui/react";
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
@@ -30,11 +31,13 @@ import { MdSell } from "react-icons/md";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
 import { FaUserTag } from "react-icons/fa6";
+import { IoEyeSharp } from "react-icons/io5";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
   const [hiddenRows, setHiddenRows] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [editedObservations, setEditedObservations] = useState({});
 
   const capitalizeFirstLetter = (str) => {
     return str.toLowerCase().replace(/(?:^|\s)\w/g, (match) => {
@@ -61,6 +64,11 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
 
   const closeModal = () => {
     setSelectedItem(null);
+  };
+
+  // Função para atualizar a observação do cliente
+  const updateObservation = (id, observation) => {
+    setEditedObservations({ ...editedObservations, [id]: observation });
   };
 
   return (
@@ -380,7 +388,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                               ? "black"
                               : "white"
                           }
-                          w="70px"
+                          w="79px"
                           borderRadius="10px"
                           justifyContent="center"
                           p={1}
@@ -390,6 +398,32 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                           }`}
                         </Box>
                       </Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
+                      </Text>
+                      <Textarea
+                        value={selectedItem.obsCliente}
+                        bg="#1A202C"
+                        color="white"
+                        border="1px"
+                        resize="none"
+                        _placeholder={{ color: "gray.400" }}
+                        onChange={(e) => {
+                          setSelectedItem({
+                            ...selectedItem,
+                            obsCliente: e.target.value,
+                          });
+                        }}
+                      />
                     </Box>
                   </GridItem>
                 </Grid>
