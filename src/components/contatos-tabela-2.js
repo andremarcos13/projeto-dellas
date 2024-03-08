@@ -380,7 +380,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                               ? "black"
                               : "white"
                           }
-                          w="90px"
+                          w="70px"
                           borderRadius="10px"
                           justifyContent="center"
                           p={1}
@@ -398,7 +398,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" onClick={closeModal}>
+            <Button colorScheme="green" onClick={closeModal}>
               Fechar
             </Button>
           </ModalFooter>
