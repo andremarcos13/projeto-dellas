@@ -20,10 +20,12 @@ import {
   GridItem,
   Grid,
   Divider,
+  Heading,
 } from "@chakra-ui/react";
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -128,129 +130,164 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
           <ModalCloseButton />
           <ModalBody>
             {selectedItem && (
-              <Grid templateColumns="repeat(5, 1fr)" gap={3}>
-                <GridItem colSpan={1}>
-                  <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
-                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
-                      <Icon as={MdPhone} mr={2} /> Celular:
-                    </Text>
+              <>
+                <Text size="4xl" mb="25px">
+                  {`Operador: ${selectedItem.nomeOperador} - ${selectedItem.codOperador} - Lista: ${selectedItem.codLista}`}
+                </Text>
+                <Grid templateColumns="repeat(5, 1fr)" gap={3}>
+                  <GridItem colSpan={1}>
+                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={FaUser} mr={2} /> Contato:
+                      </Text>
 
-                    <Text
-                      ml="30px"
-                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                    >
-                      {selectedItem.ddd > 0 && `(${selectedItem.ddd}) `}
-                      {selectedItem.celular}
-                    </Text>
-                    {selectedItem.celular && (
-                      <>
-                        {(selectedItem.fone &&
-                          selectedItem.fone !== selectedItem.celular) ||
-                        (selectedItem.fone1 &&
-                          selectedItem.fone1 !== selectedItem.celular) ||
-                        (selectedItem.fone2 &&
-                          selectedItem.fone2 !== selectedItem.celular) ||
-                        (selectedItem.fax &&
-                          selectedItem.fax !== selectedItem.celular) ? (
-                          <>
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="white"
-                              mt={2}
-                              mb={2}
-                            >
-                              <Icon as={MdPhone} mr={2} /> Outros números:
-                            </Text>
-                            <Text ml="30px">
-                              {selectedItem.fone &&
-                                selectedItem.fone !== selectedItem.celular && (
-                                  <>
-                                    {selectedItem.fone}
-                                    <br />
-                                  </>
-                                )}
-                              {selectedItem.fone1 &&
-                                selectedItem.fone1 !== selectedItem.celular &&
-                                selectedItem.fone1 !== selectedItem.fone && (
-                                  <>
-                                    {selectedItem.fone1}
-                                    <br />
-                                  </>
-                                )}
-                              {selectedItem.fone2 &&
-                                selectedItem.fone2 !== selectedItem.celular &&
-                                selectedItem.fone2 !== selectedItem.fone &&
-                                selectedItem.fone2 !== selectedItem.fone1 && (
-                                  <>
-                                    {selectedItem.fone2}
-                                    <br />
-                                  </>
-                                )}
-                              {selectedItem.fax &&
-                                selectedItem.fax !== selectedItem.celular &&
-                                selectedItem.fax !== selectedItem.fone &&
-                                selectedItem.fax !== selectedItem.fone1 &&
-                                selectedItem.fax !== selectedItem.fone2 && (
-                                  <>{selectedItem.fax}</>
-                                )}
-                            </Text>
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    )}
-                  </Box>
-                </GridItem>
-                <GridItem colSpan={1}>
-                  <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
-                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
-                      <Icon as={IoStorefront} mr={2} /> Cliente:
-                    </Text>
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.nomeContato}
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={MdPhone} mr={2} /> Celular:
+                      </Text>
 
-                    <Text
-                      ml="30px"
-                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                    >
-                      {selectedItem.nomeCliente}
-                    </Text>
-                    <Text
-                      ml="30px"
-                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                    >
-                      {selectedItem.nomeFantasia &&
-                        selectedItem.nomeFantasia !==
-                          selectedItem.nomeCliente && (
-                          <Text>{selectedItem.nomeFantasia}</Text>
-                        )}
-                    </Text>
-                    {selectedItem.emailCliente !== "" ? (
-                      <>
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="white"
-                          mt={2}
-                          mb={2}
-                        >
-                          <Icon as={MdEmail} mr={2} /> Email:
-                        </Text>
-                        <Text
-                          ml="30px"
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {selectedItem.emailCliente}
-                        </Text>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </Box>
-                </GridItem>
-              </Grid>
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.ddd > 0 && `(${selectedItem.ddd}) `}
+                        {selectedItem.celular}
+                      </Text>
+                      {selectedItem.celular && (
+                        <>
+                          {(selectedItem.fone &&
+                            selectedItem.fone !== selectedItem.celular) ||
+                          (selectedItem.fone1 &&
+                            selectedItem.fone1 !== selectedItem.celular) ||
+                          (selectedItem.fone2 &&
+                            selectedItem.fone2 !== selectedItem.celular) ||
+                          (selectedItem.fax &&
+                            selectedItem.fax !== selectedItem.celular) ? (
+                            <>
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="white"
+                                mt={2}
+                                mb={2}
+                              >
+                                <Icon as={MdPhone} mr={2} /> Outros números:
+                              </Text>
+                              <Text ml="30px">
+                                {selectedItem.fone &&
+                                  selectedItem.fone !==
+                                    selectedItem.celular && (
+                                    <>
+                                      {selectedItem.fone}
+                                      <br />
+                                    </>
+                                  )}
+                                {selectedItem.fone1 &&
+                                  selectedItem.fone1 !== selectedItem.celular &&
+                                  selectedItem.fone1 !== selectedItem.fone && (
+                                    <>
+                                      {selectedItem.fone1}
+                                      <br />
+                                    </>
+                                  )}
+                                {selectedItem.fone2 &&
+                                  selectedItem.fone2 !== selectedItem.celular &&
+                                  selectedItem.fone2 !== selectedItem.fone &&
+                                  selectedItem.fone2 !== selectedItem.fone1 && (
+                                    <>
+                                      {selectedItem.fone2}
+                                      <br />
+                                    </>
+                                  )}
+                                {selectedItem.fax &&
+                                  selectedItem.fax !== selectedItem.celular &&
+                                  selectedItem.fax !== selectedItem.fone &&
+                                  selectedItem.fax !== selectedItem.fone1 &&
+                                  selectedItem.fax !== selectedItem.fone2 && (
+                                    <>{selectedItem.fax}</>
+                                  )}
+                              </Text>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      )}
+                    </Box>
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={IoStorefront} mr={2} /> Cliente:
+                      </Text>
+
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.nomeCliente}
+                      </Text>
+                      <Text
+                        ml="30px"
+                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      >
+                        {selectedItem.nomeFantasia &&
+                          selectedItem.nomeFantasia !==
+                            selectedItem.nomeCliente && (
+                            <Text>{selectedItem.nomeFantasia}</Text>
+                          )}
+                      </Text>
+                      {selectedItem.emailCliente !== "" ? (
+                        <>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="white"
+                            mt={2}
+                            mb={2}
+                          >
+                            <Icon as={MdEmail} mr={2} /> Email:
+                          </Text>
+                          <Text
+                            ml="30px"
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {selectedItem.emailCliente}
+                          </Text>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </Box>
+                  </GridItem>
+                </Grid>
+              </>
             )}
           </ModalBody>
+
           <ModalFooter>
             <Button colorScheme="blue" onClick={closeModal}>
               Fechar
