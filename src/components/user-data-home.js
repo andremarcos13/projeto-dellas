@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from "react";
 import { VStack, Box, Heading, Text, Flex, Icon } from "@chakra-ui/react";
 import { MdPhone, MdToday, MdOfflinePin } from "react-icons/md"; // Importa os ícones relevantes
+import { FaClock } from "react-icons/fa";
 
 const UserDataHome = () => {
   // Obtenha a data de hoje
@@ -10,6 +12,20 @@ const UserDataHome = () => {
   )
     .toString()
     .padStart(2, "0")}/${today.getFullYear()}`;
+
+  // Estado para armazenar a hora atual
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Atualiza a hora atual a cada segundo
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Formata a hora atual como HH:MM:SS
+  const formattedTime = currentTime.toLocaleTimeString();
 
   return (
     <VStack spacing="6" h="50%" justifyContent="flex-start" alignItems="center">
@@ -26,19 +42,11 @@ const UserDataHome = () => {
         bg="rgba(0, 0, 0, 0.2)"
         textAlign="center" // Alinha o texto centralmente dentro do Box
       >
-        {/* <Flex direction="column" alignItems="center" mb="4">
-          <Heading as="h2" size="lg" mb="2">
-            João Carlos
-          </Heading>
-          <Text fontSize="md" color="gray.500">
-            Dev-Lindo
-          </Text>
-        </Flex> */}
-        <Flex justify="space-between">
+        <Flex justify="space-around">
           <Box>
             <Icon as={MdPhone} boxSize={8} color="green.500" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
-              Ligações Agendadas
+              Ligações
             </Text>
             <Text fontSize="2xl" color="green.500">
               10
@@ -53,13 +61,14 @@ const UserDataHome = () => {
               {formattedDate}
             </Text>
           </Box>
+
           <Box>
-            <Icon as={MdOfflinePin} boxSize={8} color="green.500" mb="2" />
+            <Icon as={FaClock} boxSize={8} color="green.500" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
-              Status
+              Hora
             </Text>
             <Text fontSize="2xl" color="green.500">
-              Disponível
+              {formattedTime}
             </Text>
           </Box>
         </Flex>
