@@ -225,21 +225,27 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                           <Text>{selectedItem.nomeFantasia}</Text>
                         )}
                     </Text>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="white"
-                      mt={2}
-                      mb={2}
-                    >
-                      <Icon as={MdEmail} mr={2} /> Email:
-                    </Text>
-                    <Text
-                      ml="30px"
-                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                    >
-                      {selectedItem.emailCliente}
-                    </Text>
+                    {selectedItem.emailCliente !== "" ? (
+                      <>
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          color="white"
+                          mt={2}
+                          mb={2}
+                        >
+                          <Icon as={MdEmail} mr={2} /> Email:
+                        </Text>
+                        <Text
+                          ml="30px"
+                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                        >
+                          {selectedItem.emailCliente}
+                        </Text>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </Box>
                 </GridItem>
               </Grid>
