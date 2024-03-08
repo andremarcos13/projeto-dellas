@@ -22,6 +22,8 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { MdDone, MdPhone } from "react-icons/md";
+import { IoStorefront } from "react-icons/io5";
+import { MdEmail } from "react-icons/md";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -126,7 +128,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
           <ModalCloseButton />
           <ModalBody>
             {selectedItem && (
-              <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <Grid templateColumns="repeat(5, 1fr)" gap={3}>
                 <GridItem colSpan={1}>
                   <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
                     <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
@@ -199,6 +201,45 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         )}
                       </>
                     )}
+                  </Box>
+                </GridItem>
+                <GridItem colSpan={1}>
+                  <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                      <Icon as={IoStorefront} mr={2} /> Cliente:
+                    </Text>
+
+                    <Text
+                      ml="30px"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                    >
+                      {selectedItem.nomeCliente}
+                    </Text>
+                    <Text
+                      ml="30px"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                    >
+                      {selectedItem.nomeFantasia &&
+                        selectedItem.nomeFantasia !==
+                          selectedItem.nomeCliente && (
+                          <Text>{selectedItem.nomeFantasia}</Text>
+                        )}
+                    </Text>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      color="white"
+                      mt={2}
+                      mb={2}
+                    >
+                      <Icon as={MdEmail} mr={2} /> Email:
+                    </Text>
+                    <Text
+                      ml="30px"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                    >
+                      {selectedItem.emailCliente}
+                    </Text>
                   </Box>
                 </GridItem>
               </Grid>
