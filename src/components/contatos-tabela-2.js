@@ -433,6 +433,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
                       </Text>
                       <Textarea
+                        placeholder="Observação relacionada ao cliente."
                         value={selectedItem.obsCliente}
                         bg="#1A202C"
                         color="white"
@@ -457,6 +458,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         Atendimento:
                       </Text>
                       <Textarea
+                        placeholder="Observação durante o atendimento."
                         bg="#1A202C"
                         color="white"
                         border="1px"
@@ -473,6 +475,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         <Icon as={MdMessage} mr={2} /> Msg para Nota:
                       </Text>
                       <Textarea
+                        placeholder="Mensagem para ser anexada na nota."
                         bg="#1A202C"
                         color="white"
                         border="1px"
