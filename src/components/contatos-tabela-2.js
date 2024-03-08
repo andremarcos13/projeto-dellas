@@ -79,6 +79,8 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                   _hover={{
                     bg: "gray.600",
                     transition: "opacity 0.1s",
+                    transform: "scale(1.02)",
+                    boxShadow: "lg",
                   }}
                   onClick={(event) => handleRowClick(index, event)} // Adiciona o evento de clique na linha
                   cursor="pointer"
@@ -102,6 +104,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                       }}
                       variant="unstyled"
                       bg="#1A202C"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                     >
                       <Icon as={MdDone} boxSize={5} color="green.500" />
                     </Button>
