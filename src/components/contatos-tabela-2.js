@@ -39,8 +39,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
     return hiddenRows.includes(index);
   };
 
-  const handleRowClick = (index) => {
-    setSelectedItem(item.lista_contatos[index]);
+  const handleRowClick = (index, event) => {
+    // Verifica se o ícone de OK foi clicado, se sim, não faz nada
+    if (event.target.tagName !== "BUTTON") {
+      // Se o clique não foi no botão, abre o modal
+      setSelectedItem(item.lista_contatos[index]);
+      setShowNextContact(true);
+    }
   };
 
   const closeModal = () => {
@@ -52,14 +57,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
       <Table variant="simple" style={{ overflowX: "auto" }}>
         <Thead>
           <Tr>
-            <Th>Tel. Contato</Th>
-            <Th>Data Cadastro</Th>
-            <Th>Dias Compras</Th>
-            <Th>Email Cliente</Th>
-            <Th>Município</Th>
             <Th>Nome Cliente</Th>
             <Th>Nome Contato</Th>
-            <Th>Nome Fantasia</Th>
+            <Th>Tel. Contato</Th>
+            <Th>Data Cadastro</Th>
+            <Th>Última Compra</Th>
+            <Th>Email Cliente</Th>
+            <Th>Município</Th>
             <Th>Observação Cliente</Th>
             <Th>Potencial Lub</Th>
             <Th>Venda Total NFS</Th>
@@ -76,22 +80,28 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                     bg: "gray.600",
                     transition: "opacity 0.1s",
                   }}
-                  onClick={() => handleRowClick(index)} // Adiciona o evento de clique na linha
+                  onClick={(event) => handleRowClick(index, event)} // Adiciona o evento de clique na linha
                   cursor="pointer"
                 >
-                  <Td>{contato.celular}</Td>
-                  <Td>{contato.dataCadastro}</Td>
-                  <Td>{contato.diasCompras}</Td>
-                  <Td>{contato.emailCliente.toLowerCase()}</Td>
-                  <Td>{capitalizeFirstLetter(contato.municipio)}</Td>
                   <Td>{capitalizeFirstLetter(contato.nomeCliente)}</Td>
                   <Td>{capitalizeFirstLetter(contato.nomeContato)}</Td>
-                  <Td>{capitalizeFirstLetter(contato.nomeFantasia)}</Td>
+
+                  <Td>{contato.celular}</Td>
+                  <Td>{contato.dataCadastro}</Td>
+                  <Td>{`${contato.diasCompras} dias`}</Td>
+                  <Td>{contato.emailCliente.toLowerCase()}</Td>
+                  <Td>{capitalizeFirstLetter(contato.municipio)}</Td>
                   <Td>{capitalizeFirstLetter(contato.obsCliente)}</Td>
                   <Td>{contato.potencialLub}</Td>
                   <Td>{contato.venda_total_nfs}</Td>
                   <Td>
-                    <Button onClick={() => hideRow(index)} variant="unstyled">
+                    <Button
+                      onClick={(event) => {
+                        event.stopPropagation(); // Impede a propagação do clique para a linha
+                        hideRow(index);
+                      }}
+                      variant="unstyled"
+                    >
                       <Icon as={MdDone} boxSize={5} color="green.500" />
                     </Button>
                   </Td>
