@@ -101,6 +101,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         hideRow(index);
                       }}
                       variant="unstyled"
+                      bg="#1A202C"
                     >
                       <Icon as={MdDone} boxSize={5} color="green.500" />
                     </Button>

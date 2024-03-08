@@ -1,4 +1,5 @@
-import { VStack, Box, Heading, Text, Flex } from "@chakra-ui/react";
+import { VStack, Box, Heading, Text, Flex, Icon } from "@chakra-ui/react";
+import { MdPhone, MdToday, MdOfflinePin } from "react-icons/md"; // Importa os ícones relevantes
 
 const UserDataHome = () => {
   // Obtenha a data de hoje
@@ -35,22 +36,25 @@ const UserDataHome = () => {
         </Flex>
         <Flex justify="space-between">
           <Box>
+            <Icon as={MdPhone} boxSize={8} color="green.500" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Ligações Agendadas
             </Text>
-            <Text fontSize="2xl" color="blue.500">
+            <Text fontSize="2xl" color="green.500">
               10
             </Text>
           </Box>
           <Box>
+            <Icon as={MdToday} boxSize={8} color="green.500" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Data
             </Text>
-            <Text fontSize="2xl" color="blue.500">
+            <Text fontSize="2xl" color="green.500">
               {formattedDate}
             </Text>
           </Box>
           <Box>
+            <Icon as={MdOfflinePin} boxSize={8} color="green.500" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Status
             </Text>
