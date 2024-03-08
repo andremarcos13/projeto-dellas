@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import CalendarioComponent from "../components/calendario";
 import ContatosTable from "../components/contatos-tabela-2";
+import BreadCrumbLinks from "../components/breadcumber";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -77,6 +78,7 @@ const AgendaPage = () => {
     <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
       {" "}
       {/* Define o plano de fundo e o padding */}
+      <BreadCrumbLinks />
       <Box mt="20px" mb="20px">
         <CalendarioComponent onDateChange={handleDateChange} />
       </Box>

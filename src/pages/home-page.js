@@ -3,6 +3,7 @@ import { MdEvent, MdDateRange, MdList, MdAssignment } from "react-icons/md";
 import UserDataHome from "../components/user-data-home";
 import { useNavigate } from "react-router-dom";
 import { IoConstruct } from "react-icons/io5";
+import BreadCrumbLinks from "../components/breadcumber";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const HomePage = () => {
   return (
     <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
       <Box>
+        <BreadCrumbLinks />
         <UserDataHome />
       </Box>
       <VStack spacing="6" h="50vh" justifyContent="center">
