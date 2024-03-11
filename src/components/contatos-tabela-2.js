@@ -189,7 +189,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                 </Text>
                 <Grid templateColumns="repeat(5, 1fr)" gap={3}>
                   <GridItem colSpan={1}>
-                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
@@ -302,7 +308,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                     </Box>
                   </GridItem>
                   <GridItem colSpan={1}>
-                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
@@ -385,7 +397,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                     </Box>
                   </GridItem>
                   <GridItem colSpan={1}>
-                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
@@ -442,7 +460,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                     </Box>
                   </GridItem>
                   <GridItem colSpan={1}>
-                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
@@ -457,6 +481,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         bg="#1A202C"
                         color="white"
                         border="1px"
+                        height="120px"
                         resize="none"
                         focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
                         _placeholder={{ color: "gray.400" }}
@@ -480,6 +505,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         placeholder="Observação durante o atendimento."
                         bg="#1A202C"
                         color="white"
+                        height="120px"
                         border="1px"
                         resize="none"
                         focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
@@ -497,6 +523,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         placeholder="Mensagem para ser anexada na nota."
                         bg="#1A202C"
                         color="white"
+                        height="120px"
                         border="1px"
                         resize="none"
                         focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
@@ -521,7 +548,13 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                     </Box>
                   </GridItem>
                   <GridItem colSpan={1}>
-                    <Box bg="#1A202C" p="4" borderRadius="10px" maxW="350px">
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
                       <Text
                         fontSize="lg"
                         fontWeight="bold"
