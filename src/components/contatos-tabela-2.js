@@ -40,6 +40,7 @@ import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { FaTruck } from "react-icons/fa";
 import { FaRoad } from "react-icons/fa6";
 import { FaDollarSign } from "react-icons/fa";
+import { LuHistory } from "react-icons/lu";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -112,6 +113,22 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
     { value: "2", label: "Orçamento" },
     { value: "3", label: "Atendimento" },
   ];
+
+  const customStyles = {
+    control: {
+      backgroundColor: "transparent",
+      borderColor: "green.500", // Altera a cor da borda quando o controle está focado
+    },
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "green.500" : "white", // Define a cor de fundo das opções selecionadas como verde e as não selecionadas como branca
+      color: state.isSelected ? "white" : "black", // Define a cor do texto das opções selecionadas como branco e as não selecionadas como preto
+      "&:hover": {
+        backgroundColor: "lightgreen", // Define a cor de fundo ao passar o mouse sobre as opções
+      },
+    }),
+  };
+
   return (
     <>
       <Table variant="simple" style={{ overflowX: "auto" }}>
@@ -303,6 +320,65 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                           >
                             {selectedItem.vendedor}
                           </Text>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="white"
+                            mb={2}
+                          >
+                            <Icon as={MdSell} mr={2} /> Potencial Lub:
+                          </Text>
+
+                          <Text
+                            ml="30px"
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {selectedItem.potencialLub}
+                          </Text>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="white"
+                            mb={2}
+                          >
+                            <Icon as={FaCalendarDays} mr={2} /> Última Compra:
+                          </Text>
+
+                          <Text
+                            ml="30px"
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            <Box
+                              bg={
+                                selectedItem.diasCompras <= 90
+                                  ? "green"
+                                  : selectedItem.diasCompras <= 180
+                                  ? "yellow"
+                                  : "red"
+                              }
+                              color={
+                                selectedItem.diasCompras <= 90
+                                  ? "white"
+                                  : selectedItem.diasCompras <= 180
+                                  ? "black"
+                                  : "white"
+                              }
+                              w="79px"
+                              borderRadius="10px"
+                              justifyContent="center"
+                              p={1}
+                            >
+                              {`${selectedItem.diasCompras} ${
+                                selectedItem.diasCompras > 1 ? "dias" : "dia"
+                              }`}
+                            </Box>
+                          </Text>
                         </>
                       )}
                     </Box>
@@ -393,69 +469,6 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                       >
                         {selectedItem.dataCadastro}
-                      </Text>
-                    </Box>
-                  </GridItem>
-                  <GridItem colSpan={1}>
-                    <Box
-                      bg="#1A202C"
-                      p="4"
-                      borderRadius="10px"
-                      maxW="350px"
-                      minH="590px"
-                    >
-                      <Text
-                        fontSize="lg"
-                        fontWeight="bold"
-                        color="white"
-                        mb={2}
-                      >
-                        <Icon as={MdSell} mr={2} /> Potencial Lub:
-                      </Text>
-
-                      <Text
-                        ml="30px"
-                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                      >
-                        {selectedItem.potencialLub}
-                      </Text>
-                      <Text
-                        fontSize="lg"
-                        fontWeight="bold"
-                        color="white"
-                        mb={2}
-                      >
-                        <Icon as={FaCalendarDays} mr={2} /> Última Compra:
-                      </Text>
-
-                      <Text
-                        ml="30px"
-                        _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                      >
-                        <Box
-                          bg={
-                            selectedItem.diasCompras <= 90
-                              ? "green"
-                              : selectedItem.diasCompras <= 180
-                              ? "yellow"
-                              : "red"
-                          }
-                          color={
-                            selectedItem.diasCompras <= 90
-                              ? "white"
-                              : selectedItem.diasCompras <= 180
-                              ? "black"
-                              : "white"
-                          }
-                          w="79px"
-                          borderRadius="10px"
-                          justifyContent="center"
-                          p={1}
-                        >
-                          {`${selectedItem.diasCompras} ${
-                            selectedItem.diasCompras > 1 ? "dias" : "dia"
-                          }`}
-                        </Box>
                       </Text>
                     </Box>
                   </GridItem>
@@ -616,7 +629,42 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                       />
                     </Box>
                   </GridItem>
+                  <GridItem colSpan={1}>
+                    <Box
+                      bg="#1A202C"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                    >
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="white"
+                        mb={2}
+                      >
+                        <Icon as={LuHistory} mr={2} /> Histórico de Compras:
+                      </Text>
+                    </Box>
+                  </GridItem>
                 </Grid>
+                <Box mt="30px">
+                  {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                    <Icon as={LuHistory} mr={2} /> Histórico de Compras:
+                  </Text> */}
+                  <Table variant="striped" colorScheme="teal">
+                    <Thead>
+                      <Tr>
+                        <Th>Produto</Th>
+                        <Th>Quantidade</Th>
+                        <Th>Valor Unitário</Th>
+                        <Th>Total</Th>
+                        <Th>Data</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody></Tbody>
+                  </Table>
+                </Box>
               </>
             )}
           </ModalBody>
