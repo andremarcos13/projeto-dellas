@@ -162,6 +162,7 @@ const AgendaPage = () => {
                     mb="4"
                     colorScheme="green"
                     color="white"
+                    ml={3}
                   >
                     Voltar
                   </Button>
