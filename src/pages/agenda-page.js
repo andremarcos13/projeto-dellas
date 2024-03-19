@@ -46,7 +46,7 @@ const AgendaPage = () => {
     try {
       const formattedDate = format(selectedDate, "yyyyMMdd");
       const response = await axios.get(
-        `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador?data_inicial=${formattedDate}&usuario=000283`,
+        `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador?data_inicial=${formattedDate}&usuario=000283&empresa=01&filial=01`,
         {
           headers: {
             Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
@@ -93,9 +93,6 @@ const AgendaPage = () => {
   const dataFormatada = `${dia < 10 ? "0" : ""}${dia}/${
     mes < 10 ? "0" : ""
   }${mes}/${ano}`;
-
-  console.log(dataFormatada); // Output: 11/03/2024
-  console.log("selectedDate", selectedDate);
 
   return (
     <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
