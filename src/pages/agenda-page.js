@@ -22,6 +22,7 @@ import BreadCrumbLinks from "../components/breadcumber";
 import { FaClock } from "react-icons/fa";
 import { BsCalendarDateFill } from "react-icons/bs";
 import { FaList } from "react-icons/fa6";
+import { IoCall } from "react-icons/io5";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -103,9 +104,6 @@ const AgendaPage = () => {
         </Box>
         <Box mb="150px" ml="15px">
           <Icon as={FaList} boxSize={8} color="green.500" />
-          {/* <Text fontSize="xl" fontWeight="bold" color="white.700" mb="2">
-            Dados
-          </Text> */}
           {agendaData.length > 0 ? (
             agendaData.map((data, index) => (
               <Box key={index} fontSize="lg" color="white.500" mb="2">
@@ -117,22 +115,6 @@ const AgendaPage = () => {
               Nenhum dado disponível.
             </Text>
           )}
-        </Box>
-        <Box mt="20px" mb="20px" mr="2">
-          <Icon as={BsCalendarDateFill} boxSize={8} color="green.500" mb="2" />
-          <Text fontSize="xl" fontWeight="bold" color="white.700" mb="2">
-            Data Ativa
-          </Text>
-          <Text fontSize="2xl" color="green.500" mb="2">
-            {dataFormatada}
-          </Text>
-          <Icon as={FaClock} boxSize={8} color="green.500" mb="2" mt="10px" />
-          <Text fontSize="xl" fontWeight="bold" color="white.700" mb="2">
-            Hora
-          </Text>
-          <Text fontSize="2xl" color="green.500">
-            {formattedTime}
-          </Text>
         </Box>
       </Grid>
       {isLoading ? (
@@ -158,8 +140,8 @@ const AgendaPage = () => {
                     onClick={handleBackButtonClick}
                     mb="4"
                     colorScheme="green"
-                    color="white"
                     ml={3}
+                    color="black"
                   >
                     Voltar
                   </Button>
