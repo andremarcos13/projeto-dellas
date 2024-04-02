@@ -1,9 +1,9 @@
-import LoginInputs from "../components/login-inputs";
+import AtendimentoPage from "./atendimento-page";
 
 const LoginPage = () => {
   return (
     <>
-      <LoginInputs />
+      <AtendimentoPage />
     </>
   );
 };
