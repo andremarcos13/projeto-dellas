@@ -1,18 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Importe BrowserRouter e Routes
+import { useEffect } from "react";
 import LoginPage from "./pages/login-page";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { ptBR } from "date-fns/locale/pt-BR";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Importe BrowserRouter e Routes
+import HomePage from "./pages/home-page";
+import AgendaPage from "./pages/agenda-page";
 
 function App() {
+  useEffect(() => {
+    localStorage.setItem("chakra-ui-color-mode", "dark");
+  }, []); // O array vazio assegura que o efeito só será executado uma vez, equivalente ao componentDidMount()
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-        </Routes>
-      </Router>
-    </LocalizationProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/agenda" element={<AgendaPage />} />
+      </Routes>
+    </Router>
   );
 }
 
