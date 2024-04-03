@@ -6,9 +6,12 @@ const AppContext = createContext();
 // Componente Provider que irá envolver os componentes que precisam acessar o contexto
 const AppContextProvider = ({ children }) => {
   const [dateGlobal, setDateGlobal] = useState("");
+  const [rowItem, setRowItem] = useState({});
 
   return (
-    <AppContext.Provider value={{ dateGlobal, setDateGlobal }}>
+    <AppContext.Provider
+      value={{ dateGlobal, setDateGlobal, rowItem, setRowItem }}
+    >
       {children}
     </AppContext.Provider>
   );

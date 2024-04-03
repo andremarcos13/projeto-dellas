@@ -10,11 +10,16 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { MdDone } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
   const [hiddenRows, setHiddenRows] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const { rowItem, setRowItem } = useAppContext();
+
+  const navigate = useNavigate();
 
   const capitalizeFirstLetter = (str) => {
     return str.toLowerCase().replace(/(?:^|\s)\w/g, (match) => {
@@ -35,7 +40,11 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
     if (event.target.tagName !== "BUTTON") {
       // Se o clique não foi no botão, abre o modal
       setSelectedItem(item.lista_contatos[index]);
+      setRowItem(item.lista_contatos[index]);
+      console.log("rowItem", rowItem);
+      console.log("selectedRowItem", selectedItem);
       setShowNextContact(true);
+      navigate(`/atendimento/${[index]}`);
     }
   };
 

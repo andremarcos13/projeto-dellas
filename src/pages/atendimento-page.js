@@ -3,18 +3,14 @@ import { DatePicker } from "@mui/x-date-pickers";
 import ptLocale from "date-fns/locale/pt-BR";
 import { useEffect } from "react";
 import fetchAgenda from "../apis/agenda-api";
+import Atendimento from "../components/atendimento";
 
 const AtendimentoPage = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchAgenda();
-      console.log("data =>", data);
-    };
-
-    fetchData();
-  }, []);
-
-  return <Box></Box>;
+  return (
+    <Box>
+      <Atendimento />
+    </Box>
+  );
 };
 
 export default AtendimentoPage;
