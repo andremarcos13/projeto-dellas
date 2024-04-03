@@ -113,7 +113,12 @@ const Atendimento = () => {
   };
 
   return (
-    <>
+    <Box
+      bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
+      py="10" // Adiciona um pouco de espaço acima e abaixo do texto
+      px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
+      borderRadius="md" // Borda arredondada
+    >
       <Button
         onClick={handleBackButtonClick}
         mb="4"
@@ -139,7 +144,14 @@ const Atendimento = () => {
                 maxW="350px"
                 minH="590px"
               >
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaUser} mr={2} /> Contato:
                 </Text>
 
@@ -149,7 +161,14 @@ const Atendimento = () => {
                 >
                   {rowItem.nomeContato}
                 </Text>
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={MdPhone} mr={2} /> Celular:
                 </Text>
 
@@ -210,7 +229,14 @@ const Atendimento = () => {
                     ) : (
                       ""
                     )}
-                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      color="white"
+                      mb={2}
+                      display="flex"
+                      alignItems="center"
+                    >
                       <Icon as={FaUserTag} mr={2} /> Vendedor:
                     </Text>
 
@@ -223,7 +249,14 @@ const Atendimento = () => {
                     >
                       {rowItem.vendedor}
                     </Text>
-                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      color="white"
+                      mb={2}
+                      display="flex"
+                      alignItems="center"
+                    >
                       <Icon as={MdSell} mr={2} /> Potencial Lub:
                     </Text>
 
@@ -236,7 +269,14 @@ const Atendimento = () => {
                     >
                       {rowItem.potencialLub}
                     </Text>
-                    <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      color="white"
+                      mb={2}
+                      display="flex"
+                      alignItems="center"
+                    >
                       <Icon as={FaCalendarDays} mr={2} /> Última Compra:
                     </Text>
 
@@ -284,7 +324,14 @@ const Atendimento = () => {
                 maxW="350px"
                 minH="590px"
               >
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={IoStorefront} mr={2} /> Cliente:
                 </Text>
 
@@ -327,7 +374,14 @@ const Atendimento = () => {
                 ) : (
                   ""
                 )}
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaBarcode} mr={2} /> Código Cliente:
                 </Text>
 
@@ -337,7 +391,14 @@ const Atendimento = () => {
                 >
                   {rowItem.codCliente}
                 </Text>
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
                 </Text>
 
@@ -357,7 +418,14 @@ const Atendimento = () => {
                 maxW="350px"
                 minH="590px"
               >
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
                 </Text>
                 <Textarea
@@ -377,7 +445,14 @@ const Atendimento = () => {
                     });
                   }}
                 />
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={MdDesignServices} mr={2} /> Observação Atendimento:
                 </Text>
                 <Textarea
@@ -390,7 +465,14 @@ const Atendimento = () => {
                   focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={MdMessage} mr={2} /> Msg para Nota:
                 </Text>
                 <Textarea
@@ -403,7 +485,14 @@ const Atendimento = () => {
                   focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
                 </Text>
                 <Input
@@ -424,7 +513,14 @@ const Atendimento = () => {
                 maxW="350px"
                 minH="590px"
               >
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
                 </Text>
                 <Select variant="flushed">
@@ -435,7 +531,14 @@ const Atendimento = () => {
                   ))}
                 </Select>
 
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaRoad} mr={2} /> Tipo Frete:
                 </Text>
                 <Select
@@ -449,14 +552,28 @@ const Atendimento = () => {
                   ))}
                 </Select>
 
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaTruck} mr={2} /> Transportadora:
                 </Text>
                 <Select
                   variant="flushed"
                   placeholder="Selecione uma transportadora."
                 />
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
                 </Text>
                 <Select
@@ -473,7 +590,14 @@ const Atendimento = () => {
                 maxW="350px"
                 minH="590px"
               >
-                <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="white"
+                  mb={2}
+                  display="flex"
+                  alignItems="center"
+                >
                   <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                 </Text>
               </Box>
@@ -498,7 +622,7 @@ const Atendimento = () => {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
 };
 
