@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 // Criando o contexto
 const AppContext = createContext();
@@ -13,5 +13,13 @@ const AppContextProvider = ({ children }) => {
     </AppContext.Provider>
   );
 };
+
+export function useAppContext() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext deve ser usado dentro do AppProvider");
+  }
+  return context;
+}
 
 export default AppContextProvider;
