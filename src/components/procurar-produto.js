@@ -18,6 +18,7 @@ import {
   Flex,
   Divider,
   Center,
+  Grid,
 } from "@chakra-ui/react";
 import { FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -72,7 +73,7 @@ const ProcurarProduto = () => {
           </Center>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center">
+            <Flex align="center" justify="center">
               <Input
                 flex="1"
                 mt="10px"
@@ -82,6 +83,7 @@ const ProcurarProduto = () => {
               />
               <Button
                 ml={4}
+                mt="10px"
                 onClick={handleSearch}
                 colorScheme="gray"
                 variant="outline"
@@ -91,13 +93,31 @@ const ProcurarProduto = () => {
               </Button>
             </Flex>
             {isLoading ? (
-              <Spinner mt={4} />
+              <Center mt="25%">
+                <Spinner mt={4} />
+              </Center>
             ) : searchResults.length > 0 ? (
-              <UnorderedList mt={4}>
+              <Grid
+                mt={4}
+                templateColumns="repeat(auto-fit, minmax(200px, 1fr))"
+                gap={4}
+              >
                 {searchResults.map((item, index) => (
-                  <ListItem key={index}>
-                    <VStack align="flex-start" spacing={2}>
-                      <Text fontSize="lg">
+                  <Box
+                    key={index}
+                    border="1px"
+                    p={2}
+                    borderColor="gray.200"
+                    borderRadius="10px"
+                    boxShadow="md"
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                    mb={4} // Espaçamento mínimo entre os itens
+                  >
+                    <Flex
+                      direction="column"
+                      height="100%" // Garante que o conteúdo do Flex ocupe toda a altura
+                    >
+                      <Text fontWeight="bold" fontSize="md" mb={15}>
                         {item.descricao.includes(searchTerm) ? (
                           <>
                             {item.descricao
@@ -115,12 +135,16 @@ const ProcurarProduto = () => {
                           item.descricao
                         )}
                       </Text>
-                      <Flex>
-                        <Text fontWeight="bold">Filial:</Text>
-                        <Text ml={1}>{item.filial}</Text>
-                      </Flex>
-                      <Flex>
-                        <Text fontWeight="bold">Código:</Text>
+                      <Flex alignItems="center">
+                        <Text
+                          bg="black"
+                          color="white"
+                          p={1}
+                          borderRadius="10px"
+                          mb={1}
+                        >
+                          Código:
+                        </Text>
                         <Text ml={1}>
                           {item.codigo.includes(searchTerm) ? (
                             <>
@@ -140,18 +164,34 @@ const ProcurarProduto = () => {
                           )}
                         </Text>
                       </Flex>
-                      <Flex>
-                        <Text fontWeight="bold">Tipo:</Text>
+                      <Flex alignItems="center">
+                        <Text
+                          bg="black"
+                          color="white"
+                          p={1}
+                          borderRadius="10px"
+                          mb={1}
+                        >
+                          Tipo:
+                        </Text>
                         <Text ml={1}>{item.tipo}</Text>
                       </Flex>
-                      <Flex>
-                        <Text fontWeight="bold">Unidade de Medida:</Text>
+                      <Flex alignItems="center">
+                        <Text
+                          bg="black"
+                          color="white"
+                          p={1}
+                          borderRadius="10px"
+                          mb={1}
+                        >
+                          Unidade de Medida:
+                        </Text>
                         <Text ml={1}>{item.um}</Text>
                       </Flex>
-                    </VStack>
-                  </ListItem>
+                    </Flex>
+                  </Box>
                 ))}
-              </UnorderedList>
+              </Grid>
             ) : (
               <Text mt={4}>Nenhum resultado encontrado.</Text>
             )}
