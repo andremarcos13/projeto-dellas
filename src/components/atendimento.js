@@ -169,6 +169,7 @@ const Atendimento = () => {
                 <Text
                   ml="30px"
                   color="white"
+                  mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.nomeContato}
@@ -208,7 +209,7 @@ const Atendimento = () => {
                         >
                           <Icon as={MdPhone} mr={2} /> Outros números:
                         </Text>
-                        <Text ml="30px" color="white">
+                        <Text ml="30px" color="white" mb={2}>
                           {rowItem.fone && rowItem.fone !== rowItem.celular && (
                             <>
                               {rowItem.fone}
@@ -275,6 +276,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
+                      mb={2}
                       color="white"
                       ml="30px"
                       _hover={{
@@ -354,6 +356,7 @@ const Atendimento = () => {
                 <Text
                   color="white"
                   ml="30px"
+                  mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.nomeCliente}
@@ -380,6 +383,7 @@ const Atendimento = () => {
                       <Icon as={MdEmail} mr={2} /> Email:
                     </Text>
                     <Text
+                      mb={2}
                       color="white"
                       ml="30px"
                       _hover={{
@@ -407,6 +411,7 @@ const Atendimento = () => {
                 <Text
                   ml="30px"
                   color="white"
+                  mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.codCliente}
@@ -423,7 +428,7 @@ const Atendimento = () => {
                 </Text>
 
                 {rowItem.dataCadastro === "  /  /  " ? (
-                  <Text color="white" ml="30px">
+                  <Text color="white" ml="30px" mb={2}>
                     Nenhuma data cadastrada
                   </Text>
                 ) : (
