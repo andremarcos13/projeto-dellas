@@ -62,7 +62,8 @@ const ProcurarProduto = () => {
   };
 
   const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
+    const upperCaseValue = event.target.value.toUpperCase(); // Converte o valor para letras maiúsculas
+    setSearchTerm(upperCaseValue);
   };
 
   const closeModal = () => {
@@ -173,7 +174,15 @@ const ProcurarProduto = () => {
                       direction="column"
                       height="100%" // Garante que o conteúdo do Flex ocupe toda a altura
                     >
-                      <Text fontWeight="bold" fontSize="md" mb={2}>
+                      <Text
+                        fontWeight="bold"
+                        fontSize="md"
+                        mb={2}
+                        bg="gray.900"
+                        color="white"
+                        borderRadius="10px"
+                        p={3}
+                      >
                         {item.descricao.includes(searchTerm) ? (
                           <>
                             {item.descricao
@@ -196,13 +205,7 @@ const ProcurarProduto = () => {
                         )}
                       </Text>
                       <Flex alignItems="center">
-                        <Text
-                          bg="black"
-                          color="white"
-                          p={1}
-                          borderRadius="10px"
-                          mb={1}
-                        >
+                        <Text as="u" p={1} borderRadius="10px" mb={1}>
                           Código:
                         </Text>
                         <Text ml={1}>
@@ -225,25 +228,13 @@ const ProcurarProduto = () => {
                         </Text>
                       </Flex>
                       <Flex alignItems="center">
-                        <Text
-                          bg="black"
-                          color="white"
-                          p={1}
-                          borderRadius="10px"
-                          mb={1}
-                        >
+                        <Text as="u" p={1} borderRadius="10px" mb={1}>
                           Tipo:
                         </Text>
                         <Text ml={1}>{item.tipo}</Text>
                       </Flex>
                       <Flex alignItems="center">
-                        <Text
-                          bg="black"
-                          color="white"
-                          p={1}
-                          borderRadius="10px"
-                          mb={1}
-                        >
+                        <Text as="u" p={1} borderRadius="10px" mb={1}>
                           Unidade de Medida:
                         </Text>
                         <Text ml={1}>{item.um}</Text>
@@ -305,7 +296,7 @@ const ProcurarProduto = () => {
                     {precoUnitario !== null && (
                       <Text
                         mt={4}
-                        bg="gray"
+                        bg="gray.900"
                         color="white"
                         w={200}
                         p={3}
@@ -318,7 +309,7 @@ const ProcurarProduto = () => {
                     {precoTotal !== null && (
                       <Text
                         mt={4}
-                        bg="gray"
+                        bg="gray.900"
                         color="white"
                         p={3}
                         w={200}
