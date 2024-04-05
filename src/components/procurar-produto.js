@@ -29,6 +29,7 @@ import { FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da rea
 import fetchProdutos from "../apis/produtos-api";
 import fetchPrecoDeVenda from "../apis/preco-venda-api";
 import { MdCalculate } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
 
 const ProcurarProduto = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -324,14 +325,22 @@ const ProcurarProduto = () => {
               </>
             )}
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter justifyContent="space-between">
             <Button
-              colorScheme="gray"
+              colorScheme="red"
               variant="outline"
               onClick={closeModal}
               leftIcon={<FaTimes />} // Usando o ícone de fechar da react-icons
             >
               Fechar
+            </Button>
+            <Button
+              colorScheme="whatsapp"
+              variant="outline"
+              //   onClick={closeModal}
+              leftIcon={<FaCheck />} // Usando o ícone de fechar da react-icons
+            >
+              Salvar
             </Button>
           </ModalFooter>
         </ModalContent>
