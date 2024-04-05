@@ -34,6 +34,7 @@ const ProcurarProduto = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [quantidade, setQuantidade] = useState(1); // Estado para a quantidade
@@ -43,6 +44,8 @@ const ProcurarProduto = () => {
 
   const handleSearch = async () => {
     setSelectedItem("");
+    setPrecoTotal(0);
+    setPrecoUnitario(0);
     setQuantidade(1);
     try {
       setIsLoading(true);
@@ -67,14 +70,20 @@ const ProcurarProduto = () => {
     setSearchTerm("");
     setIsModalOpen(false);
     setSelectedItem("");
+    setPrecoTotal(0);
+    setPrecoUnitario(0);
   };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
+    setPrecoTotal(0);
+    setPrecoUnitario(0);
+    setQuantidade(1);
   };
 
   const handleCalculatePrice = async () => {
     setIsCalculating(true);
+    setIsLoading2(true);
     try {
       const produto = selectedItem.codigo;
       const qtd = quantidade;
@@ -95,6 +104,7 @@ const ProcurarProduto = () => {
       console.error("Erro ao calcular o preço de venda:", error);
     } finally {
       setIsCalculating(false);
+      setIsLoading2(false);
     }
   };
 
@@ -173,7 +183,11 @@ const ProcurarProduto = () => {
                                   {part}
                                   {index !==
                                     item.descricao.split(searchTerm).length -
-                                      1 && <strong>{searchTerm}</strong>}
+                                      1 && (
+                                    <span style={{ color: "red" }}>
+                                      {searchTerm}
+                                    </span>
+                                  )}
                                 </span>
                               ))}
                           </>
@@ -273,36 +287,46 @@ const ProcurarProduto = () => {
                     ml={3}
                     onClick={handleCalculatePrice} // Chama a função para calcular o preço de venda
                     colorScheme="gray"
+                    loadingText="Calculando..."
                     variant="outline"
                     leftIcon={<MdCalculate />} // Usando o ícone de busca da react-icons
                     disabled={isCalculating} // Desabilita o botão enquanto o cálculo está em andamento
                   >
-                    {isCalculating ? <Spinner size="sm" /> : "Calcular"}
+                    {/* {isCalculating ? <Spinner size="sm" /> : "Calcular"} */}
+                    Calcular
                   </Button>
                 </Flex>
-                {precoUnitario !== null && ( // Renderiza o preço unitário se estiver disponível
-                  <Text
-                    mt={4}
-                    bg="black"
-                    color="white"
-                    p={1}
-                    borderRadius="10px"
-                    mb={1}
-                  >
-                    Preço Unitário: R${precoUnitario.toFixed(2)}
-                  </Text>
-                )}
-                {precoTotal !== null && ( // Renderiza o preço total se estiver disponível
-                  <Text
-                    mt={4}
-                    bg="black"
-                    color="white"
-                    p={1}
-                    borderRadius="10px"
-                    mb={1}
-                  >
-                    Preço total: R${precoTotal.toFixed(2)}
-                  </Text>
+                {isLoading2 ? (
+                  <Center>
+                    <Spinner size="sm" />
+                  </Center>
+                ) : (
+                  <>
+                    {precoUnitario !== null && (
+                      <Text
+                        mt={4}
+                        bg="black"
+                        color="white"
+                        p={1}
+                        borderRadius="10px"
+                        mb={1}
+                      >
+                        Preço Unitário: R${precoUnitario.toFixed(2)}
+                      </Text>
+                    )}
+                    {precoTotal !== null && (
+                      <Text
+                        mt={4}
+                        bg="black"
+                        color="white"
+                        p={1}
+                        borderRadius="10px"
+                        mb={1}
+                      >
+                        Preço total: R${precoTotal.toFixed(2)}
+                      </Text>
+                    )}
+                  </>
                 )}
               </>
             )}
