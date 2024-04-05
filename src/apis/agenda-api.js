@@ -1,13 +1,13 @@
-// api.js
 import axios from "axios";
 
-const fetchAgenda = async () => {
+const fetchAgenda = async (appContext) => {
+  const { dateGlobal } = appContext;
   try {
     const response = await axios.get(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador",
       {
         params: {
-          data_inicial: "20230717",
+          data_inicial: dateGlobal ? dateGlobal : "20230717",
           usuario: "000283",
           empresa: "01",
           filial: "01",

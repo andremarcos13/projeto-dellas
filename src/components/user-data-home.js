@@ -39,35 +39,36 @@ const UserDataHome = () => {
         p="4"
         flexGrow="1" // Define para ocupar todo o espaço disponível na vertical
         mt="20px"
-        bg="rgba(0, 0, 0, 0.2)"
+        // bg="rgba(0, 0, 0, 0.2)"
+        bg="#EDF2F7"
         textAlign="center" // Alinha o texto centralmente dentro do Box
       >
         <Flex justify="space-around">
           <Box>
-            <Icon as={MdPhone} boxSize={8} color="green.500" mb="2" />
+            <Icon as={MdPhone} boxSize={8} color="#1A202C" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Ligações
             </Text>
-            <Text fontSize="2xl" color="green.500">
+            <Text fontSize="2xl" color="#1A202C">
               10
             </Text>
           </Box>
           <Box>
-            <Icon as={MdToday} boxSize={8} color="green.500" mb="2" />
+            <Icon as={MdToday} boxSize={8} color="#1A202C" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Data
             </Text>
-            <Text fontSize="2xl" color="green.500">
+            <Text fontSize="2xl" color="#1A202C">
               {formattedDate}
             </Text>
           </Box>
 
           <Box>
-            <Icon as={FaClock} boxSize={8} color="green.500" mb="2" />
+            <Icon as={FaClock} boxSize={8} color="#1A202C" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Hora
             </Text>
-            <Text fontSize="2xl" color="green.500">
+            <Text fontSize="2xl" color="#1A202C">
               {formattedTime}
             </Text>
           </Box>

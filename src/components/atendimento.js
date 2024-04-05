@@ -43,12 +43,15 @@ import { FaDollarSign } from "react-icons/fa";
 import { LuHistory } from "react-icons/lu";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router";
+import fetchAgenda from "../apis/agenda-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
   const [editedObservations, setEditedObservations] = useState({});
   const [date, setDate] = useState("");
   const { rowItem, setRowItem } = useAppContext();
+  const { dateGlobal, setDateGlobal } = useAppContext();
+
   const navigate = useNavigate();
 
   // const closeModal = () => {
@@ -108,13 +111,20 @@ const Atendimento = () => {
     }),
   };
 
-  const handleBackButtonClick = () => {
+  const handleBackButtonClick = async () => {
+    try {
+      const agendaData = await fetchAgenda(dateGlobal); // Chame fetchAgenda com dateGlobal
+      // Faça o que você precisa com os dados retornados, por exemplo, definir o estado ou realizar outras operações
+      console.log(agendaData);
+    } catch (error) {
+      console.error("Erro ao buscar a agenda:", error);
+    }
     navigate("/agenda"); // Limpar selectedItem ao clicar no botão Voltar
   };
 
   return (
     <Box
-      bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
+      // bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
       py="10" // Adiciona um pouco de espaço acima e abaixo do texto
       px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
       borderRadius="md" // Borda arredondada
@@ -122,10 +132,10 @@ const Atendimento = () => {
       <Button
         onClick={handleBackButtonClick}
         mb="4"
-        colorScheme="green"
+        colorScheme="blackAlpha"
+        color="white"
         ml={3}
         mt={3}
-        color="black"
       >
         Voltar
       </Button>
@@ -138,7 +148,7 @@ const Atendimento = () => {
           <Grid templateColumns="repeat(5, 1fr)" gap={3}>
             <GridItem colSpan={1}>
               <Box
-                bg="#1A202C"
+                bg="black"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -157,6 +167,7 @@ const Atendimento = () => {
 
                 <Text
                   ml="30px"
+                  color="white"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.nomeContato}
@@ -173,6 +184,7 @@ const Atendimento = () => {
                 </Text>
 
                 <Text
+                  color="white"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -241,6 +253,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
+                      color="white"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -261,6 +274,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
+                      color="white"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -281,6 +295,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
+                      color="white"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -318,7 +333,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="#1A202C"
+                bg="black"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -336,12 +351,14 @@ const Atendimento = () => {
                 </Text>
 
                 <Text
+                  color="white"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.nomeCliente}
                 </Text>
                 <Text
+                  color="white"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -362,6 +379,7 @@ const Atendimento = () => {
                       <Icon as={MdEmail} mr={2} /> Email:
                     </Text>
                     <Text
+                      color="white"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -387,6 +405,7 @@ const Atendimento = () => {
 
                 <Text
                   ml="30px"
+                  color="white"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
                   {rowItem.codCliente}
@@ -403,6 +422,7 @@ const Atendimento = () => {
                 </Text>
 
                 <Text
+                  color="white"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -412,7 +432,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="#1A202C"
+                bg="black"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -431,12 +451,12 @@ const Atendimento = () => {
                 <Textarea
                   placeholder="Observação relacionada ao cliente."
                   value={rowItem.obsCliente}
-                  bg="#1A202C"
+                  bg="black"
                   color="white"
                   border="1px"
                   height="120px"
                   resize="none"
-                  focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                   onChange={(e) => {
                     setRowItem({
@@ -457,12 +477,12 @@ const Atendimento = () => {
                 </Text>
                 <Textarea
                   placeholder="Observação durante o atendimento."
-                  bg="#1A202C"
+                  bg="black"
                   color="white"
                   height="120px"
                   border="1px"
                   resize="none"
-                  focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -477,12 +497,12 @@ const Atendimento = () => {
                 </Text>
                 <Textarea
                   placeholder="Mensagem para ser anexada na nota."
-                  bg="#1A202C"
+                  bg="black"
                   color="white"
                   height="120px"
                   border="1px"
                   resize="none"
-                  focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -496,10 +516,11 @@ const Atendimento = () => {
                   <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
                 </Text>
                 <Input
-                  focusBorderColor="lime" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                   type="text"
+                  color="white"
                   value={date}
-                  placeholder="dd/mm/aaaa"
+                  placeholder="Apenas números"
                   onChange={handleChangeInputDate}
                   borderColor="white"
                 />
@@ -507,7 +528,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="#1A202C"
+                bg="black"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -523,9 +544,13 @@ const Atendimento = () => {
                 >
                   <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
                 </Text>
-                <Select variant="flushed">
+                <Select variant="flushed" bg="black" color="white">
                   {tipoOperacaoOptions.map((option, index) => (
-                    <option key={index} value={option.value}>
+                    <option
+                      key={index}
+                      value={option.value}
+                      style={{ color: "black" }}
+                    >
                       {option.label}
                     </option>
                   ))}
@@ -543,10 +568,15 @@ const Atendimento = () => {
                 </Text>
                 <Select
                   variant="flushed"
-                  // placeholder="Selecione um frete"
+                  bg="black"
+                  color="white" // placeholder="Selecione um frete"
                 >
                   {tipoFreteOptions.map((option, index) => (
-                    <option key={index} value={option.value}>
+                    <option
+                      key={index}
+                      value={option.value}
+                      style={{ color: "black" }}
+                    >
                       {option.label}
                     </option>
                   ))}
@@ -562,10 +592,12 @@ const Atendimento = () => {
                 >
                   <Icon as={FaTruck} mr={2} /> Transportadora:
                 </Text>
-                <Select
-                  variant="flushed"
-                  placeholder="Selecione uma transportadora."
-                />
+                <Select bg="black" color="white" variant="flushed">
+                  <option style={{ color: "black" }}> 1</option>
+                  <option style={{ color: "black" }}> 2</option>
+                  <option style={{ color: "black" }}> 3</option>
+                  <option style={{ color: "black" }}> 4</option>
+                </Select>
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
@@ -577,6 +609,8 @@ const Atendimento = () => {
                   <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
                 </Text>
                 <Select
+                  bg="black"
+                  color="white"
                   variant="flushed"
                   placeholder="Selecione uma condição de pagamento."
                 />
@@ -584,7 +618,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="#1A202C"
+                bg="black"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -607,14 +641,20 @@ const Atendimento = () => {
             {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
                     <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                   </Text> */}
-            <Table variant="striped" colorScheme="teal">
-              <Thead>
+            <Table variant="striped">
+              <Thead
+                Thead
+                position="sticky"
+                top="0"
+                bg="black"
+                fontWeight="bold"
+              >
                 <Tr>
-                  <Th>Produto</Th>
-                  <Th>Quantidade</Th>
-                  <Th>Valor Unitário</Th>
-                  <Th>Total</Th>
-                  <Th>Data</Th>
+                  <Th color="white">Produto</Th>
+                  <Th color="white">Quantidade</Th>
+                  <Th color="white">Valor Unitário</Th>
+                  <Th color="white">Total</Th>
+                  <Th color="white">Data</Th>
                 </Tr>
               </Thead>
               <Tbody></Tbody>

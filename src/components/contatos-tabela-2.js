@@ -12,6 +12,7 @@ import {
 import { MdDone } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { GrHide } from "react-icons/gr";
 
 const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   const [showNextContact, setShowNextContact] = useState(false);
@@ -51,19 +52,19 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   return (
     <>
       <Table variant="simple" style={{ overflowX: "auto" }}>
-        <Thead>
+        <Thead position="sticky" top="0" bg="black" fontWeight="bold">
           <Tr>
-            <Th>Nome Cliente</Th>
-            <Th>Nome Contato</Th>
-            <Th>Tel. Contato</Th>
-            <Th>Data Cadastro</Th>
-            <Th>Última Compra</Th>
-            <Th>Email Cliente</Th>
-            <Th>Município</Th>
-            <Th>Observação Cliente</Th>
-            <Th>Potencial Lub</Th>
-            <Th>Venda Total NFS</Th>
-            <Th></Th> {/* Coluna extra para o ícone de OK */}
+            <Th color="white">Nome Cliente</Th>
+            <Th color="white">Nome Contato</Th>
+            <Th color="white">Tel. Contato</Th>
+            <Th color="white">Data Cadastro</Th>
+            <Th color="white">Última Compra</Th>
+            <Th color="white">Email Cliente</Th>
+            <Th color="white">Município</Th>
+            <Th color="white">Observação Cliente</Th>
+            <Th color="white">Potencial Lub</Th>
+            <Th color="white">Venda Total NFS</Th>
+            <Th color="white">{""}</Th> {/* Coluna extra para o ícone de OK */}
           </Tr>
         </Thead>
         <Tbody>
@@ -73,10 +74,11 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                 <Tr
                   key={index}
                   _hover={{
-                    bg: "gray.600",
+                    bg: "black",
                     transition: "opacity 0.1s",
                     transform: "scale(1.02)",
                     boxShadow: "lg",
+                    color: "white",
                   }}
                   onClick={(event) => handleRowClick(index, event)} // Adiciona o evento de clique na linha
                   cursor="pointer"
@@ -98,11 +100,16 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                         event.stopPropagation(); // Impede a propagação do clique para a linha
                         hideRow(index);
                       }}
-                      variant="unstyled"
-                      bg="#1A202C"
-                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                      bg="black"
+                      variant="outline"
+                      // bg="#1A202C"
+                      _hover={{
+                        transform: "scale(1.05)",
+                        boxShadow: "lg",
+                        bg: "red",
+                      }}
                     >
-                      <Icon as={MdDone} boxSize={5} color="green.500" />
+                      <Icon as={GrHide} boxSize={5} color="white" />
                     </Button>
                   </Td>
                 </Tr>

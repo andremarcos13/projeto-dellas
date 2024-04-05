@@ -13,7 +13,8 @@ const HomePage = () => {
   };
 
   return (
-    <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
+    // bg="rgba(0,0,0,0.5)"
+    <Box minHeight="100vh" p="6">
       <Box>
         <BreadCrumbLinks />
         <UserDataHome />

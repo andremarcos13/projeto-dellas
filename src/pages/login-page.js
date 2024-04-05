@@ -5,7 +5,8 @@ const LoginPage = () => {
   return (
     <Flex height="100vh">
       {/* Metade esquerda */}
-      <Box width="25%" p="15px" bg="rgba(0,0,0,0.5)">
+      {/* bg="rgba(0,0,0,0.5)" */}
+      <Box width="25%" p="15px">
         <LoginComponent />
       </Box>
       {/* Metade direita */}

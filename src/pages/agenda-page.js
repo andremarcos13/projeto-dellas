@@ -15,6 +15,7 @@ import {
   Button,
   Icon,
   Grid,
+  Divider,
 } from "@chakra-ui/react";
 import CalendarioComponent from "../components/calendario";
 import ContatosTable from "../components/contatos-tabela-2";
@@ -23,6 +24,7 @@ import { FaClock } from "react-icons/fa";
 import { BsCalendarDateFill } from "react-icons/bs";
 import { FaList } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
+import { useAppContext } from "../context/AppContext";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -31,6 +33,8 @@ const AgendaPage = () => {
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { dateGlobal, setDateGlobal } = useAppContext();
+
   const formattedTime = currentTime.toLocaleTimeString();
 
   useEffect(() => {
@@ -45,17 +49,32 @@ const AgendaPage = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const formattedDate = format(selectedDate, "yyyyMMdd");
+      let formattedDateToUse = "";
+
+      if (dateGlobal) {
+        formattedDateToUse = format(dateGlobal, "yyyyMMdd");
+      } else {
+        formattedDateToUse = format(selectedDate, "yyyyMMdd");
+      }
+
+      console.log(formattedDateToUse);
+
       const response = await axios.get(
-        `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador?data_inicial=${formattedDate}&usuario=000283&empresa=01&filial=01`,
+        `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
         {
+          params: {
+            data_inicial: formattedDateToUse,
+            usuario: "000283",
+            empresa: "01",
+            filial: "01",
+          },
           headers: {
             Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
           },
         }
       );
       setAgendaData(response.data);
-      console.log("api", agendaData);
+      console.log("api", response.data);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -96,19 +115,23 @@ const AgendaPage = () => {
   }${mes}/${ano}`;
 
   return (
-    <Box bg="rgba(0,0,0,0.5)" minHeight="100vh" p="6">
+    // bg="rgba(0,0,0,0.5)"
+    <Box minHeight="100vh" p="6">
       <BreadCrumbLinks />
       <Grid templateColumns="1fr 2fr 2fr" gap="2" alignItems="center">
-        <Box mt="20px" mb="20px" ml="2">
+        <Box mt="20px" mb="20px">
           <CalendarioComponent onDateChange={handleDateChange} />
         </Box>
-        <Box mb="150px" ml="15px">
-          <Icon as={FaList} boxSize={8} color="green.500" />
+        <Box mb="100px" ml="15px" mt={30}>
+          {/* <Icon as={FaList} boxSize={8} color="#1A202C" /> */}
           {agendaData.length > 0 ? (
             agendaData.map((data, index) => (
-              <Box key={index} fontSize="lg" color="white.500" mb="2">
-                {`Código da Lista: ${data.codLista} - Código Operador: ${data.codOperad} - Ligar às: ${data.hora}`}
-              </Box>
+              <>
+                <Box key={index} fontSize="lg" color="white.500" mb="2">
+                  {`Código da Lista: ${data.codLista} - Código Operador: ${data.codOperad} - Ligar às: ${data.hora}`}
+                </Box>
+                <Divider mb={3} />
+              </>
             ))
           ) : (
             <Text fontSize="2xl" color="white.500">
@@ -119,7 +142,7 @@ const AgendaPage = () => {
       </Grid>
       {isLoading ? (
         <Flex align="center" justify="center" h="40vh">
-          <Spinner size="xl" color="green.500" />
+          <Spinner size="xl" color="#1A202C" />
         </Flex>
       ) : (
         <>
@@ -139,9 +162,8 @@ const AgendaPage = () => {
                   <Button
                     onClick={handleBackButtonClick}
                     mb="4"
-                    colorScheme="green"
-                    ml={3}
-                    color="black"
+                    colorScheme="blackAlpha"
+                    color="white"
                   >
                     Voltar
                   </Button>
@@ -163,8 +185,9 @@ const AgendaPage = () => {
                       <Tr
                         key={index}
                         _hover={{
-                          bg: "gray.600",
+                          bg: "black",
                           transition: "opacity 0.1s",
+                          color: "white",
                         }}
                         onClick={() => handleItemClick(item)}
                         cursor="pointer"
