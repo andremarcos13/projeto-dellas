@@ -457,8 +457,8 @@ const Atendimento = () => {
                 <Textarea
                   placeholder="Observação relacionada ao cliente."
                   value={rowItem.obsCliente}
-                  bg="black"
-                  color="white"
+                  bg="white"
+                  color="black"
                   border="1px"
                   height="120px"
                   resize="none"
@@ -483,8 +483,8 @@ const Atendimento = () => {
                 </Text>
                 <Textarea
                   placeholder="Observação durante o atendimento."
-                  bg="black"
-                  color="white"
+                  bg="white"
+                  color="black"
                   height="120px"
                   border="1px"
                   resize="none"
@@ -503,8 +503,8 @@ const Atendimento = () => {
                 </Text>
                 <Textarea
                   placeholder="Mensagem para ser anexada na nota."
-                  bg="black"
-                  color="white"
+                  bg="white"
+                  color="black"
                   height="120px"
                   border="1px"
                   resize="none"
@@ -524,9 +524,10 @@ const Atendimento = () => {
                 <Input
                   focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                   type="text"
-                  color="white"
+                  bg="white"
+                  color="black"
                   value={date}
-                  placeholder="Apenas números"
+                  placeholder="Apenas números - ddmmaaaa"
                   onChange={handleChangeInputDate}
                   borderColor="white"
                 />
