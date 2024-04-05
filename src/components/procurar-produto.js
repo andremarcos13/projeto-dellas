@@ -28,6 +28,7 @@ const ProcurarProduto = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleSearch = async () => {
     try {
@@ -52,6 +53,10 @@ const ProcurarProduto = () => {
     setSearchResults([]);
     setSearchTerm("");
     setIsModalOpen(false);
+  };
+
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
   };
 
   return (
@@ -112,12 +117,14 @@ const ProcurarProduto = () => {
                     boxShadow="md"
                     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                     mb={4} // Espaçamento mínimo entre os itens
+                    onClick={() => handleItemClick(item)} // Adiciona o manipulador de clique
+                    cursor="pointer" // Altera o cursor ao passar por cima
                   >
                     <Flex
                       direction="column"
                       height="100%" // Garante que o conteúdo do Flex ocupe toda a altura
                     >
-                      <Text fontWeight="bold" fontSize="md" mb={15}>
+                      <Text fontWeight="bold" fontSize="md" mb={2}>
                         {item.descricao.includes(searchTerm) ? (
                           <>
                             {item.descricao
@@ -194,6 +201,15 @@ const ProcurarProduto = () => {
               </Grid>
             ) : (
               <Text mt={4}>Nenhum resultado encontrado.</Text>
+            )}
+            {selectedItem && ( // Renderiza os detalhes do item selecionado
+              <Box mt={4}>
+                <Text fontWeight="bold">Detalhes do Item Selecionado:</Text>
+                <Text>Descrição: {selectedItem.descricao}</Text>
+                <Text>Código: {selectedItem.codigo}</Text>
+                <Text>Tipo: {selectedItem.tipo}</Text>
+                <Text>Unidade de Medida: {selectedItem.um}</Text>
+              </Box>
             )}
           </ModalBody>
           <ModalFooter>
