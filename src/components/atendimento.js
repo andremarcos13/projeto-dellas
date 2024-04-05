@@ -44,6 +44,7 @@ import { LuHistory } from "react-icons/lu";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router";
 import fetchAgenda from "../apis/agenda-api";
+import ProcurarProduto from "./procurar-produto";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -132,8 +133,8 @@ const Atendimento = () => {
       <Button
         onClick={handleBackButtonClick}
         mb="4"
-        colorScheme="blackAlpha"
-        color="white"
+        colorScheme="gray"
+        variant="outline"
         ml={3}
         mt={3}
       >
@@ -644,6 +645,10 @@ const Atendimento = () => {
               </Box>
             </GridItem>
           </Grid>
+          <Box mt={30}>
+            <ProcurarProduto />
+          </Box>
+
           <Box mt="30px">
             {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
                     <Icon as={LuHistory} mr={2} /> Histórico de Compras:
