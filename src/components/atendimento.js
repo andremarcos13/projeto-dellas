@@ -669,6 +669,7 @@ const Atendimento = () => {
                 <Tr>
                   <Th color="white">Produto</Th>
                   <Th color="white">Quantidade</Th>
+                  <Th color="white">Desconto (%)</Th>
                   <Th color="white">Valor Unitário</Th>
                   <Th color="white">Total</Th>
                   <Th color="white">Data</Th>
