@@ -27,6 +27,8 @@ import {
 } from "@chakra-ui/react";
 import { FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
+import fetchPrecoDeVenda from "../apis/preco-venda-api";
+import { MdCalculate } from "react-icons/md";
 
 const ProcurarProduto = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,8 +36,14 @@ const ProcurarProduto = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [quantidade, setQuantidade] = useState(1); // Estado para a quantidade
+  const [isCalculating, setIsCalculating] = useState(false); // Estado para controlar se o cálculo está em andamento
+  const [precoTotal, setPrecoTotal] = useState(null); // Estado para armazenar o preço total
+  const [precoUnitario, setPrecoUnitario] = useState(null); // Estado para armazenar o preço unitário
 
   const handleSearch = async () => {
+    setSelectedItem("");
+    setQuantidade(1);
     try {
       setIsLoading(true);
       const data = await fetchProdutos({ search: searchTerm });
@@ -58,10 +66,36 @@ const ProcurarProduto = () => {
     setSearchResults([]);
     setSearchTerm("");
     setIsModalOpen(false);
+    setSelectedItem("");
   };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
+  };
+
+  const handleCalculatePrice = async () => {
+    setIsCalculating(true);
+    try {
+      const produto = selectedItem.codigo;
+      const qtd = quantidade;
+      const response = await fetchPrecoDeVenda({ produto, qtd });
+
+      if (response && response.preco >= 0 && response.quantidade) {
+        const precoTotal = response.preco * response.quantidade;
+        const precoUnit = response.preco;
+        setPrecoTotal(precoTotal);
+        setPrecoUnitario(precoUnit);
+      } else {
+        console.error("Resposta da API inválida:", response);
+        // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
+        setPrecoTotal(0);
+        setPrecoUnitario(0);
+      }
+    } catch (error) {
+      console.error("Erro ao calcular o preço de venda:", error);
+    } finally {
+      setIsCalculating(false);
+    }
   };
 
   return (
@@ -219,7 +253,15 @@ const ProcurarProduto = () => {
                 <Flex alignItems="center">
                   <Text mr={2}>Quantidade:</Text>
                   <Box>
-                    <NumberInput defaultValue={1} min={0} w={100}>
+                    <NumberInput
+                      defaultValue={1}
+                      min={0}
+                      w={100}
+                      value={quantidade} // Define o valor do NumberInput como a quantidade
+                      onChange={
+                        (valueString) => setQuantidade(parseInt(valueString)) // Atualiza o estado da quantidade ao alterar o valor do NumberInput
+                      }
+                    >
                       <NumberInputField />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
@@ -227,7 +269,41 @@ const ProcurarProduto = () => {
                       </NumberInputStepper>
                     </NumberInput>
                   </Box>
+                  <Button
+                    ml={3}
+                    onClick={handleCalculatePrice} // Chama a função para calcular o preço de venda
+                    colorScheme="gray"
+                    variant="outline"
+                    leftIcon={<MdCalculate />} // Usando o ícone de busca da react-icons
+                    disabled={isCalculating} // Desabilita o botão enquanto o cálculo está em andamento
+                  >
+                    {isCalculating ? <Spinner size="sm" /> : "Calcular"}
+                  </Button>
                 </Flex>
+                {precoUnitario !== null && ( // Renderiza o preço unitário se estiver disponível
+                  <Text
+                    mt={4}
+                    bg="black"
+                    color="white"
+                    p={1}
+                    borderRadius="10px"
+                    mb={1}
+                  >
+                    Preço Unitário: R${precoUnitario.toFixed(2)}
+                  </Text>
+                )}
+                {precoTotal !== null && ( // Renderiza o preço total se estiver disponível
+                  <Text
+                    mt={4}
+                    bg="black"
+                    color="white"
+                    p={1}
+                    borderRadius="10px"
+                    mb={1}
+                  >
+                    Preço total: R${precoTotal.toFixed(2)}
+                  </Text>
+                )}
               </>
             )}
           </ModalBody>
