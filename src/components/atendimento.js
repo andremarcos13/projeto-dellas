@@ -323,7 +323,7 @@ const Atendimento = () => {
                         w="79px"
                         borderRadius="10px"
                         justifyContent="center"
-                        p={1}
+                        p={2}
                       >
                         {`${rowItem.diasCompras} ${
                           rowItem.diasCompras > 1 ? "dias" : "dia"

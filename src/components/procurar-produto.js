@@ -42,6 +42,7 @@ const ProcurarProduto = () => {
   const [isCalculating, setIsCalculating] = useState(false); // Estado para controlar se o cálculo está em andamento
   const [precoTotal, setPrecoTotal] = useState(null); // Estado para armazenar o preço total
   const [precoUnitario, setPrecoUnitario] = useState(null); // Estado para armazenar o preço unitário
+  const [valoresSelecionados, setValoresSelecionados] = useState({});
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -96,6 +97,15 @@ const ProcurarProduto = () => {
         const precoUnit = response.preco;
         setPrecoTotal(precoTotal);
         setPrecoUnitario(precoUnit);
+        setValoresSelecionados({
+          descricao: selectedItem.descricao,
+          codigo: selectedItem.codigo,
+          tipo: selectedItem.tipo,
+          um: selectedItem.um,
+          quantidade: quantidade,
+          precoTotal: precoTotal,
+          precoUnitario: precoUnit,
+        });
       } else {
         console.error("Resposta da API inválida:", response);
         // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
@@ -107,6 +117,43 @@ const ProcurarProduto = () => {
     } finally {
       setIsCalculating(false);
       setIsLoading2(false);
+    }
+  };
+
+  const handleSalvar = () => {
+    if (selectedItem) {
+      const newItem = {
+        descricao: selectedItem.descricao,
+        codigo: selectedItem.codigo,
+        tipo: selectedItem.tipo,
+        um: selectedItem.um,
+        quantidade: quantidade,
+        precoTotal: precoTotal,
+        precoUnitario: precoUnitario,
+      };
+
+      setValoresSelecionados((prevValoresSelecionados) => {
+        const existingItem = prevValoresSelecionados[selectedItem.codigo];
+        if (existingItem) {
+          if (Array.isArray(existingItem)) {
+            return {
+              ...prevValoresSelecionados,
+              [selectedItem.codigo]: [...existingItem, newItem],
+            };
+          } else {
+            return {
+              ...prevValoresSelecionados,
+              [selectedItem.codigo]: [existingItem, newItem],
+            };
+          }
+        } else {
+          return {
+            ...prevValoresSelecionados,
+            [selectedItem.codigo]: newItem,
+          };
+        }
+      });
+      console.log("Valores selecionados:", valoresSelecionados);
     }
   };
 
@@ -337,7 +384,7 @@ const ProcurarProduto = () => {
             <Button
               colorScheme="whatsapp"
               variant="outline"
-              //   onClick={closeModal}
+              onClick={handleSalvar} // Chama a função para salvar os valores selecionados
               leftIcon={<FaCheck />} // Usando o ícone de fechar da react-icons
             >
               Salvar
