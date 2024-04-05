@@ -305,9 +305,10 @@ const ProcurarProduto = () => {
                     {precoUnitario !== null && (
                       <Text
                         mt={4}
-                        bg="black"
+                        bg="gray"
                         color="white"
-                        p={1}
+                        w={200}
+                        p={3}
                         borderRadius="10px"
                         mb={1}
                       >
@@ -317,9 +318,10 @@ const ProcurarProduto = () => {
                     {precoTotal !== null && (
                       <Text
                         mt={4}
-                        bg="black"
+                        bg="gray"
                         color="white"
-                        p={1}
+                        p={3}
+                        w={200}
                         borderRadius="10px"
                         mb={1}
                       >
