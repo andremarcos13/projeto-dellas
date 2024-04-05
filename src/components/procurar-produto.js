@@ -19,6 +19,11 @@ import {
   Divider,
   Center,
   Grid,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -98,7 +103,7 @@ const ProcurarProduto = () => {
               </Button>
             </Flex>
             {isLoading ? (
-              <Center mt="25%">
+              <Center mt="5%">
                 <Spinner mt={4} />
               </Center>
             ) : searchResults.length > 0 ? (
@@ -112,7 +117,7 @@ const ProcurarProduto = () => {
                     key={index}
                     border="1px"
                     p={2}
-                    borderColor="gray.200"
+                    borderColor={selectedItem === item ? "black" : "gray.200"} // Altera a cor da borda com base no item selecionado
                     borderRadius="10px"
                     boxShadow="md"
                     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -203,13 +208,27 @@ const ProcurarProduto = () => {
               <Text mt={4}>Nenhum resultado encontrado.</Text>
             )}
             {selectedItem && ( // Renderiza os detalhes do item selecionado
-              <Box mt={4}>
-                <Text fontWeight="bold">Detalhes do Item Selecionado:</Text>
-                <Text>Descrição: {selectedItem.descricao}</Text>
-                <Text>Código: {selectedItem.codigo}</Text>
-                <Text>Tipo: {selectedItem.tipo}</Text>
-                <Text>Unidade de Medida: {selectedItem.um}</Text>
-              </Box>
+              <>
+                <Box mt={4}>
+                  <Text fontWeight="bold">Detalhes do Item Selecionado:</Text>
+                  <Text mb={1}>Descrição: {selectedItem.descricao}</Text>
+                  <Text mb={1}>Código: {selectedItem.codigo}</Text>
+                  <Text mb={1}>Tipo: {selectedItem.tipo}</Text>
+                  <Text mb={1}>Unidade de Medida: {selectedItem.um}</Text>
+                </Box>
+                <Flex alignItems="center">
+                  <Text mr={2}>Quantidade:</Text>
+                  <Box>
+                    <NumberInput defaultValue={1} min={0} w={100}>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </Box>
+                </Flex>
+              </>
             )}
           </ModalBody>
           <ModalFooter>
