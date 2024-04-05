@@ -162,8 +162,8 @@ const AgendaPage = () => {
                   <Button
                     onClick={handleBackButtonClick}
                     mb="4"
-                    colorScheme="blackAlpha"
-                    color="white"
+                    colorScheme="gray"
+                    variant="outline"
                   >
                     Voltar
                   </Button>
