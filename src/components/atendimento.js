@@ -207,7 +207,7 @@ const Atendimento = () => {
                         >
                           <Icon as={MdPhone} mr={2} /> Outros números:
                         </Text>
-                        <Text ml="30px">
+                        <Text ml="30px" color="white">
                           {rowItem.fone && rowItem.fone !== rowItem.celular && (
                             <>
                               {rowItem.fone}
@@ -421,13 +421,19 @@ const Atendimento = () => {
                   <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
                 </Text>
 
-                <Text
-                  color="white"
-                  ml="30px"
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.dataCadastro}
-                </Text>
+                {rowItem.dataCadastro === "  /  /  " ? (
+                  <Text color="white" ml="30px">
+                    Nenhuma data cadastrada
+                  </Text>
+                ) : (
+                  <Text
+                    color="white"
+                    ml="30px"
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                  >
+                    {rowItem.dataCadastro}
+                  </Text>
+                )}
               </Box>
             </GridItem>
             <GridItem colSpan={1}>
