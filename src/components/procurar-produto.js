@@ -1,8 +1,12 @@
 import { useState } from "react";
 import {
+  Card,
+  CardBody,
   Input,
   Text,
+  CardHeader,
   VStack,
+  Stack,
   ListItem,
   UnorderedList,
   Spinner,
@@ -25,13 +29,16 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from "@chakra-ui/react";
-import { FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
+import { FaPlus, FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
 import fetchPrecoDeVenda from "../apis/preco-venda-api";
 import { MdCalculate } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
+import DrawerCarrinho from "./drawer-carrinho";
+import { MdAttachMoney } from "react-icons/md";
+import { PiCoinsFill } from "react-icons/pi";
 
-const ProcurarProduto = () => {
+const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +51,7 @@ const ProcurarProduto = () => {
   const [precoUnitario, setPrecoUnitario] = useState(null); // Estado para armazenar o preço unitário
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [calculado, setCalculado] = useState(false);
+  const [controlaAbrir, setControlaAbrir] = useState(false);
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -100,6 +108,7 @@ const ProcurarProduto = () => {
         setPrecoTotal(precoTotal);
         setPrecoUnitario(precoUnit);
         setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
+        setControlaAbrir(true);
       } else {
         console.error("Resposta da API inválida:", response);
         // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
@@ -130,7 +139,14 @@ const ProcurarProduto = () => {
         // Criamos uma nova cópia do array anterior e adicionamos o novo item
         return [...prevValoresSelecionados, newItem];
       });
+
+      console.log("valoresSelecionados", valoresSelecionados);
     }
+  };
+
+  const handleFinalizar = () => {
+    // Chama a função de retorno de chamada e passa os valores selecionados como argumento
+    onFinalizarAddProdutos(valoresSelecionados);
   };
 
   return (
@@ -270,97 +286,189 @@ const ProcurarProduto = () => {
             ) : (
               <Text mt={4}>Nenhum resultado encontrado.</Text>
             )}
-            {selectedItem && ( // Renderiza os detalhes do item selecionado
-              <>
-                <Box mt={4}>
-                  <Text fontWeight="bold">Detalhes do Item Selecionado:</Text>
-                  <Text mb={1}>Descrição: {selectedItem.descricao}</Text>
-                  <Text mb={1}>Código: {selectedItem.codigo}</Text>
-                  <Text mb={1}>Tipo: {selectedItem.tipo}</Text>
-                  <Text mb={1}>Unidade de Medida: {selectedItem.um}</Text>
-                </Box>
-                <Flex alignItems="center">
-                  <Text mr={2}>Quantidade:</Text>
-                  <Box>
-                    <NumberInput
-                      defaultValue={1}
-                      min={0}
-                      w={100}
-                      value={quantidade} // Define o valor do NumberInput como a quantidade
-                      onChange={
-                        (valueString) => setQuantidade(parseInt(valueString)) // Atualiza o estado da quantidade ao alterar o valor do NumberInput
-                      }
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-                  </Box>
-                  <Button
-                    ml={3}
-                    onClick={handleCalculatePrice} // Chama a função para calcular o preço de venda
-                    colorScheme="gray"
-                    loadingText="Calculando..."
-                    variant="outline"
-                    leftIcon={<MdCalculate />} // Usando o ícone de busca da react-icons
-                    disabled={isCalculating} // Desabilita o botão enquanto o cálculo está em andamento
-                  >
-                    {/* {isCalculating ? <Spinner size="sm" /> : "Calcular"} */}
-                    Calcular
-                  </Button>
-                </Flex>
-                {isLoading2 ? (
-                  <Center>
-                    <Spinner size="sm" />
-                  </Center>
-                ) : (
+            <Flex justify="space-between">
+              <Box flexBasis="45%">
+                {selectedItem && (
                   <>
-                    {calculado && precoUnitario !== null ? (
-                      precoUnitario !== 0 ? (
-                        <Text
-                          mt={4}
-                          bg="gray.900"
-                          color="white"
-                          w={200}
-                          p={3}
-                          borderRadius="10px"
-                          mb={1}
-                        >
-                          Preço Unitário: R${precoUnitario.toFixed(2)}
-                        </Text>
-                      ) : (
-                        <Text
-                          mt={4}
-                          bg="gray.900"
-                          color="white"
-                          w={310}
-                          p={2}
-                          borderRadius="10px"
-                          mb={1}
-                        >
-                          Preço unitário cadastrado com valor zero.
-                        </Text>
-                      )
-                    ) : null}
-                    {precoTotal !== null && precoTotal !== 0 && (
-                      <Text
-                        mt={4}
-                        bg="gray.900"
-                        color="white"
-                        p={3}
-                        w={200}
-                        borderRadius="10px"
-                        mb={1}
-                      >
-                        Preço total: R${precoTotal.toFixed(2)}
+                    <Box mt={4}>
+                      <Text fontWeight="bold" mb={2}>
+                        Detalhes do Item Selecionado:
                       </Text>
+                      <Text mb={1}>
+                        Descrição: <strong>{selectedItem.descricao}</strong>
+                      </Text>
+                      <Text mb={1}>
+                        Código: <strong>{selectedItem.codigo}</strong>
+                      </Text>
+                      <Text mb={1}>
+                        Tipo: <strong>{selectedItem.tipo}</strong>
+                      </Text>
+                      <Text mb={1}>
+                        Unidade de Medida: <strong>{selectedItem.um}</strong>
+                      </Text>
+                    </Box>
+                    <Flex alignItems="center">
+                      <Text mr={2}>Quantidade:</Text>
+                      <Box>
+                        <NumberInput
+                          defaultValue={1}
+                          min={0}
+                          w={100}
+                          value={quantidade}
+                          onChange={(valueString) =>
+                            setQuantidade(parseInt(valueString))
+                          }
+                        >
+                          <NumberInputField />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </Box>
+                      <Button
+                        ml={3}
+                        onClick={handleCalculatePrice}
+                        colorScheme="gray"
+                        loadingText="Calculando..."
+                        variant="outline"
+                        leftIcon={<MdCalculate />}
+                        disabled={isCalculating}
+                      >
+                        Calcular
+                      </Button>
+                      <Button
+                        colorScheme="whatsapp"
+                        variant="outline"
+                        ml={3}
+                        onClick={handleSalvar} // Chama a função para salvar os valores selecionados
+                        leftIcon={<FaPlus />} // Usando o ícone de fechar da react-icons
+                      >
+                        Adicionar
+                      </Button>
+                    </Flex>
+                    {isLoading2 ? (
+                      <Center mt={3}>
+                        <Spinner size="sm" />
+                      </Center>
+                    ) : (
+                      <>
+                        <Card
+                          mt={3}
+                          p={1}
+                          w={250}
+                          h={120}
+                          shadow="lg"
+                          size="md"
+                        >
+                          {/* <CardHeader mt={0} p={0} ml={0} mr={0} mb={0}>
+                            <MdAttachMoney />
+                          </CardHeader> */}
+                          <CardBody>
+                            {calculado && precoUnitario !== null ? (
+                              precoUnitario !== 0 ? (
+                                <Flex alignItems="center">
+                                  <Text
+                                    mt={4}
+                                    color="black"
+                                    borderRadius="10px"
+                                    mb={1}
+                                    mr={2}
+                                    fontWeight="bold"
+                                  >
+                                    Preço Unitário: R$
+                                  </Text>
+                                  <Text
+                                    mt={4}
+                                    color="black"
+                                    borderRadius="10px"
+                                    mb={1}
+                                    _hover={{
+                                      transform: "scale(1.25)",
+                                    }}
+                                  >
+                                    {precoUnitario.toFixed(2)}
+                                  </Text>
+                                </Flex>
+                              ) : (
+                                <Text
+                                  mt={4}
+                                  color="black"
+                                  p={3}
+                                  borderRadius="10px"
+                                  mb={1}
+                                  fontWeight="bold"
+                                >
+                                  Preço unitário cadastrado com valor zero.
+                                </Text>
+                              )
+                            ) : null}
+                            {precoTotal !== null && precoTotal !== 0 && (
+                              <Flex alignItems="center">
+                                <Text
+                                  mt={4}
+                                  color="black"
+                                  borderRadius="10px"
+                                  mb={1}
+                                  mr={2}
+                                  fontWeight="bold"
+                                >
+                                  Preço total: R$
+                                </Text>
+                                <Text
+                                  mt={4}
+                                  color="black"
+                                  borderRadius="10px"
+                                  mb={1}
+                                  _hover={{
+                                    transform: "scale(1.25)",
+                                  }}
+                                >
+                                  {precoTotal.toFixed(2)}
+                                </Text>
+                              </Flex>
+                            )}
+                          </CardBody>
+                        </Card>
+                      </>
                     )}
                   </>
                 )}
-              </>
-            )}
+              </Box>
+
+              <Box flexBasis="45%" borderLeft="1px solid #E2E8F0" pl={4}>
+                <Box mt={4}>
+                  <Text fontWeight="bold" fontSize="xl">
+                    Itens Adicionados:
+                  </Text>
+                  {valoresSelecionados.map((item, index) => (
+                    <Box
+                      key={index}
+                      mt={4}
+                      p={4}
+                      borderRadius="md"
+                      boxShadow="md"
+                      bg="gray.100"
+                      _hover={{
+                        transform: "scale(1.05)",
+                        boxShadow: "lg",
+                      }}
+                    >
+                      <Text fontWeight="semibold">Nome do Produto:</Text>
+                      <Text>{item.descricao}</Text>
+                      <Text fontWeight="semibold" mt={2}>
+                        Quantidade:
+                      </Text>
+                      <Text>{item.quantidade}</Text>
+                      <Text fontWeight="semibold" mt={2}>
+                        Preço:
+                      </Text>
+                      <Text>R${item.precoTotal.toFixed(2)}</Text>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            </Flex>
           </ModalBody>
           <ModalFooter justifyContent="space-between">
             <Button
@@ -374,7 +482,7 @@ const ProcurarProduto = () => {
             <Button
               colorScheme="whatsapp"
               variant="outline"
-              onClick={handleSalvar} // Chama a função para salvar os valores selecionados
+              onClick={handleFinalizar} // Chama a função para salvar os valores selecionados
               leftIcon={<FaCheck />} // Usando o ícone de fechar da react-icons
             >
               Salvar
