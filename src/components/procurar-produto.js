@@ -43,6 +43,7 @@ const ProcurarProduto = () => {
   const [precoTotal, setPrecoTotal] = useState(null); // Estado para armazenar o preço total
   const [precoUnitario, setPrecoUnitario] = useState(null); // Estado para armazenar o preço unitário
   const [valoresSelecionados, setValoresSelecionados] = useState({});
+  const [calculado, setCalculado] = useState(false);
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -82,6 +83,7 @@ const ProcurarProduto = () => {
     setPrecoTotal(0);
     setPrecoUnitario(0);
     setQuantidade(1);
+    setCalculado(false); // Redefine o estado para indicar que o cálculo não foi feito
   };
 
   const handleCalculatePrice = async () => {
@@ -106,6 +108,7 @@ const ProcurarProduto = () => {
           precoTotal: precoTotal,
           precoUnitario: precoUnit,
         });
+        setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
       } else {
         console.error("Resposta da API inválida:", response);
         // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
@@ -132,27 +135,11 @@ const ProcurarProduto = () => {
         precoUnitario: precoUnitario,
       };
 
-      setValoresSelecionados((prevValoresSelecionados) => {
-        const existingItem = prevValoresSelecionados[selectedItem.codigo];
-        if (existingItem) {
-          if (Array.isArray(existingItem)) {
-            return {
-              ...prevValoresSelecionados,
-              [selectedItem.codigo]: [...existingItem, newItem],
-            };
-          } else {
-            return {
-              ...prevValoresSelecionados,
-              [selectedItem.codigo]: [existingItem, newItem],
-            };
-          }
-        } else {
-          return {
-            ...prevValoresSelecionados,
-            [selectedItem.codigo]: newItem,
-          };
-        }
-      });
+      // Adiciona o novo item ao array existente de valores selecionados
+      setValoresSelecionados((prevValoresSelecionados) => [
+        ...prevValoresSelecionados,
+        newItem,
+      ]);
       console.log("Valores selecionados:", valoresSelecionados);
     }
   };
@@ -341,20 +328,34 @@ const ProcurarProduto = () => {
                   </Center>
                 ) : (
                   <>
-                    {precoUnitario !== null && (
-                      <Text
-                        mt={4}
-                        bg="gray.900"
-                        color="white"
-                        w={200}
-                        p={3}
-                        borderRadius="10px"
-                        mb={1}
-                      >
-                        Preço Unitário: R${precoUnitario.toFixed(2)}
-                      </Text>
-                    )}
-                    {precoTotal !== null && (
+                    {calculado && precoUnitario !== null ? (
+                      precoUnitario !== 0 ? (
+                        <Text
+                          mt={4}
+                          bg="gray.900"
+                          color="white"
+                          w={200}
+                          p={3}
+                          borderRadius="10px"
+                          mb={1}
+                        >
+                          Preço Unitário: R${precoUnitario.toFixed(2)}
+                        </Text>
+                      ) : (
+                        <Text
+                          mt={4}
+                          bg="gray.900"
+                          color="white"
+                          w={310}
+                          p={2}
+                          borderRadius="10px"
+                          mb={1}
+                        >
+                          Preço unitário cadastrado com valor zero.
+                        </Text>
+                      )
+                    ) : null}
+                    {precoTotal !== null && precoTotal !== 0 && (
                       <Text
                         mt={4}
                         bg="gray.900"
