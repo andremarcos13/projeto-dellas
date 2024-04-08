@@ -52,6 +52,7 @@ const Atendimento = () => {
   const [editedObservations, setEditedObservations] = useState({});
   const [date, setDate] = useState("");
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
+  const [descontoTotal, setDescontoTotal] = useState(0);
 
   const { rowItem, setRowItem } = useAppContext();
   const { dateGlobal, setDateGlobal } = useAppContext();
@@ -154,6 +155,43 @@ const Atendimento = () => {
       (total, produto) => total + produto.precoTotal,
       0
     );
+  };
+
+  const handleDescontoChange = (index, desconto) => {
+    setValoresSelecionados((prevState) =>
+      prevState.map((produto, i) =>
+        i === index ? { ...produto, desconto: desconto } : produto
+      )
+    );
+  };
+
+  const handleDescontoTotalChange = (e) => {
+    setDescontoTotal(e.target.value);
+  };
+
+  const calcularPrecoTotalComDesconto = (precoTotal, desconto) => {
+    const valorDesconto = (precoTotal * desconto) / 100;
+    return precoTotal - valorDesconto;
+  };
+
+  const calcularPrecoTotal = (quantidade, precoUnitario, desconto) => {
+    const precoTotal = quantidade * precoUnitario;
+    return calcularPrecoTotalComDesconto(precoTotal, desconto);
+  };
+
+  const calcularPrecoTotalGeral = () => {
+    let precoTotalGeral = 0;
+    valoresSelecionados.forEach((produto) => {
+      precoTotalGeral +=
+        calcularPrecoTotal(
+          produto.quantidade,
+          produto.precoUnitario,
+          produto.desconto
+        ) || 0;
+    });
+    const descontoTotalDecimal = descontoTotal / 100;
+    precoTotalGeral *= 1 - descontoTotalDecimal;
+    return precoTotalGeral;
   };
 
   return (
@@ -724,10 +762,23 @@ const Atendimento = () => {
                   <Tr key={index}>
                     <Td>{produto.descricao}</Td>
                     <Td>{produto.quantidade}</Td>
-                    <Td></Td> {/* Deixando a coluna de desconto em branco */}
+                    <Input
+                      border="0px"
+                      type="number"
+                      onChange={(e) =>
+                        handleDescontoChange(index, e.target.value)
+                      }
+                    />{" "}
                     <Td>{produto.precoUnitario.toFixed(2)}</Td>{" "}
                     {/* Usando precoUnitario */}
-                    <Td>{produto.precoTotal.toFixed(2)}</Td>{" "}
+                    <Td>
+                      {" "}
+                      {calcularPrecoTotal(
+                        produto.quantidade,
+                        produto.precoUnitario,
+                        produto.desconto
+                      ).toFixed(2)}
+                    </Td>{" "}
                     {/* Usando precoTotal */}
                     <Td>{produto.um}</Td>
                     <Td>{obterDataAtual()}</Td>{" "}
@@ -739,10 +790,15 @@ const Atendimento = () => {
                 <Tr>
                   <Td fontWeight="bold">TOTAL</Td>
                   <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-                  <Td></Td>
+                  <Input
+                    border="0px"
+                    type="number"
+                    value={descontoTotal}
+                    onChange={handleDescontoTotalChange}
+                  />
                   <Td></Td>
                   <Td fontWeight="bold">
-                    {calcularTotalValorTotal().toFixed(2)}
+                    {calcularPrecoTotalGeral().toFixed(2)}
                   </Td>
                   <Td></Td>
                   <Td></Td>
