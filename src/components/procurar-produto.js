@@ -42,7 +42,7 @@ const ProcurarProduto = () => {
   const [isCalculating, setIsCalculating] = useState(false); // Estado para controlar se o cálculo está em andamento
   const [precoTotal, setPrecoTotal] = useState(null); // Estado para armazenar o preço total
   const [precoUnitario, setPrecoUnitario] = useState(null); // Estado para armazenar o preço unitário
-  const [valoresSelecionados, setValoresSelecionados] = useState({});
+  const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [calculado, setCalculado] = useState(false);
 
   const handleSearch = async () => {
@@ -99,15 +99,6 @@ const ProcurarProduto = () => {
         const precoUnit = response.preco;
         setPrecoTotal(precoTotal);
         setPrecoUnitario(precoUnit);
-        setValoresSelecionados({
-          descricao: selectedItem.descricao,
-          codigo: selectedItem.codigo,
-          tipo: selectedItem.tipo,
-          um: selectedItem.um,
-          quantidade: quantidade,
-          precoTotal: precoTotal,
-          precoUnitario: precoUnit,
-        });
         setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
       } else {
         console.error("Resposta da API inválida:", response);
@@ -124,7 +115,7 @@ const ProcurarProduto = () => {
   };
 
   const handleSalvar = () => {
-    if (selectedItem) {
+    if (selectedItem && precoTotal !== null && precoUnitario !== null) {
       const newItem = {
         descricao: selectedItem.descricao,
         codigo: selectedItem.codigo,
@@ -135,12 +126,10 @@ const ProcurarProduto = () => {
         precoUnitario: precoUnitario,
       };
 
-      // Adiciona o novo item ao array existente de valores selecionados
-      setValoresSelecionados((prevValoresSelecionados) => [
-        ...prevValoresSelecionados,
-        newItem,
-      ]);
-      console.log("Valores selecionados:", valoresSelecionados);
+      setValoresSelecionados((prevValoresSelecionados) => {
+        // Criamos uma nova cópia do array anterior e adicionamos o novo item
+        return [...prevValoresSelecionados, newItem];
+      });
     }
   };
 
