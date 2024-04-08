@@ -15,6 +15,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Tfoot,
   Box,
   Text,
   GridItem,
@@ -50,6 +51,8 @@ const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
   const [editedObservations, setEditedObservations] = useState({});
   const [date, setDate] = useState("");
+  const [valoresSelecionados, setValoresSelecionados] = useState([]);
+
   const { rowItem, setRowItem } = useAppContext();
   const { dateGlobal, setDateGlobal } = useAppContext();
 
@@ -121,6 +124,36 @@ const Atendimento = () => {
       console.error("Erro ao buscar a agenda:", error);
     }
     navigate("/agenda"); // Limpar selectedItem ao clicar no botão Voltar
+  };
+
+  const handleFinalizarAddProdutos = (valores) => {
+    console.log("Finalizado no papito:", valores);
+    // Faça o que quiser com os valores selecionados, como armazená-los no estado do componente pai
+    setValoresSelecionados(valores);
+  };
+
+  const obterDataAtual = () => {
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  };
+
+  // Função para calcular o total da quantidade
+  const calcularTotalQuantidade = () => {
+    return valoresSelecionados.reduce(
+      (total, produto) => total + produto.quantidade,
+      0
+    );
+  };
+
+  // Função para calcular o total do valor total
+  const calcularTotalValorTotal = () => {
+    return valoresSelecionados.reduce(
+      (total, produto) => total + produto.precoTotal,
+      0
+    );
   };
 
   return (
@@ -259,6 +292,7 @@ const Atendimento = () => {
                     <Text
                       color="black"
                       ml="30px"
+                      mb={2}
                       _hover={{
                         transform: "scale(1.05)",
                         boxShadow: "lg",
@@ -657,7 +691,9 @@ const Atendimento = () => {
             </GridItem>
           </Grid>
           <Box mt={30}>
-            <ProcurarProduto />
+            <ProcurarProduto
+              onFinalizarAddProdutos={handleFinalizarAddProdutos}
+            />
           </Box>
 
           <Box mt="30px">
@@ -678,10 +714,40 @@ const Atendimento = () => {
                   <Th color="white">Desconto (%)</Th>
                   <Th color="white">Valor Unitário</Th>
                   <Th color="white">Total</Th>
+                  <Th color="white">Unidade de Medida</Th>{" "}
+                  {/* Nova coluna para UM */}
                   <Th color="white">Data</Th>
                 </Tr>
               </Thead>
-              <Tbody></Tbody>
+              <Tbody>
+                {valoresSelecionados.map((produto, index) => (
+                  <Tr key={index}>
+                    <Td>{produto.descricao}</Td>
+                    <Td>{produto.quantidade}</Td>
+                    <Td></Td> {/* Deixando a coluna de desconto em branco */}
+                    <Td>{produto.precoUnitario.toFixed(2)}</Td>{" "}
+                    {/* Usando precoUnitario */}
+                    <Td>{produto.precoTotal.toFixed(2)}</Td>{" "}
+                    {/* Usando precoTotal */}
+                    <Td>{produto.um}</Td>
+                    <Td>{obterDataAtual()}</Td>{" "}
+                    {/* Preenchendo com a data atual */}
+                  </Tr>
+                ))}
+              </Tbody>
+              <Tfoot>
+                <Tr>
+                  <Td fontWeight="bold">TOTAL</Td>
+                  <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td fontWeight="bold">
+                    {calcularTotalValorTotal().toFixed(2)}
+                  </Td>
+                  <Td></Td>
+                  <Td></Td>
+                </Tr>
+              </Tfoot>
             </Table>
           </Box>
         </>
