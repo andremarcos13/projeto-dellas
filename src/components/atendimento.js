@@ -149,16 +149,18 @@ const Atendimento = () => {
           <Grid templateColumns="repeat(5, 1fr)" gap={3}>
             <GridItem colSpan={1}>
               <Box
-                bg="black"
+                // bg="black"
+                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
+                _hover={{ boxShadow: "lg" }}
               >
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -168,7 +170,7 @@ const Atendimento = () => {
 
                 <Text
                   ml="30px"
-                  color="white"
+                  color="black"
                   mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -177,7 +179,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -186,7 +188,7 @@ const Atendimento = () => {
                 </Text>
 
                 <Text
-                  color="white"
+                  color="black"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -203,13 +205,13 @@ const Atendimento = () => {
                         <Text
                           fontSize="lg"
                           fontWeight="bold"
-                          color="white"
+                          color="black"
                           mt={2}
                           mb={2}
                         >
                           <Icon as={MdPhone} mr={2} /> Outros números:
                         </Text>
-                        <Text ml="30px" color="white" mb={2}>
+                        <Text ml="30px" color="black" mb={2}>
                           {rowItem.fone && rowItem.fone !== rowItem.celular && (
                             <>
                               {rowItem.fone}
@@ -246,7 +248,7 @@ const Atendimento = () => {
                     <Text
                       fontSize="lg"
                       fontWeight="bold"
-                      color="white"
+                      color="black"
                       mb={2}
                       display="flex"
                       alignItems="center"
@@ -255,7 +257,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
-                      color="white"
+                      color="black"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -267,7 +269,7 @@ const Atendimento = () => {
                     <Text
                       fontSize="lg"
                       fontWeight="bold"
-                      color="white"
+                      color="black"
                       mb={2}
                       display="flex"
                       alignItems="center"
@@ -277,7 +279,7 @@ const Atendimento = () => {
 
                     <Text
                       mb={2}
-                      color="white"
+                      color="black"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -289,7 +291,7 @@ const Atendimento = () => {
                     <Text
                       fontSize="lg"
                       fontWeight="bold"
-                      color="white"
+                      color="black"
                       mb={2}
                       display="flex"
                       alignItems="center"
@@ -320,10 +322,10 @@ const Atendimento = () => {
                             ? "black"
                             : "white"
                         }
-                        w="79px"
+                        w="99px"
                         borderRadius="10px"
                         justifyContent="center"
-                        p={2}
+                        p={3}
                       >
                         {`${rowItem.diasCompras} ${
                           rowItem.diasCompras > 1 ? "dias" : "dia"
@@ -336,7 +338,8 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="black"
+                _hover={{ boxShadow: "lg" }}
+                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -345,7 +348,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -354,7 +357,7 @@ const Atendimento = () => {
                 </Text>
 
                 <Text
-                  color="white"
+                  color="black"
                   ml="30px"
                   mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -362,7 +365,7 @@ const Atendimento = () => {
                   {rowItem.nomeCliente}
                 </Text>
                 <Text
-                  color="white"
+                  color="black"
                   ml="30px"
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -376,7 +379,7 @@ const Atendimento = () => {
                     <Text
                       fontSize="lg"
                       fontWeight="bold"
-                      color="white"
+                      color="black"
                       mt={2}
                       mb={2}
                     >
@@ -384,7 +387,7 @@ const Atendimento = () => {
                     </Text>
                     <Text
                       mb={2}
-                      color="white"
+                      color="black"
                       ml="30px"
                       _hover={{
                         transform: "scale(1.05)",
@@ -400,7 +403,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -410,7 +413,7 @@ const Atendimento = () => {
 
                 <Text
                   ml="30px"
-                  color="white"
+                  color="black"
                   mb={2}
                   _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                 >
@@ -419,7 +422,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -428,12 +431,12 @@ const Atendimento = () => {
                 </Text>
 
                 {rowItem.dataCadastro === "  /  /  " ? (
-                  <Text color="white" ml="30px" mb={2}>
+                  <Text color="black" ml="30px" mb={2}>
                     Nenhuma data cadastrada
                   </Text>
                 ) : (
                   <Text
-                    color="white"
+                    color="black"
                     ml="30px"
                     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                   >
@@ -444,7 +447,8 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="black"
+                _hover={{ boxShadow: "lg" }}
+                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -453,7 +457,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -480,7 +484,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -500,7 +504,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -520,7 +524,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -535,13 +539,14 @@ const Atendimento = () => {
                   value={date}
                   placeholder="Apenas números - ddmmaaaa"
                   onChange={handleChangeInputDate}
-                  borderColor="white"
+                  borderColor="black"
                 />
               </Box>
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="black"
+                _hover={{ boxShadow: "lg" }}
+                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -550,14 +555,14 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
                 >
                   <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
                 </Text>
-                <Select variant="flushed" bg="black" color="white">
+                <Select variant="flushed" bg="white" color="black">
                   {tipoOperacaoOptions.map((option, index) => (
                     <option
                       key={index}
@@ -572,7 +577,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -581,8 +586,8 @@ const Atendimento = () => {
                 </Text>
                 <Select
                   variant="flushed"
-                  bg="black"
-                  color="white" // placeholder="Selecione um frete"
+                  bg="white"
+                  color="black" // placeholder="Selecione um frete"
                 >
                   {tipoFreteOptions.map((option, index) => (
                     <option
@@ -598,14 +603,14 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
                 >
                   <Icon as={FaTruck} mr={2} /> Transportadora:
                 </Text>
-                <Select bg="black" color="white" variant="flushed">
+                <Select bg="white" color="black" variant="flushed">
                   <option style={{ color: "black" }}> 1</option>
                   <option style={{ color: "black" }}> 2</option>
                   <option style={{ color: "black" }}> 3</option>
@@ -614,7 +619,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
@@ -622,8 +627,8 @@ const Atendimento = () => {
                   <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
                 </Text>
                 <Select
-                  bg="black"
-                  color="white"
+                  bg="white"
+                  color="black"
                   variant="flushed"
                   placeholder="Selecione uma condição de pagamento."
                 />
@@ -631,7 +636,8 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                bg="black"
+                _hover={{ boxShadow: "lg" }}
+                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -640,7 +646,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
-                  color="white"
+                  color="black"
                   mb={2}
                   display="flex"
                   alignItems="center"
