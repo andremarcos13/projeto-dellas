@@ -741,6 +741,8 @@ const Atendimento = () => {
                   color="black"
                   variant="flushed"
                   placeholder="Selecione uma transportadora."
+                  isSearchable
+                  fontSize="sm"
                 >
                   {transportadoras.map((option) => (
                     <option key={option.codigo} value={option.codigo}>
