@@ -659,12 +659,12 @@ const Atendimento = () => {
                 </Text>
                 <Input
                   focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
-                  type="text"
+                  type="date"
                   bg="white"
                   color="black"
-                  value={date}
+                  // value={date}
                   placeholder="Apenas números - ddmmaaaa"
-                  onChange={handleChangeInputDate}
+                  // onChange={handleChangeInputDate}
                   borderColor="black"
                 />
               </Box>
