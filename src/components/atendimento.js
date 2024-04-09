@@ -7,6 +7,7 @@ import {
   Tr,
   Th,
   Td,
+  Flex,
   Button,
   Icon,
   ModalOverlay,
@@ -58,6 +59,8 @@ const Atendimento = () => {
   const [transportadoras, setTransportadoras] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [condPagamentos, setCondPagamentos] = useState([]);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+
   const { rowItem, setRowItem } = useAppContext();
   const { dateGlobal, setDateGlobal } = useAppContext();
 
@@ -239,6 +242,12 @@ const Atendimento = () => {
 
     fetchApis();
   }, []);
+
+  const handleCondPagamentoChange = (event) => {
+    const selectedOption = event.target.value;
+    setShowAdditionalInputs(selectedOption === "999");
+  };
+
   return (
     <Box
       // bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
@@ -749,18 +758,39 @@ const Atendimento = () => {
                 >
                   <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
                 </Text>
+
                 <Select
+                  variant="flushed"
                   bg="white"
                   color="black"
-                  variant="flushed"
-                  placeholder="Selecione uma condição de pagamento."
+                  onChange={handleCondPagamentoChange}
+                  mb={5}
+                  placeholder="Selecione a condição de pagamento."
                 >
-                  {condPagamentos.map((option) => (
-                    <option key={option.codigo} value={option.codigo}>
+                  {condPagamentos.map((option, index) => (
+                    <option key={index} value={option.codigo}>
                       {option.descricao}
                     </option>
                   ))}
                 </Select>
+
+                {/* Inputs adicionais */}
+                {showAdditionalInputs && (
+                  <>
+                    {[1, 2, 3, 4].map((parcela) => (
+                      <Flex key={parcela} alignItems="center" mb={2}>
+                        <Text fontSize="sm" color="black" mr={2}>
+                          {`${parcela}ª parcela`}
+                        </Text>
+                        <Input type="number" bg="white" color="black" w={150} />
+                        <Text fontSize="sm" color="black" ml={2} mr={2}>
+                          Data:
+                        </Text>
+                        <Input type="date" bg="white" color="black" />
+                      </Flex>
+                    ))}
+                  </>
+                )}
               </Box>
             </GridItem>
             <GridItem colSpan={1}>
