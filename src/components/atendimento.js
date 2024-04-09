@@ -766,26 +766,26 @@ const Atendimento = () => {
               <Tbody>
                 {valoresSelecionados.map((produto, index) => (
                   <Tr key={index}>
-                    <Td>{produto.descricao}</Td>
-                    <Td>{produto.quantidade}</Td>
-                    <Td w={120}>
+                    <Td w={250}>{produto.descricao}</Td>
+                    <Td w={100}>{produto.quantidade}</Td>
+                    <Td w={150}>
                       <Input
+                        focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                         border="1px"
                         borderColor="gray.300"
                         type="number"
                         mt={2}
                         w="70px"
-                        p={5}
+                        p={6}
                         value={produto.qtd}
                         onChange={(e) =>
                           handleDescontoChange(index, e.target.value)
                         }
                       />
                     </Td>
-                    <Td>{produto.precoUnitario.toFixed(2)}</Td>{" "}
+                    <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
                     {/* Usando precoUnitario */}
-                    <Td>
-                      {" "}
+                    <Td w={150}>
                       {calcularPrecoTotal(
                         produto.quantidade,
                         produto.precoUnitario,
@@ -793,8 +793,8 @@ const Atendimento = () => {
                       ).toFixed(2)}
                     </Td>{" "}
                     {/* Usando precoTotal */}
-                    <Td>{produto.um}</Td>
-                    <Td>{obterDataAtual()}</Td>{" "}
+                    <Td w={150}>{produto.um}</Td>
+                    <Td w={150}>{obterDataAtual()}</Td>{" "}
                     {/* Preenchendo com a data atual */}
                   </Tr>
                 ))}
@@ -805,12 +805,13 @@ const Atendimento = () => {
                   <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
                   <Td>
                     <Input
+                      focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
                       border="1px"
                       borderColor="gray.300"
                       type="number"
                       mt={2}
                       w="70px"
-                      p={5}
+                      p={6}
                       value={descontoTotal}
                       onChange={handleDescontoTotalChange}
                     />
