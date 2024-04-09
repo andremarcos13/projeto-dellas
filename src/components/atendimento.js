@@ -226,7 +226,7 @@ const Atendimento = () => {
     try {
       const response = await fetchTransportadoras();
       setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
-      console.log("getTransportadoras", condPagamentos);
+      console.log("getTransportadoras", transportadoras);
     } catch (error) {
       console.error(error);
     } finally {
@@ -742,9 +742,9 @@ const Atendimento = () => {
                   variant="flushed"
                   placeholder="Selecione uma transportadora."
                 >
-                  {transportadoras.map((option, index) => (
-                    <option key={index} value={option.codigo}>
-                      {option.nome}
+                  {transportadoras.map((option) => (
+                    <option key={option.codigo} value={option.codigo}>
+                      {`${option.nome} - ${option.codigo}`}
                     </option>
                   ))}
                 </Select>
