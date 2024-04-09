@@ -47,6 +47,7 @@ import { useNavigate } from "react-router";
 import fetchAgenda from "../apis/agenda-api";
 import ProcurarProduto from "./procurar-produto";
 import fetchCondPagamentos from "../apis/cond-pagamento";
+import fetchTransportadoras from "../apis/transportadoras-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -54,7 +55,7 @@ const Atendimento = () => {
   const [date, setDate] = useState("");
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [descontoTotal, setDescontoTotal] = useState(0);
-  const [descontoItem, setDescontoItem] = useState(0);
+  const [transportadoras, setTransportadoras] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [condPagamentos, setCondPagamentos] = useState([]);
   const { rowItem, setRowItem } = useAppContext();
@@ -216,9 +217,24 @@ const Atendimento = () => {
     }
   };
 
+  const getTransportadoras = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetchTransportadoras();
+      setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+      console.log("getTransportadoras", condPagamentos);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchApis = async () => {
       await getCondPagamentos();
+      await getTransportadoras();
     };
 
     fetchApis();
@@ -711,11 +727,17 @@ const Atendimento = () => {
                 >
                   <Icon as={FaTruck} mr={2} /> Transportadora:
                 </Text>
-                <Select bg="white" color="black" variant="flushed">
-                  <option style={{ color: "black" }}> 1</option>
-                  <option style={{ color: "black" }}> 2</option>
-                  <option style={{ color: "black" }}> 3</option>
-                  <option style={{ color: "black" }}> 4</option>
+                <Select
+                  bg="white"
+                  color="black"
+                  variant="flushed"
+                  placeholder="Selecione uma transportadora."
+                >
+                  {transportadoras.map((option, index) => (
+                    <option key={index} value={option.codigo}>
+                      {option.nome}
+                    </option>
+                  ))}
                 </Select>
                 <Text
                   fontSize="lg"
