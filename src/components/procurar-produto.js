@@ -72,6 +72,12 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   const handleInputChange = (event) => {
     const upperCaseValue = event.target.value.toUpperCase(); // Converte o valor para letras maiúsculas
     setSearchTerm(upperCaseValue);
@@ -134,7 +140,6 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
         precoTotal: precoTotal,
         precoUnitario: precoUnitario,
       };
-
       setValoresSelecionados((prevValoresSelecionados) => {
         // Criamos uma nova cópia do array anterior e adicionamos o novo item
         return [...prevValoresSelecionados, newItem];
@@ -147,6 +152,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
   const handleFinalizar = () => {
     // Chama a função de retorno de chamada e passa os valores selecionados como argumento
     onFinalizarAddProdutos(valoresSelecionados);
+    closeModal();
   };
 
   return (
@@ -175,6 +181,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                 placeholder="Digite o nome do produto"
                 value={searchTerm}
                 onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
               />
               <Button
                 ml={4}
@@ -343,6 +350,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                         ml={3}
                         onClick={handleSalvar} // Chama a função para salvar os valores selecionados
                         leftIcon={<FaPlus />} // Usando o ícone de fechar da react-icons
+                        isDisabled={precoUnitario === 0 || precoTotal === 0}
                       >
                         Adicionar
                       </Button>
@@ -364,7 +372,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                           {/* <CardHeader mt={0} p={0} ml={0} mr={0} mb={0}>
                             <MdAttachMoney />
                           </CardHeader> */}
-                          <CardBody>
+                          <CardBody p={2}>
                             {calculado && precoUnitario !== null ? (
                               precoUnitario !== 0 ? (
                                 <Flex alignItems="center">
@@ -396,7 +404,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                                   color="black"
                                   p={3}
                                   borderRadius="10px"
-                                  mb={1}
+                                  mb={3}
                                   fontWeight="bold"
                                 >
                                   Preço unitário cadastrado com valor zero.
