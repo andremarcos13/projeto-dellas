@@ -89,8 +89,8 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                   <Td>{contato.celular}</Td>
                   <Td>{contato.dataCadastro}</Td>
                   <Td>{`${contato.diasCompras} dias`}</Td>
-                  <Td>{contato.emailCliente.toLowerCase()}</Td>
-                  <Td>{capitalizeFirstLetter(contato.municipio)}</Td>
+                  <Td w={120}>{contato.emailCliente.toLowerCase()}</Td>
+                  <Td w={200}>{capitalizeFirstLetter(contato.municipio)}</Td>
                   <Td>{capitalizeFirstLetter(contato.obsCliente)}</Td>
                   <Td>{contato.potencialLub}</Td>
                   <Td>{contato.venda_total_nfs}</Td>
