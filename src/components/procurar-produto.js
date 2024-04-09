@@ -52,6 +52,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [calculado, setCalculado] = useState(false);
   const [controlaAbrir, setControlaAbrir] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // Página atual
+  const [hasNextPage, setHasNextPage] = useState(false); // Indica se há mais
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -63,10 +65,28 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
       const data = await fetchProdutos({ search: searchTerm });
       if (data && data.items) {
         setSearchResults(data.items);
+        setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
         setIsModalOpen(true);
       }
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadMoreResults = async () => {
+    try {
+      setIsLoading(true);
+      const nextPage = currentPage + 1;
+      const data = await fetchProdutos({ search: searchTerm, page: nextPage });
+      if (data && data.items) {
+        setSearchResults([...searchResults, ...data.items]); // Adicionando os novos resultados à lista existente
+        setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
+        setCurrentPage(nextPage); // Atualizando o número da página atual
+      }
+    } catch (error) {
+      console.error("Erro ao carregar mais produtos:", error);
     } finally {
       setIsLoading(false);
     }
@@ -264,8 +284,12 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                                   <span key={index}>
                                     {part}
                                     {index !==
-                                      item.codigo.split(searchTerm).length -
-                                        1 && <strong>{searchTerm}</strong>}
+                                      item.descricao.split(searchTerm).length -
+                                        1 && (
+                                      <span style={{ color: "red" }}>
+                                        <strong>{searchTerm}</strong>
+                                      </span>
+                                    )}
                                   </span>
                                 ))}
                             </>
@@ -293,6 +317,14 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
             ) : (
               <Text mt={4}>Nenhum resultado encontrado.</Text>
             )}
+            <Button
+              onClick={loadMoreResults}
+              isDisabled={!hasNextPage || isLoading}
+            >
+              {hasNextPage
+                ? "Carregar mais resultados"
+                : "Não há mais produtos com o código selecionado"}
+            </Button>
             <Flex justify="space-between">
               <Box flexBasis="45%">
                 {selectedItem && (
