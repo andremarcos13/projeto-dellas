@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -46,6 +46,7 @@ import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router";
 import fetchAgenda from "../apis/agenda-api";
 import ProcurarProduto from "./procurar-produto";
+import fetchCondPagamentos from "../apis/cond-pagamento";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -54,7 +55,8 @@ const Atendimento = () => {
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [descontoTotal, setDescontoTotal] = useState(0);
   const [descontoItem, setDescontoItem] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [condPagamentos, setCondPagamentos] = useState([]);
   const { rowItem, setRowItem } = useAppContext();
   const { dateGlobal, setDateGlobal } = useAppContext();
 
@@ -200,6 +202,27 @@ const Atendimento = () => {
     return precoTotalGeral;
   };
 
+  const getCondPagamentos = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetchCondPagamentos();
+      setCondPagamentos(response.items); // Supondo que o array de objetos esteja em response.items
+      console.log("condPagamentos", condPagamentos);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchApis = async () => {
+      await getCondPagamentos();
+    };
+
+    fetchApis();
+  }, []);
   return (
     <Box
       // bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
@@ -709,7 +732,13 @@ const Atendimento = () => {
                   color="black"
                   variant="flushed"
                   placeholder="Selecione uma condição de pagamento."
-                />
+                >
+                  {condPagamentos.map((option) => (
+                    <option key={option.codigo} value={option.codigo}>
+                      {option.descricao}
+                    </option>
+                  ))}
+                </Select>
               </Box>
             </GridItem>
             <GridItem colSpan={1}>
