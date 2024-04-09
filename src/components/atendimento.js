@@ -53,6 +53,7 @@ const Atendimento = () => {
   const [date, setDate] = useState("");
   const [valoresSelecionados, setValoresSelecionados] = useState([]);
   const [descontoTotal, setDescontoTotal] = useState(0);
+  const [descontoItem, setDescontoItem] = useState(0);
 
   const { rowItem, setRowItem } = useAppContext();
   const { dateGlobal, setDateGlobal } = useAppContext();
@@ -175,6 +176,11 @@ const Atendimento = () => {
   };
 
   const calcularPrecoTotal = (quantidade, precoUnitario, desconto) => {
+    // Verifica se o desconto é um número válido, se não for, define como zero
+    if (isNaN(desconto)) {
+      desconto = 0;
+    }
+
     const precoTotal = quantidade * precoUnitario;
     return calcularPrecoTotalComDesconto(precoTotal, desconto);
   };
@@ -741,7 +747,7 @@ const Atendimento = () => {
             <Table variant="striped">
               <Thead
                 Thead
-                position="sticky"
+                // position="sticky"
                 top="0"
                 bg="black"
                 fontWeight="bold"
@@ -762,13 +768,20 @@ const Atendimento = () => {
                   <Tr key={index}>
                     <Td>{produto.descricao}</Td>
                     <Td>{produto.quantidade}</Td>
-                    <Input
-                      border="0px"
-                      type="number"
-                      onChange={(e) =>
-                        handleDescontoChange(index, e.target.value)
-                      }
-                    />{" "}
+                    <Td w={120}>
+                      <Input
+                        border="1px"
+                        borderColor="gray.300"
+                        type="number"
+                        mt={2}
+                        w="70px"
+                        p={5}
+                        value={produto.qtd}
+                        onChange={(e) =>
+                          handleDescontoChange(index, e.target.value)
+                        }
+                      />
+                    </Td>
                     <Td>{produto.precoUnitario.toFixed(2)}</Td>{" "}
                     {/* Usando precoUnitario */}
                     <Td>
@@ -790,12 +803,18 @@ const Atendimento = () => {
                 <Tr>
                   <Td fontWeight="bold">TOTAL</Td>
                   <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-                  <Input
-                    border="0px"
-                    type="number"
-                    value={descontoTotal}
-                    onChange={handleDescontoTotalChange}
-                  />
+                  <Td>
+                    <Input
+                      border="1px"
+                      borderColor="gray.300"
+                      type="number"
+                      mt={2}
+                      w="70px"
+                      p={5}
+                      value={descontoTotal}
+                      onChange={handleDescontoTotalChange}
+                    />
+                  </Td>
                   <Td></Td>
                   <Td fontWeight="bold">
                     {calcularPrecoTotalGeral().toFixed(2)}
