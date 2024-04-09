@@ -788,7 +788,12 @@ const Atendimento = () => {
                         <Text fontSize="sm" color="black" ml={2} mr={2}>
                           Data:
                         </Text>
-                        <Input type="date" bg="white" color="black" />
+                        <Input
+                          type="date"
+                          bg="white"
+                          color="black"
+                          fontSize="sm"
+                        />
                       </Flex>
                     ))}
                   </>
