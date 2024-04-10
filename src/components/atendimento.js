@@ -711,6 +711,7 @@ const Atendimento = () => {
                   color="black"
                   mb={2}
                   display="flex"
+                  mt={2}
                   alignItems="center"
                 >
                   <Icon as={FaRoad} mr={2} /> Tipo Frete:
@@ -737,6 +738,7 @@ const Atendimento = () => {
                   fontWeight="bold"
                   color="black"
                   mb={2}
+                  mt={2}
                   display="flex"
                   alignItems="center"
                 >
@@ -759,6 +761,7 @@ const Atendimento = () => {
                 <Text
                   fontSize="lg"
                   fontWeight="bold"
+                  mt={2}
                   color="black"
                   mb={2}
                   display="flex"
