@@ -688,7 +688,12 @@ const Atendimento = () => {
                 >
                   <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
                 </Text>
-                <Select variant="flushed" bg="white" color="black">
+                <Select
+                  variant="flushed"
+                  bg="white"
+                  color="black"
+                  fontSize="sm"
+                >
                   {tipoOperacaoOptions.map((option, index) => (
                     <option
                       key={index}
@@ -711,6 +716,7 @@ const Atendimento = () => {
                   <Icon as={FaRoad} mr={2} /> Tipo Frete:
                 </Text>
                 <Select
+                  fontSize="sm"
                   variant="flushed"
                   bg="white"
                   color="black" // placeholder="Selecione um frete"
@@ -765,6 +771,7 @@ const Atendimento = () => {
                   variant="flushed"
                   bg="white"
                   color="black"
+                  fontSize="sm"
                   onChange={handleCondPagamentoChange}
                   mb={5}
                   placeholder="Selecione a condição de pagamento."

@@ -164,8 +164,6 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
         // Criamos uma nova cópia do array anterior e adicionamos o novo item
         return [...prevValoresSelecionados, newItem];
       });
-
-      console.log("valoresSelecionados", valoresSelecionados);
     }
   };
 
@@ -174,6 +172,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
     onFinalizarAddProdutos(valoresSelecionados);
     closeModal();
   };
+
+  console.log("valoresSelecionados filho", valoresSelecionados);
 
   return (
     <>
