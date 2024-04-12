@@ -973,7 +973,7 @@ const Atendimento = () => {
                         borderColor="gray.300"
                         type="number"
                         mt={2}
-                        w="70px"
+                        w="75px"
                         p={6}
                         value={produto.qtd}
                         onChange={(e) =>
@@ -1008,7 +1008,7 @@ const Atendimento = () => {
                       borderColor="gray.300"
                       type="number"
                       mt={2}
-                      w="70px"
+                      w="75px"
                       p={6}
                       value={descontoTotal}
                       onChange={handleDescontoTotalChange}
