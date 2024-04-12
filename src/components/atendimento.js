@@ -60,8 +60,21 @@ const Atendimento = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [condPagamentos, setCondPagamentos] = useState([]);
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [dadosAtendimento, setDadosAtendimento] = useState([]);
+  const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("");
+  const [transportadoraSelecioando, setTransportadoraSelecionada] =
+    useState("");
+  const [operacaoSelecionada, setOperacaoSelecionada] = useState("");
+  const [msgNotaSelecionada, setMsgNotaSelecionada] = useState("");
+  const [obsAtendimentoSelecionada, setObsAtendimentoSelecionada] =
+    useState("");
+  const [tipoFreteSelecionado, setTipoFreteSelecionado] = useState("");
 
   const { rowItem, setRowItem } = useAppContext();
+  const [obsClienteSelecionada, setObsSelecionada] = useState(
+    rowItem.obsCliente
+  );
+
   const { dateGlobal, setDateGlobal } = useAppContext();
 
   const navigate = useNavigate();
@@ -92,6 +105,19 @@ const Atendimento = () => {
       setDate(input);
     }
   };
+  const dataAtual = new Date();
+
+  // Obtém as horas, minutos e segundos
+  const horas = dataAtual.getHours();
+  const minutos = dataAtual.getMinutes();
+  const segundos = dataAtual.getSeconds();
+
+  // Formata a hora para exibição com dois dígitos (por exemplo, '09' em vez de '9')
+  const horasFormatadas = horas < 10 ? "0" + horas : horas;
+  const minutosFormatados = minutos < 10 ? "0" + minutos : minutos;
+  const segundosFormatados = segundos < 10 ? "0" + segundos : segundos;
+
+  const horarioAtual = `${horasFormatadas}:${minutosFormatados}:${segundosFormatados}`;
 
   const tipoFreteOptions = [
     { value: "C", label: "CIF" },
@@ -246,6 +272,35 @@ const Atendimento = () => {
   const handleCondPagamentoChange = (event) => {
     const selectedOption = event.target.value;
     setShowAdditionalInputs(selectedOption === "999");
+    setCondPagamentoSelecionado(event.target.value);
+  };
+
+  const handleTransportadora = (event) => {
+    setTransportadoraSelecionada(event.target.value);
+  };
+
+  const handleOperacao = (event) => {
+    setOperacaoSelecionada(event.target.value);
+  };
+
+  const handleMsgNota = (event) => {
+    // Obtém o valor do campo de texto e atualiza o estado
+    setMsgNotaSelecionada(event.target.value);
+  };
+
+  const handleObsCliente = (event) => {
+    // Obtém o valor do campo de texto e atualiza o estado
+    setObsSelecionada(event.target.value);
+  };
+
+  const handleObsAtendimento = (event) => {
+    // Obtém o valor do campo de texto e atualiza o estado
+    setObsAtendimentoSelecionada(event.target.value);
+  };
+
+  const handleTipoFrete = (event) => {
+    // Obtém o valor do campo de texto e atualiza o estado
+    setTipoFreteSelecionado(event.target.value);
   };
 
   const handleRemoveItem = (itemToRemove) => {
@@ -255,6 +310,34 @@ const Atendimento = () => {
     );
     setValoresSelecionados(novosValoresSelecionados);
   };
+
+  const bodyApi = [
+    {
+      cliente: rowItem.codCliente,
+      loja: "00",
+      contato: rowItem.contato,
+      vendedor: rowItem.vendedor,
+      operador: rowItem.codOperador,
+      condpag: condPagamentoSelecionado,
+      tabela: "L02",
+      operacao: operacaoSelecionada,
+      msgNota: msgNotaSelecionada,
+      obsCliente: obsClienteSelecionada,
+      dataLigacao: obterDataAtual(),
+      horaLigacao: horarioAtual,
+      obsAtendimento: obsAtendimentoSelecionada,
+      transporadora: transportadoraSelecioando,
+      tipoFrete: tipoFreteSelecionado,
+      tipoCliente: "F",
+      produtos: valoresSelecionados.map((produto) => ({
+        produto: produto.codigo,
+        quant: produto.quantidade,
+        valorUnit: produto.precoUnitario,
+      })),
+    },
+  ];
+
+  console.log("bodyApi", bodyApi);
 
   return (
     <Box
@@ -607,9 +690,10 @@ const Atendimento = () => {
                   border="1px"
                   height="120px"
                   resize="none"
-                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="blue.700"
                   _placeholder={{ color: "gray.400" }}
                   onChange={(e) => {
+                    handleObsCliente(e); // Chama a função e passa o evento como argumento
                     setRowItem({
                       ...rowItem,
                       obsCliente: e.target.value,
@@ -627,6 +711,7 @@ const Atendimento = () => {
                   <Icon as={MdDesignServices} mr={2} /> Observação Atendimento:
                 </Text>
                 <Textarea
+                  onChange={(e) => handleObsAtendimento(e)}
                   placeholder="Observação durante o atendimento."
                   bg="white"
                   color="black"
@@ -647,6 +732,7 @@ const Atendimento = () => {
                   <Icon as={MdMessage} mr={2} /> Msg para Nota:
                 </Text>
                 <Textarea
+                  onChange={handleMsgNota}
                   placeholder="Mensagem para ser anexada na nota."
                   bg="white"
                   color="black"
@@ -698,6 +784,7 @@ const Atendimento = () => {
                   <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
                 </Text>
                 <Select
+                  onChange={handleOperacao}
                   variant="flushed"
                   bg="white"
                   color="black"
@@ -726,6 +813,7 @@ const Atendimento = () => {
                   <Icon as={FaRoad} mr={2} /> Tipo Frete:
                 </Text>
                 <Select
+                  onChange={handleTipoFrete}
                   fontSize="sm"
                   variant="flushed"
                   bg="white"
@@ -760,6 +848,7 @@ const Atendimento = () => {
                   placeholder="Selecione uma transportadora."
                   isSearchable
                   fontSize="sm"
+                  onChange={handleTransportadora}
                 >
                   {transportadoras.map((option) => (
                     <option key={option.codigo} value={option.codigo}>
