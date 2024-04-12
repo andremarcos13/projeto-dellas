@@ -248,6 +248,14 @@ const Atendimento = () => {
     setShowAdditionalInputs(selectedOption === "999");
   };
 
+  const handleRemoveItem = (itemToRemove) => {
+    // Filtra os valores selecionados, removendo o item a ser removido
+    const novosValoresSelecionados = valoresSelecionados.filter(
+      (item) => item !== itemToRemove
+    );
+    setValoresSelecionados(novosValoresSelecionados);
+  };
+
   return (
     <Box
       // bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
@@ -334,7 +342,8 @@ const Atendimento = () => {
                           mt={2}
                           mb={2}
                         >
-                          <Icon as={MdPhone} mr={2} /> Outros números:
+                          <Icon as={MdPhone} mr={2} />
+                          Outros números:
                         </Text>
                         <Text ml="30px" color="black" mb={2}>
                           {rowItem.fone && rowItem.fone !== rowItem.celular && (
@@ -835,6 +844,8 @@ const Atendimento = () => {
           <Box mt={30}>
             <ProcurarProduto
               onFinalizarAddProdutos={handleFinalizarAddProdutos}
+              onRemoveItem={handleRemoveItem}
+              valoresSelecionados={valoresSelecionados}
             />
           </Box>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -37,8 +37,10 @@ import { FaCheck } from "react-icons/fa";
 import DrawerCarrinho from "./drawer-carrinho";
 import { MdAttachMoney } from "react-icons/md";
 import { PiCoinsFill } from "react-icons/pi";
+import { MdDelete } from "react-icons/md";
+import { IconButton } from "@chakra-ui/react";
 
-const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
+const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -172,6 +174,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
     onFinalizarAddProdutos(valoresSelecionados);
     closeModal();
   };
+
+  useEffect(() => {
+    setValoresSelecionados(valoresSelecionados);
+  }, [valoresSelecionados]);
 
   console.log("valoresSelecionados filho", valoresSelecionados);
 
@@ -504,6 +510,22 @@ const ProcurarProduto = ({ onFinalizarAddProdutos }) => {
                         Preço:
                       </Text>
                       <Text>R${item.precoTotal.toFixed(2)}</Text>
+                      <IconButton
+                        aria-label="Remover produto"
+                        icon={<MdDelete />}
+                        _hover={{ color: "red" }}
+                        onClick={() => {
+                          // Remover o item localmente no filho
+                          const novosValoresSelecionados = [
+                            ...valoresSelecionados,
+                          ];
+                          novosValoresSelecionados.splice(index, 1);
+                          setValoresSelecionados(novosValoresSelecionados);
+
+                          // Chamar a função para remover o item no pai
+                          onRemoveItem(item); // ou onRemoveItem(index) se preferir passar o índice
+                        }}
+                      />
                     </Box>
                   ))}
                 </Box>
