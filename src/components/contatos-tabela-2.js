@@ -74,7 +74,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                 <Tr
                   key={index}
                   _hover={{
-                    bg: "black",
+                    bg: "gray.200",
                     transition: "opacity 0.1s",
                     transform: "scale(1.02)",
                     boxShadow: "lg",
