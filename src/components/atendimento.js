@@ -49,6 +49,7 @@ import fetchAgenda from "../apis/agenda-api";
 import ProcurarProduto from "./procurar-produto";
 import fetchCondPagamentos from "../apis/cond-pagamento";
 import fetchTransportadoras from "../apis/transportadoras-api";
+import enviarRequisicao from "../apis/finaliza-atendimento-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -317,6 +318,64 @@ const Atendimento = () => {
     setValoresSelecionados(novosValoresSelecionados);
   };
 
+  const isButtonDisabled = () => {
+    // Verifica se algum estado necessário está vazio ou indefinido
+    if (
+      !rowItem.codCliente ||
+      !rowItem.contato ||
+      !rowItem.vendedor ||
+      !rowItem.codOperador ||
+      !condPagamentoSelecionado ||
+      !operacaoSelecionada ||
+      !msgNotaSelecionada ||
+      !obsClienteSelecionada ||
+      !obsAtendimentoSelecionada ||
+      !transportadoraSelecioando ||
+      !tipoFreteSelecionado ||
+      valoresSelecionados.length === 0
+    ) {
+      // Verifica qual estado específico está vazio ou indefinido e imprime no console
+      if (!rowItem.codCliente)
+        console.log("rowItem.codCliente está vazio ou indefinido");
+      if (!rowItem.contato)
+        console.log("rowItem.contato está vazio ou indefinido");
+      if (!rowItem.vendedor)
+        console.log("rowItem.vendedor está vazio ou indefinido");
+      if (!rowItem.codOperador)
+        console.log("rowItem.codOperador está vazio ou indefinido");
+      if (!condPagamentoSelecionado)
+        console.log("condPagamentoSelecionado está vazio ou indefinido");
+      if (!operacaoSelecionada)
+        console.log("operacaoSelecionada está vazio ou indefinido");
+      if (!msgNotaSelecionada)
+        console.log("msgNotaSelecionada está vazio ou indefinido");
+      if (!obsClienteSelecionada)
+        console.log("obsClienteSelecionada está vazio ou indefinido");
+      if (!obsAtendimentoSelecionada)
+        console.log("obsAtendimentoSelecionada está vazio ou indefinido");
+      if (!transportadoraSelecioando)
+        console.log("transportadoraSelecioando está vazio ou indefinido");
+      if (!tipoFreteSelecionado)
+        console.log("tipoFreteSelecionado está vazio ou indefinido");
+      if (valoresSelecionados.length === 0)
+        console.log("valoresSelecionados está vazio");
+      if (
+        valoresSelecionados.some(
+          (produto) =>
+            !produto.codigo ||
+            !produto.quantidade ||
+            produto.desconto === undefined
+        )
+      )
+        console.log(
+          "Algum produto em valoresSelecionados está com campos vazios ou indefinidos"
+        );
+
+      return true; // Se algum estado estiver vazio ou indefinido, o botão deve ser desabilitado
+    }
+    return false; // Caso contrário, o botão deve ser habilitado
+  };
+
   const bodyApi = [
     {
       cliente: rowItem.codCliente,
@@ -350,6 +409,17 @@ const Atendimento = () => {
       }),
     },
   ];
+
+  const handleClickFinalizaAtendimento = async () => {
+    try {
+      // Chama a função enviarRequisicao com o requestBody necessário
+      const resposta = await enviarRequisicao(bodyApi);
+      console.log("Resposta da requisição:", resposta);
+      // Faça o que for necessário com a resposta da requisição...
+    } catch (error) {
+      // Trate o erro, se necessário...
+    }
+  };
 
   console.log("bodyApi", bodyApi);
 
@@ -1069,6 +1139,16 @@ const Atendimento = () => {
           </Box>
         </>
       )}
+      <Button
+        w="100%"
+        mt={5}
+        mb={2}
+        colorScheme="whatsapp"
+        isDisabled={isButtonDisabled()}
+        onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
+      >
+        Finaliza Atendimento
+      </Button>
     </Box>
   );
 };

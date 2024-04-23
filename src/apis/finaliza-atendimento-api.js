@@ -8,7 +8,7 @@ const enviarRequisicao = async (requestBody) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Basic QUxFU1NBTkRSTzoxMjM0NTY=",
+          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
         },
       }
     );
