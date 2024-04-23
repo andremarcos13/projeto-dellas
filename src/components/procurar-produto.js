@@ -186,7 +186,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       <Button
         onClick={() => setIsModalOpen(true)}
         leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
-        colorScheme="gray"
+        colorScheme="blue"
         variant="outline"
       >
         Procurar Produto
@@ -326,6 +326,9 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
             <Button
               onClick={loadMoreResults}
               isDisabled={!hasNextPage || isLoading}
+              variant="outline"
+              colorScheme="blue"
+              leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
             >
               {hasNextPage
                 ? "Carregar mais resultados"
