@@ -269,6 +269,12 @@ const Atendimento = () => {
     fetchApis();
   }, []);
 
+  useEffect(() => {
+    const precoTotalGeral = calcularPrecoTotalGeral();
+    console.log("Preço total geral recalculado:", precoTotalGeral);
+    // Faça o que for necessário com o preço total geral recalculado, como atualizar o estado ou enviar para a API
+  }, [valoresSelecionados, descontoTotal]);
+
   const handleCondPagamentoChange = (event) => {
     const selectedOption = event.target.value;
     setShowAdditionalInputs(selectedOption === "999");
@@ -329,11 +335,19 @@ const Atendimento = () => {
       transporadora: transportadoraSelecioando,
       tipoFrete: tipoFreteSelecionado,
       tipoCliente: "F",
-      produtos: valoresSelecionados.map((produto) => ({
-        produto: produto.codigo,
-        quant: produto.quantidade,
-        valorUnit: produto.precoUnitario,
-      })),
+      produtos: valoresSelecionados.map((produto) => {
+        const precoUnitarioComDesconto =
+          calcularPrecoTotal(
+            produto.quantidade,
+            produto.precoUnitario,
+            produto.desconto
+          ) / produto.quantidade; // Calcula o preço unitário com desconto
+        return {
+          produto: produto.codigo,
+          quant: produto.quantidade,
+          valorUnit: precoUnitarioComDesconto,
+        };
+      }),
     },
   ];
 
@@ -341,7 +355,7 @@ const Atendimento = () => {
 
   return (
     <Box
-      // bg="rgba(0, 0, 0, 0.5)" // Cor de fundo cinza com opacidade
+      // bg="rgba(0, 0, 0, 0.01)" // Cor de fundo cinza com opacidade
       py="10" // Adiciona um pouco de espaço acima e abaixo do texto
       px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
       borderRadius="md" // Borda arredondada
