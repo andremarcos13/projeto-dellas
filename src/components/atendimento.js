@@ -366,12 +366,16 @@ const Atendimento = () => {
             <GridItem colSpan={1}>
               <Box
                 // bg="black"
-                border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
-                _hover={{ boxShadow: "lg" }}
+                shadow="lg"
+                _hover={{
+                  boxShadow: "lg",
+                  borderColor: "black",
+                  border: "1px",
+                }}
               >
                 <Text
                   fontSize="lg"
@@ -556,12 +560,16 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                _hover={{ boxShadow: "lg" }}
-                border="1px"
+                _hover={{
+                  boxShadow: "lg",
+                  borderColor: "black",
+                  border: "1px",
+                }} // border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
+                shadow="lg"
               >
                 <Text
                   fontSize="lg"
@@ -612,7 +620,7 @@ const Atendimento = () => {
                         boxShadow: "lg",
                       }}
                     >
-                      {rowItem.emailCliente}
+                      {rowItem.emailCliente.toLowerCase()}
                     </Text>
                   </>
                 ) : (
@@ -665,12 +673,16 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                _hover={{ boxShadow: "lg" }}
-                border="1px"
+                _hover={{
+                  boxShadow: "lg",
+                  borderColor: "black",
+                  border: "1px",
+                }} // border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
+                shadow="lg"
               >
                 <Text
                   fontSize="lg"
@@ -690,7 +702,7 @@ const Atendimento = () => {
                   border="1px"
                   height="120px"
                   resize="none"
-                  focusBorderColor="blue.700"
+                  focusBorderColor="green.500"
                   _placeholder={{ color: "gray.400" }}
                   onChange={(e) => {
                     handleObsCliente(e); // Chama a função e passa o evento como argumento
@@ -718,7 +730,7 @@ const Atendimento = () => {
                   height="120px"
                   border="1px"
                   resize="none"
-                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -739,7 +751,7 @@ const Atendimento = () => {
                   height="120px"
                   border="1px"
                   resize="none"
-                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -753,7 +765,7 @@ const Atendimento = () => {
                   <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
                 </Text>
                 <Input
-                  focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                   type="date"
                   bg="white"
                   color="black"
@@ -766,12 +778,16 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                _hover={{ boxShadow: "lg" }}
-                border="1px"
+                _hover={{
+                  boxShadow: "lg",
+                  borderColor: "black",
+                  border: "1px",
+                }} // border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
+                shadow="lg"
               >
                 <Text
                   fontSize="lg"
@@ -910,12 +926,16 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
-                _hover={{ boxShadow: "lg" }}
-                border="1px"
+                _hover={{
+                  boxShadow: "lg",
+                  borderColor: "black",
+                  border: "1px",
+                }} // border="1px"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
                 minH="590px"
+                shadow="lg"
               >
                 <Text
                   fontSize="lg"
@@ -968,7 +988,7 @@ const Atendimento = () => {
                     <Td w={100}>{produto.quantidade}</Td>
                     <Td w={150}>
                       <Input
-                        focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                        focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                         border="1px"
                         borderColor="gray.300"
                         type="number"
@@ -1003,7 +1023,7 @@ const Atendimento = () => {
                   <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
                   <Td>
                     <Input
-                      focusBorderColor="blue.700" // Definindo a cor da borda quando em foco como verde
+                      focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                       border="1px"
                       borderColor="gray.300"
                       type="number"
