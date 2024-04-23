@@ -363,7 +363,7 @@ const Atendimento = () => {
       <Button
         onClick={handleBackButtonClick}
         mb="4"
-        colorScheme="gray"
+        colorScheme="red"
         variant="outline"
         ml={3}
         mt={3}
@@ -372,10 +372,19 @@ const Atendimento = () => {
       </Button>
       {rowItem && (
         <>
-          <Text size="4xl" mb="25px" ml={3}>
-            <strong>{`Operador: ${rowItem.nomeOperador} - ${rowItem.codOperador} - Lista: ${rowItem.codLista}`}</strong>
-            <Divider w={520} mt={1} borderWidth={2} />
-          </Text>
+          <Box
+            bg="black"
+            color="white"
+            mb={3}
+            p={1}
+            borderRadius={5}
+            shadow="lg"
+          >
+            <Text size="4xl" mb="25px" ml={3}>
+              <strong>{`Operador: ${rowItem.nomeOperador} - ${rowItem.codOperador} - Lista: ${rowItem.codLista}`}</strong>
+              <Divider w={520} mt={1} borderWidth={2} />
+            </Text>
+          </Box>
           <Grid templateColumns="repeat(5, 1fr)" gap={3}>
             <GridItem colSpan={1}>
               <Box
