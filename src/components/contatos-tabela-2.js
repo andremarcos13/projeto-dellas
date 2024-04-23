@@ -74,11 +74,11 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                 <Tr
                   key={index}
                   _hover={{
-                    bg: "gray.200",
+                    bg: "gray.300",
                     transition: "opacity 0.1s",
                     transform: "scale(1.02)",
                     boxShadow: "lg",
-                    color: "white",
+                    color: "black",
                   }}
                   onClick={(event) => handleRowClick(index, event)} // Adiciona o evento de clique na linha
                   cursor="pointer"
