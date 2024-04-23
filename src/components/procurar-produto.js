@@ -335,8 +335,16 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
               <Box flexBasis="45%">
                 {selectedItem && (
                   <>
-                    <Box mt={4}>
-                      <Text fontWeight="bold" mb={2}>
+                    <Box
+                      mt={4}
+                      bg="gray.200"
+                      p={2}
+                      mb={5}
+                      border="2px"
+                      borderRadius={5}
+                      shadow="sm"
+                    >
+                      <Text fontWeight="bold" mb={2} as="u">
                         Detalhes do Item Selecionado:
                       </Text>
                       <Text mb={1}>
