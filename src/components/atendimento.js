@@ -1,4 +1,4 @@
-import { Modal } from "@chakra-ui/react";
+import { Alert, AlertIcon, Modal } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -75,6 +75,8 @@ const Atendimento = () => {
   const [obsClienteSelecionada, setObsSelecionada] = useState(
     rowItem.obsCliente
   );
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para armazenar a mensagem de erro
+
   const { globalToken, setGlobalToken } = useAppContext();
 
   const { dateGlobal, setDateGlobal } = useAppContext();
@@ -418,7 +420,10 @@ const Atendimento = () => {
       console.log("Resposta da requisição:", resposta);
       // Faça o que for necessário com a resposta da requisição...
     } catch (error) {
-      // Trate o erro, se necessário...
+      setErrorMessage(
+        "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
+      );
+      console.error("Erro ao finalizar atendimento:", error);
     }
   };
 
@@ -1150,6 +1155,17 @@ const Atendimento = () => {
       >
         Finaliza Atendimento
       </Button>
+      {errorMessage && (
+        <Box mt={4}>
+          <Alert status="error" borderRadius="md">
+            <AlertIcon />
+            <Box flex="1">
+              <strong>Código:</strong> {errorMessage.code} <br />
+              <strong>Mensagem:</strong> {errorMessage.message}
+            </Box>
+          </Alert>
+        </Box>
+      )}
     </Box>
   );
 };
