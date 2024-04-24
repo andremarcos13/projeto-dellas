@@ -12,13 +12,17 @@ import {
   Fade,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 function LoginComponent() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [welcomeText, setWelcomeText] = useState("");
   const [error, setError] = useState("");
   const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const { username, setUsername } = useAppContext();
+  const { password, setPassword } = useAppContext();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,12 +43,12 @@ function LoginComponent() {
   }, []);
 
   const handleLogin = () => {
-    if (!email.trim() || !password.trim()) {
+    if (!username.trim() || !password.trim()) {
       setError("Por favor, preencha todos os campos.");
       setIsErrorVisible(true);
       return;
     }
-    console.log("Email:", email);
+    console.log("Email:", username);
     console.log("Password:", password);
     navigate("/home");
   };
@@ -64,8 +68,8 @@ function LoginComponent() {
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Seu endereço de email"
             onKeyPress={handleKeyPress}
           />
