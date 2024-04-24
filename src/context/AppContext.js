@@ -9,10 +9,13 @@ const AppContextProvider = ({ children }) => {
   const [rowItem, setRowItem] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [globalToken, setGlobalToken] = useState("");
 
   return (
     <AppContext.Provider
       value={{
+        globalToken,
+        setGlobalToken,
         dateGlobal,
         setDateGlobal,
         rowItem,
