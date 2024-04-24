@@ -62,14 +62,14 @@ const Atendimento = () => {
   const [condPagamentos, setCondPagamentos] = useState([]);
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
   const [dadosAtendimento, setDadosAtendimento] = useState([]);
-  const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("");
+  const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("1");
   const [transportadoraSelecioando, setTransportadoraSelecionada] =
     useState("");
-  const [operacaoSelecionada, setOperacaoSelecionada] = useState("");
+  const [operacaoSelecionada, setOperacaoSelecionada] = useState("1");
   const [msgNotaSelecionada, setMsgNotaSelecionada] = useState("");
   const [obsAtendimentoSelecionada, setObsAtendimentoSelecionada] =
     useState("");
-  const [tipoFreteSelecionado, setTipoFreteSelecionado] = useState("");
+  const [tipoFreteSelecionado, setTipoFreteSelecionado] = useState("C");
 
   const { rowItem, setRowItem } = useAppContext();
   const [obsClienteSelecionada, setObsSelecionada] = useState(
