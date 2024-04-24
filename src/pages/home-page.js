@@ -4,8 +4,47 @@ import UserDataHome from "../components/user-data-home";
 import { useNavigate } from "react-router-dom";
 import { IoConstruct } from "react-icons/io5";
 import BreadCrumbLinks from "../components/breadcumber";
+import { useAppContext } from "../context/AppContext";
+import fetchCodUser from "../apis/cod-user-api";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
+  const [userData, setUserData] = useState(null);
+  const { username, setUsername } = useAppContext();
+  const { globalToken } = useAppContext();
+
+  console.log("username home", username);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let hasNext = true;
+        let page = 1;
+
+        while (hasNext) {
+          const response = await fetchCodUser(globalToken.access_token, page);
+          const { items, hasNext: next } = response;
+
+          console.log(`Página ${page}:`, items); // Console log para mostrar os itens da página
+
+          // Verificar se encontramos o usuário
+          const user = items.find((item) => item.u7_nome.includes(username));
+          if (user) {
+            console.log("Usuário encontrado:", user);
+            setUserData(user);
+            hasNext = false;
+          }
+
+          page++;
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+      }
+    };
+
+    fetchData();
+  }, [globalToken.access_token, username]);
+
   const navigate = useNavigate();
 
   const handleRoute = () => {

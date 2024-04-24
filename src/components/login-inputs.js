@@ -14,7 +14,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { getToken } from "../apis/token-api";
-import fetchCodUser from "../apis/cod-user-api";
 import { BeatLoader } from "react-spinners";
 
 function LoginComponent() {
@@ -57,8 +56,6 @@ function LoginComponent() {
     try {
       const token = await getToken(username, password);
 
-      const codUser = await fetchCodUser(token.access_token);
-      console.log("codUser", codUser);
       console.log("Token:", token);
 
       setGlobalToken(token);
