@@ -376,40 +376,37 @@ const Atendimento = () => {
     return false; // Caso contrário, o botão deve ser habilitado
   };
 
-  const bodyApi = [
-    {
-      cliente: rowItem.codCliente,
-      loja: "00",
-      contato: rowItem.contato,
-      vendedor: rowItem.vendedor,
-      operador: rowItem.codOperador,
-      condpag: condPagamentoSelecionado,
-      tabela: "L02",
-      operacao: operacaoSelecionada,
-      msgNota: msgNotaSelecionada,
-      obsCliente: obsClienteSelecionada,
-      dataLigacao: obterDataAtual(),
-      horaLigacao: horarioAtual,
-      obsAtendimento: obsAtendimentoSelecionada,
-      transporadora: transportadoraSelecioando,
-      tipoFrete: tipoFreteSelecionado,
-      tipoCliente: "F",
-      produtos: valoresSelecionados.map((produto) => {
-        const precoUnitarioComDesconto =
-          calcularPrecoTotal(
-            produto.quantidade,
-            produto.precoUnitario,
-            produto.desconto
-          ) / produto.quantidade; // Calcula o preço unitário com desconto
-        return {
-          produto: produto.codigo,
-          quant: produto.quantidade,
-          valorUnit: precoUnitarioComDesconto,
-        };
-      }),
-    },
-  ];
-
+  const bodyApi = {
+    cliente: rowItem.codCliente,
+    loja: "00",
+    contato: rowItem.contato,
+    vendedor: rowItem.vendedor,
+    operador: rowItem.codOperador,
+    condpag: condPagamentoSelecionado,
+    tabela: "L02",
+    operacao: operacaoSelecionada,
+    msgNota: msgNotaSelecionada,
+    obsCliente: obsClienteSelecionada,
+    dataLigacao: obterDataAtual(),
+    horaLigacao: horarioAtual,
+    obsAtendimento: obsAtendimentoSelecionada,
+    transporadora: transportadoraSelecioando,
+    tipoFrete: tipoFreteSelecionado,
+    tipoCliente: "F",
+    produtos: valoresSelecionados.map((produto) => {
+      const precoUnitarioComDesconto =
+        calcularPrecoTotal(
+          produto.quantidade,
+          produto.precoUnitario,
+          produto.desconto
+        ) / produto.quantidade; // Calcula o preço unitário com desconto
+      return {
+        produto: produto.codigo,
+        quant: produto.quantidade,
+        valorUnit: precoUnitarioComDesconto,
+      };
+    }),
+  };
   const handleClickFinalizaAtendimento = async () => {
     try {
       // Chama a função enviarRequisicao com o requestBody necessário
