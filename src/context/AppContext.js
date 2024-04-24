@@ -10,10 +10,13 @@ const AppContextProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [globalToken, setGlobalToken] = useState("");
+  const [userCod, setUserCod] = useState({});
 
   return (
     <AppContext.Provider
       value={{
+        userCod,
+        setUserCod,
         globalToken,
         setGlobalToken,
         dateGlobal,
