@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const enviarRequisicao = async (requestBody) => {
+const enviarRequisicao = async (requestBody, token) => {
   try {
     const response = await axios.post(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/atendimento?empresa=01&filial=01",
@@ -8,7 +8,7 @@ const enviarRequisicao = async (requestBody) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

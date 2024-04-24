@@ -75,6 +75,7 @@ const Atendimento = () => {
   const [obsClienteSelecionada, setObsSelecionada] = useState(
     rowItem.obsCliente
   );
+  const { globalToken, setGlobalToken } = useAppContext();
 
   const { dateGlobal, setDateGlobal } = useAppContext();
 
@@ -410,7 +411,7 @@ const Atendimento = () => {
   const handleClickFinalizaAtendimento = async () => {
     try {
       // Chama a função enviarRequisicao com o requestBody necessário
-      const resposta = await enviarRequisicao(bodyApi);
+      const resposta = await enviarRequisicao(bodyApi, globalToken);
       console.log("Resposta da requisição:", resposta);
       // Faça o que for necessário com a resposta da requisição...
     } catch (error) {
