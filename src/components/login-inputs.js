@@ -23,6 +23,7 @@ function LoginComponent() {
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
+  const { globalToken, setGlobalToken } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -54,9 +55,13 @@ function LoginComponent() {
       const token = await getToken(username, password);
       console.log("Token:", token);
 
+      setGlobalToken(token);
+
       // Verifica se o token foi recebido com sucesso
       if (token && token.access_token) {
         console.log("Login bem-sucedido.");
+        console.log("Token global:", globalToken);
+
         navigate("/home");
       } else {
         setError(
