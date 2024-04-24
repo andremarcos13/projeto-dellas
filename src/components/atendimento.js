@@ -391,7 +391,7 @@ const Atendimento = () => {
     dataLigacao: obterDataAtual(),
     horaLigacao: horarioAtual,
     obsAtendimento: obsAtendimentoSelecionada,
-    transporadora: transportadoraSelecioando,
+    transportadora: transportadoraSelecioando,
     tipoFrete: tipoFreteSelecionado,
     tipoCliente: "F",
     produtos: valoresSelecionados.map((produto) => {
