@@ -50,12 +50,27 @@ function LoginComponent() {
       return;
     }
 
-    const tokenz = await getToken(username, password);
-    console.log(tokenz);
+    try {
+      const token = await getToken(username, password);
+      console.log("Token:", token);
 
-    console.log("Email:", username);
-    console.log("Password:", password);
-    navigate("/home");
+      // Verifica se o token foi recebido com sucesso
+      if (token && token.access_token) {
+        console.log("Login bem-sucedido.");
+        navigate("/home");
+      } else {
+        setError(
+          "Credenciais inválidas. Por favor, verifique seu usuário e senha."
+        );
+        setIsErrorVisible(true);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setError(
+        "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente mais tarde."
+      );
+      setIsErrorVisible(true);
+    }
   };
 
   const handleKeyPress = (e) => {
