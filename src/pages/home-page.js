@@ -12,6 +12,7 @@ const HomePage = () => {
   const [userData, setUserData] = useState(null);
   const { username, setUsername } = useAppContext();
   const { globalToken } = useAppContext();
+  const { userCod, setUserCod } = useAppContext();
 
   console.log("username home", username);
 
@@ -30,8 +31,10 @@ const HomePage = () => {
           // Verificar se encontramos o usuário
           const user = items.find((item) => item.u7_nome.includes(username));
           if (user) {
-            console.log("Usuário encontrado:", user);
+            console.log("Usuário encontrado:", userCod);
             setUserData(user);
+            setUserCod(user);
+            console.log("userCoduserCod", userCod);
             hasNext = false;
           }
 

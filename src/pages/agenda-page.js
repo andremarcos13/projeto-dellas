@@ -34,6 +34,9 @@ const AgendaPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const { dateGlobal, setDateGlobal } = useAppContext();
+  const { userCod, setUserCod } = useAppContext();
+
+  console.log("teste", userCod.u7_codusu);
 
   const formattedTime = currentTime.toLocaleTimeString();
 
@@ -64,7 +67,7 @@ const AgendaPage = () => {
         {
           params: {
             data_inicial: formattedDateToUse,
-            usuario: "000283",
+            usuario: userCod.u7_codusu,
             empresa: "01",
             filial: "01",
           },
