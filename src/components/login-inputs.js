@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { getToken } from "../apis/token-api";
 
 function LoginComponent() {
   // const [email, setEmail] = useState("");
@@ -42,12 +43,16 @@ function LoginComponent() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
       setError("Por favor, preencha todos os campos.");
       setIsErrorVisible(true);
       return;
     }
+
+    const tokenz = await getToken(username, password);
+    console.log(tokenz);
+
     console.log("Email:", username);
     console.log("Password:", password);
     navigate("/home");
