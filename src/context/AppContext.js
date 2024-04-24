@@ -7,10 +7,21 @@ const AppContext = createContext();
 const AppContextProvider = ({ children }) => {
   const [dateGlobal, setDateGlobal] = useState("");
   const [rowItem, setRowItem] = useState({});
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <AppContext.Provider
-      value={{ dateGlobal, setDateGlobal, rowItem, setRowItem }}
+      value={{
+        dateGlobal,
+        setDateGlobal,
+        rowItem,
+        setRowItem,
+        username,
+        setUsername,
+        password,
+        setPassword,
+      }}
     >
       {children}
     </AppContext.Provider>
