@@ -379,7 +379,7 @@ const Atendimento = () => {
 
   const bodyApi = {
     cliente: rowItem.codCliente,
-    loja: "00",
+    loja: rowItem.lojaCliente,
     contato: rowItem.contato,
     vendedor: rowItem.vendedor,
     operador: rowItem.codOperador,
