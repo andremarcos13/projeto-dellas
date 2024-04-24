@@ -14,10 +14,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { getToken } from "../apis/token-api";
+import fetchCodUser from "../apis/cod-user-api";
+import { BeatLoader } from "react-spinners";
 
 function LoginComponent() {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Alterado para false inicialmente
   const [welcomeText, setWelcomeText] = useState("");
   const [error, setError] = useState("");
   const [isErrorVisible, setIsErrorVisible] = useState(false);
@@ -45,14 +46,19 @@ function LoginComponent() {
   }, []);
 
   const handleLogin = async () => {
+    setIsLoading(true); // Alterado para true ao iniciar o login
     if (!username.trim() || !password.trim()) {
       setError("Por favor, preencha todos os campos.");
       setIsErrorVisible(true);
+      setIsLoading(false); // Alterado para false quando houver um erro
       return;
     }
 
     try {
       const token = await getToken(username, password);
+
+      const codUser = await fetchCodUser(token.access_token);
+      console.log("codUser", codUser);
       console.log("Token:", token);
 
       setGlobalToken(token);
@@ -61,6 +67,7 @@ function LoginComponent() {
       if (token && token.access_token) {
         console.log("Login bem-sucedido.");
         console.log("Token global:", globalToken);
+        setIsLoading(false); // Alterado para false após login bem-sucedido
 
         navigate("/home");
       } else {
@@ -68,9 +75,12 @@ function LoginComponent() {
           "Credenciais inválidas. Por favor, verifique seu usuário e senha."
         );
         setIsErrorVisible(true);
+        setIsLoading(false); // Alterado para false quando houver um erro
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
+      setIsLoading(false); // Alterado para false quando houver um erro
+
       setError(
         "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente mais tarde."
       );
@@ -109,7 +119,12 @@ function LoginComponent() {
             onKeyPress={handleKeyPress}
           />
         </FormControl>
-        <Button colorScheme="green" onClick={handleLogin}>
+        <Button
+          colorScheme="green"
+          onClick={handleLogin}
+          isLoading={isLoading} // Alterado para isLoading
+          spinner={<BeatLoader size={8} color="white" />} // Adicionado spinner
+        >
           Entrar
         </Button>
       </Stack>
