@@ -420,9 +420,14 @@ const Atendimento = () => {
       console.log("Resposta da requisição:", resposta);
       // Faça o que for necessário com a resposta da requisição...
     } catch (error) {
-      setErrorMessage(
-        "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
-      );
+      // Verifique se a resposta contém a mensagem de erro
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data); // Define a mensagem de erro recebida da API
+      } else {
+        setErrorMessage(
+          "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
+        );
+      }
       console.error("Erro ao finalizar atendimento:", error);
     }
   };
