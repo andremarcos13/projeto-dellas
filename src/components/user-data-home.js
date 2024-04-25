@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { VStack, Box, Heading, Text, Flex, Icon } from "@chakra-ui/react";
+import {
+  VStack,
+  Box,
+  Heading,
+  Text,
+  Flex,
+  Icon,
+  Image,
+} from "@chakra-ui/react";
 import { MdPhone, MdToday, MdOfflinePin } from "react-icons/md"; // Importa os ícones relevantes
 import { FaClock } from "react-icons/fa";
+import imagelogo from "../images/205677077_207379361390501_3299387424663450272_n-removebg-preview.png";
 
 const UserDataHome = () => {
   // Obtenha a data de hoje
@@ -43,22 +52,29 @@ const UserDataHome = () => {
         bg="#EDF2F7"
         textAlign="center" // Alinha o texto centralmente dentro do Box
       >
-        <Flex justify="space-around">
+        <Flex justify="space-around" alignItems="center">
           <Box>
-            <Icon as={MdPhone} boxSize={8} color="#1A202C" mb="2" />
+            <Image
+              ml={0}
+              src={imagelogo}
+              alt="Dellas Logo"
+              maxW="220px"
+              maxH="220px"
+            />
+            {/* <Icon as={MdPhone} boxSize={8} color="#1A202C" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
               Ligações
             </Text>
             <Text fontSize="2xl" color="#1A202C">
               10
-            </Text>
+            </Text> */}
           </Box>
           <Box>
-            <Icon as={MdToday} boxSize={8} color="#1A202C" mb="2" />
-            <Text fontSize="xl" fontWeight="bold" color="gray.700">
+            <Icon as={MdToday} boxSize={8} color="#1A202C" mb="2" mr={6} />
+            <Text fontSize="xl" fontWeight="bold" color="gray.700" mr={6}>
               Data
             </Text>
-            <Text fontSize="2xl" color="#1A202C">
+            <Text fontSize="2xl" color="#1A202C" mr={6}>
               {formattedDate}
             </Text>
           </Box>
@@ -66,7 +82,7 @@ const UserDataHome = () => {
           <Box>
             <Icon as={FaClock} boxSize={8} color="#1A202C" mb="2" />
             <Text fontSize="xl" fontWeight="bold" color="gray.700">
-              Hora
+              Horário
             </Text>
             <Text fontSize="2xl" color="#1A202C">
               {formattedTime}
