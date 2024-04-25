@@ -50,6 +50,7 @@ import ProcurarProduto from "./procurar-produto";
 import fetchCondPagamentos from "../apis/cond-pagamento";
 import fetchTransportadoras from "../apis/transportadoras-api";
 import enviarRequisicao from "../apis/finaliza-atendimento-api";
+import { BeatLoader } from "react-spinners";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -70,6 +71,7 @@ const Atendimento = () => {
   const [obsAtendimentoSelecionada, setObsAtendimentoSelecionada] =
     useState("");
   const [tipoFreteSelecionado, setTipoFreteSelecionado] = useState("C");
+  const [isLoading2, setIsLoading2] = useState(false); // Alterado para false inicialmente
 
   const { rowItem, setRowItem } = useAppContext();
   const [obsClienteSelecionada, setObsSelecionada] = useState(
@@ -411,6 +413,8 @@ const Atendimento = () => {
     }),
   };
   const handleClickFinalizaAtendimento = async () => {
+    setIsLoading(true); // Alterado para true ao iniciar o login
+
     try {
       // Chama a função enviarRequisicao com o requestBody necessário
       const resposta = await enviarRequisicao(
@@ -418,17 +422,22 @@ const Atendimento = () => {
         globalToken.access_token
       );
       console.log("Resposta da requisição:", resposta);
+      setIsLoading(false); // Alterado para false quando houver um erro
+
       // Faça o que for necessário com a resposta da requisição...
     } catch (error) {
       // Verifique se a resposta contém a mensagem de erro
       if (error.response && error.response.data) {
         setErrorMessage(error.response.data); // Define a mensagem de erro recebida da API
+        setIsLoading(false); // Alterado para false quando houver um erro
       } else {
         setErrorMessage(
           "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
         );
+        setIsLoading(false); // Alterado para false quando houver um erro
       }
       console.error("Erro ao finalizar atendimento:", error);
+      setIsLoading(false); // Alterado para false quando houver um erro
     }
   };
 
@@ -1157,6 +1166,8 @@ const Atendimento = () => {
         colorScheme="whatsapp"
         isDisabled={isButtonDisabled()}
         onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
+        isLoading={isLoading} // Alterado para isLoading
+        spinner={<BeatLoader size={8} color="white" />}
       >
         Finaliza Atendimento
       </Button>
