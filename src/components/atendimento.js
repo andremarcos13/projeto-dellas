@@ -491,9 +491,10 @@ const Atendimento = () => {
                 minH="590px"
                 shadow="lg"
                 _hover={{
+                  transform: "scale(1.01)",
                   boxShadow: "lg",
                   borderColor: "black",
-                  border: "1px",
+                  // border: "1px",
                 }}
               >
                 <Text
@@ -683,7 +684,7 @@ const Atendimento = () => {
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
-                  border: "1px",
+                  transform: "scale(1.01)",
                 }} // border="1px"
                 p="4"
                 borderRadius="10px"
@@ -797,7 +798,7 @@ const Atendimento = () => {
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
-                  border: "1px",
+                  transform: "scale(1.01)",
                 }} // border="1px"
                 p="4"
                 borderRadius="10px"
@@ -903,7 +904,7 @@ const Atendimento = () => {
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
-                  border: "1px",
+                  transform: "scale(1.01)",
                 }} // border="1px"
                 p="4"
                 borderRadius="10px"
@@ -1052,7 +1053,7 @@ const Atendimento = () => {
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
-                  border: "1px",
+                  transform: "scale(1.01)",
                 }} // border="1px"
                 p="4"
                 borderRadius="10px"
@@ -1188,11 +1189,15 @@ const Atendimento = () => {
         w="100%"
         mt={5}
         mb={2}
-        colorScheme="whatsapp"
+        colorScheme="purple"
         isDisabled={isButtonDisabled()}
         onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
         isLoading={isLoading} // Alterado para isLoading
         spinner={<BeatLoader size={8} color="white" />}
+        variant="outline"
+        bg="#822AA2"
+        color="white"
+        _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
       >
         Finaliza Atendimento
       </Button>
