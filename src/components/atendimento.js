@@ -85,6 +85,8 @@ const Atendimento = () => {
 
   const navigate = useNavigate();
 
+  console.log("globalToken atendimento", globalToken.access_token);
+
   // const closeModal = () => {
   //   setSelectedItem(null);
   // };
@@ -157,7 +159,10 @@ const Atendimento = () => {
 
   const handleBackButtonClick = async () => {
     try {
-      const agendaData = await fetchAgenda(dateGlobal); // Chame fetchAgenda com dateGlobal
+      const agendaData = await fetchAgenda(
+        dateGlobal,
+        globalToken.access_token
+      ); // Chame fetchAgenda com dateGlobal
       // Faça o que você precisa com os dados retornados, por exemplo, definir o estado ou realizar outras operações
       console.log(agendaData);
     } catch (error) {
@@ -242,7 +247,7 @@ const Atendimento = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetchCondPagamentos();
+      const response = await fetchCondPagamentos(globalToken.access_token);
       setCondPagamentos(response.items); // Supondo que o array de objetos esteja em response.items
       console.log("condPagamentos", condPagamentos);
     } catch (error) {
@@ -256,7 +261,7 @@ const Atendimento = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetchTransportadoras();
+      const response = await fetchTransportadoras(globalToken.access_token);
       setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
       console.log("getTransportadoras", transportadoras);
     } catch (error) {
@@ -268,8 +273,8 @@ const Atendimento = () => {
 
   useEffect(() => {
     const fetchApis = async () => {
-      await getCondPagamentos();
-      await getTransportadoras();
+      await getCondPagamentos(globalToken.access_token);
+      await getTransportadoras(globalToken.access_token);
     };
 
     fetchApis();
@@ -1089,14 +1094,28 @@ const Atendimento = () => {
                 fontWeight="bold"
               >
                 <Tr>
-                  <Th color="white">Produto</Th>
-                  <Th color="white">Quantidade</Th>
-                  <Th color="white">Desconto (%)</Th>
-                  <Th color="white">Valor Unitário</Th>
-                  <Th color="white">Total</Th>
-                  <Th color="white">Unidade de Medida</Th>{" "}
+                  <Th color="white" fontSize="sm">
+                    Produto
+                  </Th>
+                  <Th color="white" fontSize="sm">
+                    Quantidade
+                  </Th>
+                  <Th color="white" fontSize="sm">
+                    Desconto (%)
+                  </Th>
+                  <Th color="white" fontSize="sm">
+                    Valor Unitário
+                  </Th>
+                  <Th color="white" fontSize="sm">
+                    Total
+                  </Th>
+                  <Th color="white" fontSize="sm">
+                    Unidade de Medida
+                  </Th>{" "}
                   {/* Nova coluna para UM */}
-                  <Th color="white">Data</Th>
+                  <Th color="white" fontSize="sm">
+                    Data
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>

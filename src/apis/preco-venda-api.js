@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const fetchPrecoDeVenda = async ({ cliente = "391158", produto, qtd }) => {
+const fetchPrecoDeVenda = async ({
+  cliente = "391158",
+  produto,
+  qtd,
+  token,
+}) => {
   try {
     const response = await axios.get(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/tabela_preco",
@@ -14,7 +19,7 @@ const fetchPrecoDeVenda = async ({ cliente = "391158", produto, qtd }) => {
           quantidade: qtd,
         },
         headers: {
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

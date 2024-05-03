@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const fetchProdutos = async ({ search = "", page = 1, pageSize = 10 }) => {
+const fetchProdutos = async ({
+  search = "",
+  page = 1,
+  pageSize = 10,
+  token,
+}) => {
   try {
     const response = await axios.get(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/cad_produtos",
@@ -13,7 +18,7 @@ const fetchProdutos = async ({ search = "", page = 1, pageSize = 10 }) => {
           pagesize: pageSize,
         },
         headers: {
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

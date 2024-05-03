@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchTransportadoras = async () => {
+const fetchTransportadoras = async (token) => {
   try {
     const response = await axios.get(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/transporadoras",
@@ -10,7 +10,7 @@ const fetchTransportadoras = async () => {
           filial: "01",
         },
         headers: {
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchAgenda = async (appContext) => {
+const fetchAgenda = async (appContext, token) => {
   const { dateGlobal } = appContext;
   try {
     const response = await axios.get(
@@ -13,7 +13,7 @@ const fetchAgenda = async (appContext) => {
           filial: "01",
         },
         headers: {
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

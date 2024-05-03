@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchCondPagamentos = async () => {
+const fetchCondPagamentos = async (token) => {
   try {
     const response = await axios.get(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/condicao_pagamento",
@@ -10,7 +10,7 @@ const fetchCondPagamentos = async () => {
           filial: "01",
         },
         headers: {
-          Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

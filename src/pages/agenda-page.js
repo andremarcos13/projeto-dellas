@@ -36,6 +36,7 @@ const AgendaPage = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { dateGlobal, setDateGlobal } = useAppContext();
   const { userCod, setUserCod } = useAppContext();
+  const { globalToken, setGlobalToken } = useAppContext();
 
   console.log("teste", userCod.u7_codusu);
 
@@ -63,6 +64,8 @@ const AgendaPage = () => {
 
       console.log(formattedDateToUse);
 
+      console.log("globalTokenglobalTokenglobalToken", globalToken);
+
       const response = await axios.get(
         `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
         {
@@ -73,7 +76,7 @@ const AgendaPage = () => {
             filial: "01",
           },
           headers: {
-            Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
+            Authorization: `Bearer ${globalToken.access_token}`,
           },
         }
       );
@@ -151,7 +154,7 @@ const AgendaPage = () => {
       ) : (
         <>
           {error && (
-            <Box mt="20px" mb="20px">
+            <Box mt="20px" mb="20px" ml="15px">
               <Text color="red.500">{error}</Text>
             </Box>
           )}
