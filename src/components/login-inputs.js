@@ -95,7 +95,7 @@ function LoginComponent() {
 
   return (
     <Box>
-      <Stack spacing={3} maxW="400px" mx="auto" mt="8">
+      <Stack spacing={3} maxW="400px" mx="auto" mt="25">
         <FormControl id="email">
           <FormLabel htmlFor="email" display="flex" alignItems="center">
             <Box as={FaUser} color="gray.400" mr="2" />

@@ -642,6 +642,7 @@ const Atendimento = () => {
                     </Text>
 
                     <Text
+                      fontWeight="bold"
                       color="white"
                       ml="30px"
                       _hover={{
@@ -655,10 +656,10 @@ const Atendimento = () => {
                         alignItems="center" // Centraliza verticalmente o conteúdo
                         bg={
                           rowItem.diasCompras <= 90
-                            ? "green"
+                            ? "green.300"
                             : rowItem.diasCompras <= 180
-                            ? "yellow"
-                            : "red"
+                            ? "yellow.200"
+                            : "red.300"
                         }
                         color={
                           rowItem.diasCompras <= 90
