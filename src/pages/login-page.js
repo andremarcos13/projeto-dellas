@@ -11,7 +11,26 @@ const LoginPage = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Box bg="white" p="5" borderRadius="lg" boxShadow="lg" textAlign="center">
+      <Box
+        bg="white"
+        p="5"
+        borderRadius="lg"
+        // Adiciona uma animação na sombra
+        animation="shadowAnimate 2s infinite alternate"
+        textAlign="center"
+      >
+        <style>
+          {`
+            @keyframes shadowAnimate {
+              30% {
+                box-shadow: 0 0 10px rgba(106, 90, 205, 0.5);
+              }
+              100% {
+                box-shadow: 0 0 25px rgba(180, 180, 180, 0.8);
+              }
+            }
+          `}
+        </style>
         <Image
           src={imagelogo}
           alt="Dellas Logo"
