@@ -781,7 +781,7 @@ const Atendimento = () => {
                 </Text>
 
                 {rowItem.dataCadastro === "  /  /  " ? (
-                  <Text color="black" ml="30px" mb={2}>
+                  <Text color="gray" ml="30px" mb={2}>
                     Nenhuma data cadastrada
                   </Text>
                 ) : (

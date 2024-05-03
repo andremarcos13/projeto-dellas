@@ -130,12 +130,12 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
                           event.stopPropagation(); // Impede a propagação do clique para a linha
                           hideRow(index);
                         }}
-                        bg="black"
+                        bg="#2C0E37"
                         variant="outline"
                         _hover={{
                           transform: "scale(1.05)",
                           boxShadow: "lg",
-                          bg: "red",
+                          bg: "red.300",
                         }}
                       >
                         <Icon as={GrHide} boxSize={5} color="white" />
