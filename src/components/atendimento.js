@@ -650,6 +650,9 @@ const Atendimento = () => {
                       }}
                     >
                       <Box
+                        display="flex"
+                        textAlign="center" // Centraliza horizontalmente o conteúdo
+                        alignItems="center" // Centraliza verticalmente o conteúdo
                         bg={
                           rowItem.diasCompras <= 90
                             ? "green"

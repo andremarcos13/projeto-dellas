@@ -171,6 +171,7 @@ const AgendaPage = () => {
                     mb="4"
                     colorScheme="red"
                     variant="outline"
+                    bg="white"
                   >
                     Voltar
                   </Button>
