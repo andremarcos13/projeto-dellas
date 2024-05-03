@@ -42,6 +42,7 @@ import { IconButton } from "@chakra-ui/react";
 import { MdPersonSearch } from "react-icons/md";
 import { FaSearchPlus } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -59,6 +60,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [controlaAbrir, setControlaAbrir] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Página atual
   const [hasNextPage, setHasNextPage] = useState(false); // Indica se há mais
+  const { globalToken, setGlobalToken } = useAppContext();
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -67,7 +69,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     setQuantidade(1);
     try {
       setIsLoading(true);
-      const data = await fetchProdutos({ search: searchTerm });
+      const data = await fetchProdutos({
+        search: searchTerm,
+        token: globalToken.access_token,
+      });
       if (data && data.items) {
         setSearchResults(data.items);
         setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
@@ -81,10 +86,15 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   };
 
   const loadMoreResults = async () => {
+    console.log("token no more results", globalToken);
     try {
       setIsLoading(true);
       const nextPage = currentPage + 1;
-      const data = await fetchProdutos({ search: searchTerm, page: nextPage });
+      const data = await fetchProdutos({
+        search: searchTerm,
+        page: nextPage,
+        token: globalToken.access_token,
+      });
       if (data && data.items) {
         setSearchResults([...searchResults, ...data.items]); // Adicionando os novos resultados à lista existente
         setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
