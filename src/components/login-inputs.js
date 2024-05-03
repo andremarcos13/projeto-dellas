@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { getToken } from "../apis/token-api";
 import { BeatLoader } from "react-spinners";
+import { MdEmail, MdLock } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 
 function LoginComponent() {
   const [isLoading, setIsLoading] = useState(false); // Alterado para false inicialmente
@@ -27,22 +29,22 @@ function LoginComponent() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const welcomeString = "Bem-vindo!";
-    let i = 0;
-    const intervalId = setInterval(() => {
-      setWelcomeText((prevText) => {
-        if (i < welcomeString.length) {
-          return prevText + welcomeString[i++];
-        } else {
-          clearInterval(intervalId);
-          return prevText;
-        }
-      });
-    }, 200);
+  // useEffect(() => {
+  //   const welcomeString = "Bem-vindo!";
+  //   let i = 0;
+  //   const intervalId = setInterval(() => {
+  //     setWelcomeText((prevText) => {
+  //       if (i < welcomeString.length) {
+  //         return prevText + welcomeString[i++];
+  //       } else {
+  //         clearInterval(intervalId);
+  //         return prevText;
+  //       }
+  //     });
+  //   }, 200);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const handleLogin = async () => {
     setIsLoading(true); // Alterado para true ao iniciar o login
@@ -94,33 +96,45 @@ function LoginComponent() {
   return (
     <Box>
       <Stack spacing={3} maxW="400px" mx="auto" mt="8">
-        <Heading>{welcomeText}</Heading>
-
         <FormControl id="email">
-          <FormLabel>Email</FormLabel>
+          <FormLabel htmlFor="email" display="flex" alignItems="center">
+            <Box as={FaUser} color="gray.400" mr="2" />
+            Usuário
+          </FormLabel>
           <Input
+            focusBorderColor="purple.700" // Definindo a cor da borda quando em foco como verde
             type="email"
+            id="email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Seu endereço de email"
+            placeholder="Ex: JOÃO CARLOS"
             onKeyPress={handleKeyPress}
+            leftIcon={<MdEmail />}
           />
         </FormControl>
         <FormControl id="password">
-          <FormLabel>Senha</FormLabel>
+          <FormLabel htmlFor="password" display="flex" alignItems="center">
+            <Box as={MdLock} color="gray.400" mr="2" />
+            Senha
+          </FormLabel>
           <Input
+            focusBorderColor="purple.700" // Definindo a cor da borda quando em foco como verde
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Sua senha secreta"
+            placeholder="Sua senha"
             onKeyPress={handleKeyPress}
+            leftIcon={<MdLock />}
           />
         </FormControl>
         <Button
-          colorScheme="green"
+          color="white"
+          bg="#2C0E37"
           onClick={handleLogin}
-          isLoading={isLoading} // Alterado para isLoading
-          spinner={<BeatLoader size={8} color="white" />} // Adicionado spinner
+          isLoading={isLoading}
+          spinner={<BeatLoader size={8} color="white" />}
+          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
         >
           Entrar
         </Button>
@@ -131,7 +145,6 @@ function LoginComponent() {
           mt="15px"
           borderRadius="9px"
           width="405px"
-          ml="23px"
           transition="opacity 0.3s ease"
         >
           <AlertIcon />

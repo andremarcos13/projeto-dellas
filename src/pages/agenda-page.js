@@ -25,6 +25,7 @@ import { BsCalendarDateFill } from "react-icons/bs";
 import { FaList } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
 import { useAppContext } from "../context/AppContext";
+import Header from "../components/header";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -67,7 +68,7 @@ const AgendaPage = () => {
         {
           params: {
             data_inicial: formattedDateToUse,
-            usuario: userCod.u7_codusu,
+            usuario: userCod,
             empresa: "01",
             filial: "01",
           },
@@ -119,10 +120,10 @@ const AgendaPage = () => {
 
   return (
     // bg="rgba(0,0,0,0.5)"
-    <Box minHeight="100vh" p="6">
-      <BreadCrumbLinks />
+    <Box minHeight="100vh" py="0" px="0" bg="rgba(0,0,0,0.1)">
+      <Header />
       <Grid templateColumns="1fr 2fr 2fr" gap="2" alignItems="center">
-        <Box mt="20px" mb="20px">
+        <Box mt="20px" mb="20px" px="4">
           <CalendarioComponent onDateChange={handleDateChange} />
         </Box>
         <Box mb="100px" ml="15px" mt={30}>
@@ -155,17 +156,17 @@ const AgendaPage = () => {
             </Box>
           )}
           {agendaData.length === 0 ? (
-            <Box mt="20px" mb="20px">
+            <Box mt="20px" mb="20px" px="4">
               <Text>Não há informações disponíveis para esta data.</Text>
             </Box>
           ) : (
             <>
               {selectedItem ? (
-                <Box>
+                <Box px="4">
                   <Button
                     onClick={handleBackButtonClick}
                     mb="4"
-                    colorScheme="gray"
+                    colorScheme="red"
                     variant="outline"
                   >
                     Voltar
@@ -174,23 +175,23 @@ const AgendaPage = () => {
                 </Box>
               ) : (
                 <Table variant="simple">
-                  <Thead>
+                  <Thead bg="#822AA2">
                     <Tr>
-                      <Th>Código Lista</Th>
-                      <Th>Descrição Lista</Th>
-                      <Th>Data</Th>
-                      <Th>Quantidade de Contatos</Th>
-                      <Th>Potencial Lub Total</Th>
+                      <Th color="white">Código Lista</Th>
+                      <Th color="white">Descrição Lista</Th>
+                      <Th color="white">Data</Th>
+                      <Th color="white">Quantidade de Contatos</Th>
+                      <Th color="white">Potencial Lub Total</Th>
                     </Tr>
                   </Thead>
-                  <Tbody>
+                  <Tbody bg="white" color="black">
                     {agendaData.map((item, index) => (
                       <Tr
                         key={index}
                         _hover={{
-                          bg: "black",
+                          bg: "#F0DFF7",
                           transition: "opacity 0.1s",
-                          color: "white",
+                          color: "black",
                         }}
                         onClick={() => handleItemClick(item)}
                         cursor="pointer"

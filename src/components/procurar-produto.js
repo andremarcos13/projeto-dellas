@@ -39,6 +39,9 @@ import { MdAttachMoney } from "react-icons/md";
 import { PiCoinsFill } from "react-icons/pi";
 import { MdDelete } from "react-icons/md";
 import { IconButton } from "@chakra-ui/react";
+import { MdPersonSearch } from "react-icons/md";
+import { FaSearchPlus } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -188,13 +191,19 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
         leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
         colorScheme="blue"
         variant="outline"
+        bg="white"
       >
         Procurar Produto
       </Button>
       <Modal isOpen={isModalOpen} onClose={closeModal} size="full">
         <ModalOverlay />
-        <ModalContent maxW="60%">
-          <ModalHeader>Buscar Produto</ModalHeader>
+        <ModalContent maxW="60%" bg="gray.100">
+          <ModalHeader bg="#2C0E37" color="white">
+            <Flex align="center">
+              <MdPersonSearch />
+              <Text ml="15px">Buscar Produto</Text>
+            </Flex>
+          </ModalHeader>
           <Center>
             <Divider borderWidth={1} maxW="95%" />
           </Center>
@@ -206,14 +215,17 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                 mt="10px"
                 placeholder="Digite o nome do produto"
                 value={searchTerm}
+                bg="white"
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
+                focusBorderColor="purple.700"
               />
               <Button
                 ml={4}
                 mt="10px"
                 onClick={handleSearch}
-                colorScheme="gray"
+                colorScheme="blue"
+                bg="white"
                 variant="outline"
                 leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
               >
@@ -232,10 +244,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
               >
                 {searchResults.map((item, index) => (
                   <Box
+                    bg="white"
                     key={index}
-                    border="1px"
+                    border="2px"
                     p={2}
-                    borderColor={selectedItem === item ? "black" : "gray.200"} // Altera a cor da borda com base no item selecionado
+                    borderColor={selectedItem === item ? "#6b3181" : "gray.200"} // Altera a cor da borda com base no item selecionado
                     borderRadius="10px"
                     boxShadow="md"
                     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
@@ -251,7 +264,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                         fontWeight="bold"
                         fontSize="md"
                         mb={2}
-                        bg="gray.900"
+                        bg="#2C0E37"
                         color="white"
                         borderRadius="10px"
                         p={3}
@@ -292,7 +305,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                                     {index !==
                                       item.descricao.split(searchTerm).length -
                                         1 && (
-                                      <span style={{ color: "red" }}>
+                                      <span style={{ color: "#822AA2" }}>
                                         <strong>{searchTerm}</strong>
                                       </span>
                                     )}
@@ -327,8 +340,9 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
               onClick={loadMoreResults}
               isDisabled={!hasNextPage || isLoading}
               variant="outline"
+              bg="white"
               colorScheme="blue"
-              leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
+              leftIcon={<FaSearchPlus />} // Usando o ícone de busca da react-icons
             >
               {hasNextPage
                 ? "Carregar mais resultados"
@@ -340,11 +354,12 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                   <>
                     <Box
                       mt={4}
-                      bg="gray.200"
-                      p={2}
+                      bg="#822AA2"
+                      p={4}
+                      color="white"
                       mb={5}
                       border="2px"
-                      borderRadius={5}
+                      borderRadius={10}
                       shadow="sm"
                     >
                       <Text fontWeight="bold" mb={2} as="u">
@@ -364,9 +379,13 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                       </Text>
                     </Box>
                     <Flex alignItems="center">
-                      <Text mr={2}>Quantidade:</Text>
+                      <Text fontWeight="bold" mr={2}>
+                        Quantidade:
+                      </Text>
                       <Box>
                         <NumberInput
+                          focusBorderColor="purple.700"
+                          bg="white"
                           defaultValue={1}
                           min={0}
                           w={100}
@@ -385,11 +404,13 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                       <Button
                         ml={3}
                         onClick={handleCalculatePrice}
-                        colorScheme="gray"
+                        colorScheme="purple"
                         loadingText="Calculando..."
                         variant="outline"
                         leftIcon={<MdCalculate />}
                         disabled={isCalculating}
+                        bg="white"
+                        _hover={{ bg: "purple.100" }}
                       >
                         Calcular
                       </Button>
@@ -400,6 +421,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                         onClick={handleSalvar} // Chama a função para salvar os valores selecionados
                         leftIcon={<FaPlus />} // Usando o ícone de fechar da react-icons
                         isDisabled={precoUnitario === 0 || precoTotal === 0}
+                        bg="white"
                       >
                         Adicionar
                       </Button>
@@ -495,9 +517,17 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
               <Box flexBasis="45%" borderLeft="1px solid #E2E8F0" pl={4}>
                 <Box mt={4}>
-                  <Text fontWeight="bold" fontSize="xl">
-                    Itens Adicionados:
-                  </Text>
+                  <Flex align="center">
+                    <FaShoppingCart color="#822AA2" />
+                    <Text
+                      fontSize="xl"
+                      fontWeight="bold"
+                      ml="15px"
+                      color="#822AA2"
+                    >
+                      Itens Adicionados
+                    </Text>
+                  </Flex>
                   {valoresSelecionados.map((item, index) => (
                     <Box
                       key={index}
@@ -505,23 +535,27 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                       p={4}
                       borderRadius="md"
                       boxShadow="md"
-                      bg="gray.100"
+                      bg="white"
                       _hover={{
                         transform: "scale(1.05)",
                         boxShadow: "lg",
                       }}
                     >
-                      <Text fontWeight="semibold">Nome do Produto:</Text>
+                      <Text color="#822AA2" fontWeight="semibold">
+                        Nome do Produto:
+                      </Text>
                       <Text>{item.descricao}</Text>
-                      <Text fontWeight="semibold" mt={2}>
+                      <Text color="#822AA2" fontWeight="semibold" mt={2}>
                         Quantidade:
                       </Text>
                       <Text>{item.quantidade}</Text>
-                      <Text fontWeight="semibold" mt={2}>
+                      <Text color="#822AA2" fontWeight="semibold" mt={2}>
                         Preço:
                       </Text>
                       <Text>R${item.precoTotal.toFixed(2)}</Text>
                       <IconButton
+                        mt="1px"
+                        ml="0px"
                         aria-label="Remover produto"
                         icon={<MdDelete />}
                         _hover={{ color: "red" }}
@@ -547,12 +581,14 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
             <Button
               colorScheme="red"
               variant="outline"
+              bg="white"
               onClick={closeModal}
               leftIcon={<FaTimes />} // Usando o ícone de fechar da react-icons
             >
               Fechar
             </Button>
             <Button
+              bg="white"
               colorScheme="whatsapp"
               variant="outline"
               onClick={handleFinalizar} // Chama a função para salvar os valores selecionados

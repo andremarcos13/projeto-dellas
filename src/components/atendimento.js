@@ -445,7 +445,7 @@ const Atendimento = () => {
 
   return (
     <Box
-      // bg="rgba(0, 0, 0, 0.01)" // Cor de fundo cinza com opacidade
+      bg="rgba(0, 0, 0, 0.1)" // Cor de fundo cinza com opacidade
       py="10" // Adiciona um pouco de espaço acima e abaixo do texto
       px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
       borderRadius="md" // Borda arredondada
@@ -454,6 +454,7 @@ const Atendimento = () => {
         onClick={handleBackButtonClick}
         mb="4"
         colorScheme="red"
+        bg="white"
         variant="outline"
         ml={3}
         mt={3}
@@ -463,7 +464,7 @@ const Atendimento = () => {
       {rowItem && (
         <>
           <Box
-            bg="black"
+            bg="#2C0E37"
             color="white"
             mb={3}
             p={1}
@@ -478,7 +479,7 @@ const Atendimento = () => {
           <Grid templateColumns="repeat(5, 1fr)" gap={3}>
             <GridItem colSpan={1}>
               <Box
-                // bg="black"
+                bg="white"
                 p="4"
                 borderRadius="10px"
                 maxW="350px"
@@ -673,6 +674,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
+                bg="white"
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
@@ -786,6 +788,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
+                bg="white"
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
@@ -812,10 +815,10 @@ const Atendimento = () => {
                   value={rowItem.obsCliente}
                   bg="white"
                   color="black"
-                  border="1px"
+                  // border="1px"
                   height="120px"
                   resize="none"
-                  focusBorderColor="green.500"
+                  focusBorderColor="purple.700"
                   _placeholder={{ color: "gray.400" }}
                   onChange={(e) => {
                     handleObsCliente(e); // Chama a função e passa o evento como argumento
@@ -841,9 +844,9 @@ const Atendimento = () => {
                   bg="white"
                   color="black"
                   height="120px"
-                  border="1px"
+                  // border="1px"
                   resize="none"
-                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="purple.700"
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -862,9 +865,9 @@ const Atendimento = () => {
                   bg="white"
                   color="black"
                   height="120px"
-                  border="1px"
+                  // border="1px"
                   resize="none"
-                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="purple.700"
                   _placeholder={{ color: "gray.400" }}
                 />
                 <Text
@@ -878,19 +881,20 @@ const Atendimento = () => {
                   <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
                 </Text>
                 <Input
-                  focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
+                  focusBorderColor="purple.700"
                   type="date"
                   bg="white"
                   color="black"
                   // value={date}
                   placeholder="Apenas números - ddmmaaaa"
                   // onChange={handleChangeInputDate}
-                  borderColor="black"
+                  // borderColor="black"
                 />
               </Box>
             </GridItem>
             <GridItem colSpan={1}>
               <Box
+                bg="white"
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
@@ -1039,6 +1043,7 @@ const Atendimento = () => {
             </GridItem>
             <GridItem colSpan={1}>
               <Box
+                bg="white"
                 _hover={{
                   boxShadow: "lg",
                   borderColor: "black",
@@ -1075,12 +1080,12 @@ const Atendimento = () => {
             {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
                     <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                   </Text> */}
-            <Table variant="striped">
+            <Table variant="simple" bg="white">
               <Thead
                 Thead
                 // position="sticky"
                 top="0"
-                bg="black"
+                bg="#822AA2"
                 fontWeight="bold"
               >
                 <Tr>
@@ -1101,7 +1106,7 @@ const Atendimento = () => {
                     <Td w={100}>{produto.quantidade}</Td>
                     <Td w={150}>
                       <Input
-                        focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
+                        focusBorderColor="purple.700"
                         border="1px"
                         borderColor="gray.300"
                         type="number"
@@ -1131,10 +1136,11 @@ const Atendimento = () => {
                 ))}
               </Tbody>
               <Tfoot>
-                <Tr>
+                <Tr bg="white">
                   <Td fontWeight="bold">TOTAL</Td>
                   <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-                  <Td>
+                  <Td></Td>
+                  {/* <Td>
                     <Input
                       focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                       border="1px"
@@ -1146,7 +1152,7 @@ const Atendimento = () => {
                       value={descontoTotal}
                       onChange={handleDescontoTotalChange}
                     />
-                  </Td>
+                  </Td> */}
                   <Td></Td>
                   <Td fontWeight="bold">
                     {calcularPrecoTotalGeral().toFixed(2)}

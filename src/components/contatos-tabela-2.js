@@ -52,7 +52,7 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
   return (
     <>
       <Table variant="simple" style={{ overflowX: "auto" }}>
-        <Thead position="sticky" top="0" bg="black" fontWeight="bold">
+        <Thead position="sticky" top="0" bg="#822AA2" fontWeight="bold">
           <Tr>
             <Th color="white">Nome Cliente</Th>
             <Th color="white">Nome Contato</Th>
@@ -67,14 +67,14 @@ const ContatosTabela2 = ({ item, onBackButtonClick }) => {
             <Th color="white">{""}</Th> {/* Coluna extra para o ícone de OK */}
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody bg="white">
           {item.lista_contatos.map(
             (contato, index) =>
               !isRowHidden(index) && ( // Verifica se a linha deve ser exibida
                 <Tr
                   key={index}
                   _hover={{
-                    bg: "gray.300",
+                    bg: "#F0DFF7",
                     transition: "opacity 0.1s",
                     transform: "scale(1.02)",
                     boxShadow: "lg",
