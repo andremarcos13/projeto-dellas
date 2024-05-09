@@ -1,4 +1,11 @@
-import { Alert, AlertIcon, Center, Modal, Spinner } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Center,
+  Modal,
+  Spinner,
+  getToken,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -83,6 +90,8 @@ const Atendimento = () => {
   const { globalToken, setGlobalToken } = useAppContext();
 
   const { dateGlobal, setDateGlobal } = useAppContext();
+  const { username, setUsername } = useAppContext();
+  const { password, setPassword } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -168,6 +177,25 @@ const Atendimento = () => {
       console.log(agendaData);
     } catch (error) {
       console.error("Erro ao buscar a agenda:", error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchAgenda com o novo token de acesso
+          const agendaData = await fetchAgenda(
+            dateGlobal,
+            newToken.access_token
+          );
+          // Faça o que você precisa com os dados retornados
+          console.log(agendaData);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      } else {
+        // Lidar com outros tipos de erro
+      }
     }
     navigate("/agenda"); // Limpar selectedItem ao clicar no botão Voltar
   };
@@ -253,6 +281,22 @@ const Atendimento = () => {
       console.log("condPagamentos", condPagamentos);
     } catch (error) {
       console.error(error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchCondPagamentos com o novo token de acesso
+          const response = await fetchCondPagamentos(newToken.access_token);
+          setCondPagamentos(response.items); // Supondo que o array de objetos esteja em response.items
+          console.log("condPagamentos", condPagamentos);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      } else {
+        // Lidar com outros tipos de erro
+      }
     } finally {
       setIsLoading(false);
     }
@@ -267,6 +311,22 @@ const Atendimento = () => {
       console.log("getTransportadoras", transportadoras);
     } catch (error) {
       console.error(error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchTransportadoras com o novo token de acesso
+          const response = await fetchTransportadoras(newToken.access_token);
+          setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+          console.log("getTransportadoras", transportadoras);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      } else {
+        // Lidar com outros tipos de erro
+      }
     } finally {
       setIsLoading(false);
     }
@@ -276,6 +336,7 @@ const Atendimento = () => {
     console.log("inicia 1o use effect loadin2");
     setIsLoading2(true);
     console.log("loadin2", isLoading2);
+
     const fetchApis = async () => {
       try {
         await getCondPagamentos(globalToken.access_token);
@@ -283,6 +344,19 @@ const Atendimento = () => {
       } catch (error) {
         // Lidar com erros, se necessário
         console.error("Erro ao buscar APIs:", error);
+        // Verificar se o erro é de autorização (401 Unauthorized)
+        if (error.response && error.response.status === 401) {
+          // Solicitar um novo token de acesso
+          try {
+            const newToken = await getToken(username, password);
+            // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
+            await getCondPagamentos(newToken.access_token);
+            await getTransportadoras(newToken.access_token);
+          } catch (error) {
+            console.error("Erro ao obter novo token de acesso:", error);
+            // Lidar com o erro ao obter o novo token de acesso
+          }
+        }
       } finally {
         setIsLoading2(false);
       }

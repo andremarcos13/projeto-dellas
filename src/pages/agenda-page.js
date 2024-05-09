@@ -26,6 +26,7 @@ import { FaList } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
 import { useAppContext } from "../context/AppContext";
 import Header from "../components/header";
+import { getToken } from "../apis/token-api";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -37,6 +38,8 @@ const AgendaPage = () => {
   const { dateGlobal, setDateGlobal } = useAppContext();
   const { userCod, setUserCod } = useAppContext();
   const { globalToken, setGlobalToken } = useAppContext();
+  const { username, setUsername } = useAppContext();
+  const { password, setPassword } = useAppContext();
 
   console.log("teste", userCod.u7_codusu);
 
@@ -53,9 +56,8 @@ const AgendaPage = () => {
 
   const fetchData = async () => {
     setIsLoading(true);
+    let formattedDateToUse = ""; // Definir formattedDateToUse fora do bloco try-catch
     try {
-      let formattedDateToUse = "";
-
       if (dateGlobal) {
         formattedDateToUse = format(dateGlobal, "yyyyMMdd");
       } else {
@@ -85,9 +87,40 @@ const AgendaPage = () => {
       setError(null);
     } catch (error) {
       console.error(error);
-      setError(
-        "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
-      );
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à API principal com o novo token de acesso
+          const response = await axios.get(
+            `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
+            {
+              params: {
+                data_inicial: formattedDateToUse, // Usar formattedDateToUse aqui
+                usuario: userCod,
+                empresa: "01",
+                filial: "01",
+              },
+              headers: {
+                Authorization: `Bearer ${newToken.access_token}`,
+              },
+            }
+          );
+          setAgendaData(response.data);
+          console.log("api", response.data);
+          setError(null);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          setError(
+            "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
+          );
+        }
+      } else {
+        setError(
+          "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
+        );
+      }
     } finally {
       setIsLoading(false);
     }

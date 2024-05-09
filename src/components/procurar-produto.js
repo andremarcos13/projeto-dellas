@@ -43,6 +43,7 @@ import { MdPersonSearch } from "react-icons/md";
 import { FaSearchPlus } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAppContext } from "../context/AppContext";
+import { getToken } from "../apis/token-api";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,6 +62,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [currentPage, setCurrentPage] = useState(1); // Página atual
   const [hasNextPage, setHasNextPage] = useState(false); // Indica se há mais
   const { globalToken, setGlobalToken } = useAppContext();
+  const { username, setUsername } = useAppContext();
+  const { password, setPassword } = useAppContext();
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -80,6 +83,26 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       }
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchProdutos com o novo token de acesso
+          const newData = await fetchProdutos({
+            search: searchTerm,
+            token: newToken.access_token,
+          });
+          if (newData && newData.items) {
+            setSearchResults(newData.items);
+            setHasNextPage(newData.hasNext); // Definindo se há mais páginas disponíveis
+            setIsModalOpen(true);
+          }
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -102,6 +125,28 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       }
     } catch (error) {
       console.error("Erro ao carregar mais produtos:", error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchProdutos com o novo token de acesso
+          const nextPage = currentPage + 1;
+          const newData = await fetchProdutos({
+            search: searchTerm,
+            page: nextPage,
+            token: newToken.access_token,
+          });
+          if (newData && newData.items) {
+            setSearchResults([...searchResults, ...newData.items]); // Adicionando os novos resultados à lista existente
+            setHasNextPage(newData.hasNext); // Definindo se há mais páginas disponíveis
+            setCurrentPage(nextPage); // Atualizando o número da página atual
+          }
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -162,6 +207,37 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       }
     } catch (error) {
       console.error("Erro ao calcular o preço de venda:", error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchPrecoDeVenda com o novo token de acesso
+          const produto = selectedItem.codigo;
+          const qtd = quantidade;
+          const newResponse = await fetchPrecoDeVenda({
+            produto,
+            qtd,
+            token: newToken.access_token,
+          });
+          if (newResponse && newResponse.preco >= 0 && newResponse.quantidade) {
+            const precoTotal = newResponse.preco * newResponse.quantidade;
+            const precoUnit = newResponse.preco;
+            setPrecoTotal(precoTotal);
+            setPrecoUnitario(precoUnit);
+            setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
+            setControlaAbrir(true);
+          } else {
+            console.error("Resposta da API inválida:", newResponse);
+            // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
+            setPrecoTotal(0);
+            setPrecoUnitario(0);
+          }
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      }
     } finally {
       setIsCalculating(false);
       setIsLoading2(false);
