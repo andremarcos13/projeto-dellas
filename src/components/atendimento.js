@@ -64,8 +64,6 @@ const Atendimento = () => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
   const [dadosAtendimento, setDadosAtendimento] = useState([]);
   const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("1");
-  const [transportadoraSelecioando, setTransportadoraSelecionada] =
-    useState("");
   const [operacaoSelecionada, setOperacaoSelecionada] = useState("1");
   const [msgNotaSelecionada, setMsgNotaSelecionada] = useState("");
   const [obsAtendimentoSelecionada, setObsAtendimentoSelecionada] =
@@ -74,6 +72,9 @@ const Atendimento = () => {
   const [isLoading2, setIsLoading2] = useState(false); // Alterado para false inicialmente
 
   const { rowItem, setRowItem } = useAppContext();
+  const [transportadoraSelecionado, setTransportadoraSelecionada] = useState(
+    rowItem.codTransp
+  );
   const [obsClienteSelecionada, setObsSelecionada] = useState(
     rowItem.obsCliente
   );
@@ -340,7 +341,7 @@ const Atendimento = () => {
       !msgNotaSelecionada ||
       !obsClienteSelecionada ||
       !obsAtendimentoSelecionada ||
-      !transportadoraSelecioando ||
+      !transportadoraSelecionado ||
       !tipoFreteSelecionado ||
       valoresSelecionados.length === 0
     ) {
@@ -363,7 +364,7 @@ const Atendimento = () => {
         console.log("obsClienteSelecionada está vazio ou indefinido");
       if (!obsAtendimentoSelecionada)
         console.log("obsAtendimentoSelecionada está vazio ou indefinido");
-      if (!transportadoraSelecioando)
+      if (!transportadoraSelecionado)
         console.log("transportadoraSelecioando está vazio ou indefinido");
       if (!tipoFreteSelecionado)
         console.log("tipoFreteSelecionado está vazio ou indefinido");
@@ -400,7 +401,7 @@ const Atendimento = () => {
     dataLigacao: obterDataAtual(),
     horaLigacao: horarioAtual,
     obsAtendimento: obsAtendimentoSelecionada,
-    transportadora: transportadoraSelecioando,
+    transportadora: transportadoraSelecionado,
     tipoFrete: tipoFreteSelecionado,
     tipoCliente: "F",
     produtos: valoresSelecionados.map((produto) => {
@@ -992,6 +993,7 @@ const Atendimento = () => {
                   isSearchable
                   fontSize="sm"
                   onChange={handleTransportadora}
+                  value={transportadoraSelecionado}
                 >
                   {transportadoras.map((option) => (
                     <option key={option.codigo} value={option.codigo}>
