@@ -141,7 +141,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     try {
       const produto = selectedItem.codigo;
       const qtd = quantidade;
-      const response = await fetchPrecoDeVenda({ produto, qtd });
+      const response = await fetchPrecoDeVenda({
+        produto,
+        qtd,
+        token: globalToken.access_token,
+      });
 
       if (response && response.preco >= 0 && response.quantidade) {
         const precoTotal = response.preco * response.quantidade;
