@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Modal } from "@chakra-ui/react";
+import { Alert, AlertIcon, Center, Modal, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -273,9 +273,19 @@ const Atendimento = () => {
   };
 
   useEffect(() => {
+    console.log("inicia 1o use effect loadin2");
+    setIsLoading2(true);
+    console.log("loadin2", isLoading2);
     const fetchApis = async () => {
-      await getCondPagamentos(globalToken.access_token);
-      await getTransportadoras(globalToken.access_token);
+      try {
+        await getCondPagamentos(globalToken.access_token);
+        await getTransportadoras(globalToken.access_token);
+      } catch (error) {
+        // Lidar com erros, se necessário
+        console.error("Erro ao buscar APIs:", error);
+      } finally {
+        setIsLoading2(false);
+      }
     };
 
     fetchApis();
@@ -456,717 +466,736 @@ const Atendimento = () => {
       px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
       borderRadius="md" // Borda arredondada
     >
-      <Button
-        onClick={handleBackButtonClick}
-        mb="4"
-        colorScheme="red"
-        bg="white"
-        variant="outline"
-        ml={3}
-        mt={3}
-      >
-        Voltar
-      </Button>
-      {rowItem && (
-        <>
-          <Box
-            bg="#2C0E37"
-            color="white"
-            mb={3}
-            p={1}
-            borderRadius={5}
-            shadow="lg"
-          >
-            <Text size="4xl" mb="25px" ml={3}>
-              <strong>{`Operador: ${rowItem.nomeOperador} - ${rowItem.codOperador} - Lista: ${rowItem.codLista}`}</strong>
-              <Divider w={520} mt={1} borderWidth={2} />
-            </Text>
-          </Box>
-          <Grid templateColumns="repeat(5, 1fr)" gap={3}>
-            <GridItem colSpan={1}>
-              <Box
-                bg="white"
-                p="4"
-                borderRadius="10px"
-                maxW="350px"
-                minH="590px"
-                shadow="lg"
-                _hover={{
-                  transform: "scale(1.01)",
-                  boxShadow: "lg",
-                  borderColor: "black",
-                  // border: "1px",
-                }}
-              >
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
+      <>
+        <Button
+          onClick={handleBackButtonClick}
+          mb="4"
+          colorScheme="red"
+          bg="white"
+          variant="outline"
+          ml={3}
+          mt={3}
+        >
+          Voltar
+        </Button>
+        {rowItem && (
+          <>
+            <Box
+              bg="#2C0E37"
+              color="white"
+              mb={3}
+              p={1}
+              borderRadius={5}
+              shadow="lg"
+            >
+              <Text size="4xl" mb="25px" ml={3}>
+                <strong>{`Operador: ${rowItem.nomeOperador} - ${rowItem.codOperador} - Lista: ${rowItem.codLista}`}</strong>
+                <Divider w={520} mt={1} borderWidth={2} />
+              </Text>
+            </Box>
+            <Grid templateColumns="repeat(5, 1fr)" gap={3}>
+              <GridItem colSpan={1}>
+                <Box
+                  bg="white"
+                  p="4"
+                  borderRadius="10px"
+                  maxW="350px"
+                  minH="590px"
+                  shadow="lg"
+                  _hover={{
+                    transform: "scale(1.01)",
+                    boxShadow: "lg",
+                    borderColor: "black",
+                    // border: "1px",
+                  }}
                 >
-                  <Icon as={FaUser} mr={2} /> Contato:
-                </Text>
-
-                <Text
-                  ml="30px"
-                  color="black"
-                  mb={2}
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.nomeContato}
-                </Text>
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={MdPhone} mr={2} /> Celular:
-                </Text>
-
-                <Text
-                  color="black"
-                  ml="30px"
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.ddd > 0 && `(${rowItem.ddd}) `}
-                  {rowItem.celular}
-                </Text>
-                {rowItem.celular && (
-                  <>
-                    {(rowItem.fone && rowItem.fone !== rowItem.celular) ||
-                    (rowItem.fone1 && rowItem.fone1 !== rowItem.celular) ||
-                    (rowItem.fone2 && rowItem.fone2 !== rowItem.celular) ||
-                    (rowItem.fax && rowItem.fax !== rowItem.celular) ? (
-                      <>
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mt={2}
-                          mb={2}
-                        >
-                          <Icon as={MdPhone} mr={2} />
-                          Outros números:
-                        </Text>
-                        <Text ml="30px" color="black" mb={2}>
-                          {rowItem.fone && rowItem.fone !== rowItem.celular && (
-                            <>
-                              {rowItem.fone}
-                              <br />
-                            </>
-                          )}
-                          {rowItem.fone1 &&
-                            rowItem.fone1 !== rowItem.celular &&
-                            rowItem.fone1 !== rowItem.fone && (
-                              <>
-                                {rowItem.fone1}
-                                <br />
-                              </>
-                            )}
-                          {rowItem.fone2 &&
-                            rowItem.fone2 !== rowItem.celular &&
-                            rowItem.fone2 !== rowItem.fone &&
-                            rowItem.fone2 !== rowItem.fone1 && (
-                              <>
-                                {rowItem.fone2}
-                                <br />
-                              </>
-                            )}
-                          {rowItem.fax &&
-                            rowItem.fax !== rowItem.celular &&
-                            rowItem.fax !== rowItem.fone &&
-                            rowItem.fax !== rowItem.fone1 &&
-                            rowItem.fax !== rowItem.fone2 && <>{rowItem.fax}</>}
-                        </Text>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="black"
-                      mb={2}
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Icon as={FaUserTag} mr={2} /> Vendedor:
-                    </Text>
-
-                    <Text
-                      color="black"
-                      ml="30px"
-                      mb={2}
-                      _hover={{
-                        transform: "scale(1.05)",
-                        boxShadow: "lg",
-                      }}
-                    >
-                      {rowItem.vendedor}
-                    </Text>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="black"
-                      mb={2}
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Icon as={MdSell} mr={2} /> Potencial Lub:
-                    </Text>
-
-                    <Text
-                      mb={2}
-                      color="black"
-                      ml="30px"
-                      _hover={{
-                        transform: "scale(1.05)",
-                        boxShadow: "lg",
-                      }}
-                    >
-                      {rowItem.potencialLub}
-                    </Text>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="black"
-                      mb={2}
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Icon as={FaCalendarDays} mr={2} /> Última Compra:
-                    </Text>
-
-                    <Text
-                      fontWeight="bold"
-                      color="white"
-                      ml="30px"
-                      _hover={{
-                        transform: "scale(1.05)",
-                        boxShadow: "lg",
-                      }}
-                    >
-                      <Box
-                        display="flex"
-                        textAlign="center" // Centraliza horizontalmente o conteúdo
-                        alignItems="center" // Centraliza verticalmente o conteúdo
-                        bg={
-                          rowItem.diasCompras <= 90
-                            ? "green.300"
-                            : rowItem.diasCompras <= 180
-                            ? "yellow.200"
-                            : "red.300"
-                        }
-                        color={
-                          rowItem.diasCompras <= 90
-                            ? "white"
-                            : rowItem.diasCompras <= 180
-                            ? "black"
-                            : "white"
-                        }
-                        w="99px"
-                        borderRadius="10px"
-                        justifyContent="center"
-                        p={3}
-                      >
-                        {`${rowItem.diasCompras} ${
-                          rowItem.diasCompras > 1 ? "dias" : "dia"
-                        }`}
-                      </Box>
-                    </Text>
-                  </>
-                )}
-              </Box>
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Box
-                bg="white"
-                _hover={{
-                  boxShadow: "lg",
-                  borderColor: "black",
-                  transform: "scale(1.01)",
-                }} // border="1px"
-                p="4"
-                borderRadius="10px"
-                maxW="350px"
-                minH="590px"
-                shadow="lg"
-              >
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={IoStorefront} mr={2} /> Cliente:
-                </Text>
-
-                <Text
-                  color="black"
-                  ml="30px"
-                  mb={2}
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.nomeCliente}
-                </Text>
-                <Text
-                  color="black"
-                  ml="30px"
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.nomeFantasia &&
-                    rowItem.nomeFantasia !== rowItem.nomeCliente && (
-                      <Text>{rowItem.nomeFantasia}</Text>
-                    )}
-                </Text>
-                {rowItem.emailCliente !== "" ? (
-                  <>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="black"
-                      mt={2}
-                      mb={2}
-                    >
-                      <Icon as={MdEmail} mr={2} /> Email:
-                    </Text>
-                    <Text
-                      mb={2}
-                      color="black"
-                      ml="30px"
-                      _hover={{
-                        transform: "scale(1.05)",
-                        boxShadow: "lg",
-                      }}
-                    >
-                      {rowItem.emailCliente.toLowerCase()}
-                    </Text>
-                  </>
-                ) : (
-                  ""
-                )}
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaBarcode} mr={2} /> Código Cliente:
-                </Text>
-
-                <Text
-                  ml="30px"
-                  color="black"
-                  mb={2}
-                  _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                >
-                  {rowItem.codCliente}
-                </Text>
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
-                </Text>
-
-                {rowItem.dataCadastro === "  /  /  " ? (
-                  <Text color="gray" ml="30px" mb={2}>
-                    Nenhuma data cadastrada
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={FaUser} mr={2} /> Contato:
                   </Text>
-                ) : (
+
+                  <Text
+                    ml="30px"
+                    color="black"
+                    mb={2}
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                  >
+                    {rowItem.nomeContato}
+                  </Text>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={MdPhone} mr={2} /> Celular:
+                  </Text>
+
                   <Text
                     color="black"
                     ml="30px"
                     _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                   >
-                    {rowItem.dataCadastro}
+                    {rowItem.ddd > 0 && `(${rowItem.ddd}) `}
+                    {rowItem.celular}
                   </Text>
-                )}
-              </Box>
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Box
-                bg="white"
-                _hover={{
-                  boxShadow: "lg",
-                  borderColor: "black",
-                  transform: "scale(1.01)",
-                }} // border="1px"
-                p="4"
-                borderRadius="10px"
-                maxW="350px"
-                minH="590px"
-                shadow="lg"
-              >
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
-                </Text>
-                <Textarea
-                  placeholder="Observação relacionada ao cliente."
-                  value={rowItem.obsCliente}
+                  {rowItem.celular && (
+                    <>
+                      {(rowItem.fone && rowItem.fone !== rowItem.celular) ||
+                      (rowItem.fone1 && rowItem.fone1 !== rowItem.celular) ||
+                      (rowItem.fone2 && rowItem.fone2 !== rowItem.celular) ||
+                      (rowItem.fax && rowItem.fax !== rowItem.celular) ? (
+                        <>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="black"
+                            mt={2}
+                            mb={2}
+                          >
+                            <Icon as={MdPhone} mr={2} />
+                            Outros números:
+                          </Text>
+                          <Text ml="30px" color="black" mb={2}>
+                            {rowItem.fone &&
+                              rowItem.fone !== rowItem.celular && (
+                                <>
+                                  {rowItem.fone}
+                                  <br />
+                                </>
+                              )}
+                            {rowItem.fone1 &&
+                              rowItem.fone1 !== rowItem.celular &&
+                              rowItem.fone1 !== rowItem.fone && (
+                                <>
+                                  {rowItem.fone1}
+                                  <br />
+                                </>
+                              )}
+                            {rowItem.fone2 &&
+                              rowItem.fone2 !== rowItem.celular &&
+                              rowItem.fone2 !== rowItem.fone &&
+                              rowItem.fone2 !== rowItem.fone1 && (
+                                <>
+                                  {rowItem.fone2}
+                                  <br />
+                                </>
+                              )}
+                            {rowItem.fax &&
+                              rowItem.fax !== rowItem.celular &&
+                              rowItem.fax !== rowItem.fone &&
+                              rowItem.fax !== rowItem.fone1 &&
+                              rowItem.fax !== rowItem.fone2 && (
+                                <>{rowItem.fax}</>
+                              )}
+                          </Text>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={FaUserTag} mr={2} /> Vendedor:
+                      </Text>
+
+                      <Text
+                        color="black"
+                        ml="30px"
+                        mb={2}
+                        _hover={{
+                          transform: "scale(1.05)",
+                          boxShadow: "lg",
+                        }}
+                      >
+                        {rowItem.vendedor}
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={MdSell} mr={2} /> Potencial Lub:
+                      </Text>
+
+                      <Text
+                        mb={2}
+                        color="black"
+                        ml="30px"
+                        _hover={{
+                          transform: "scale(1.05)",
+                          boxShadow: "lg",
+                        }}
+                      >
+                        {rowItem.potencialLub}
+                      </Text>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={FaCalendarDays} mr={2} /> Última Compra:
+                      </Text>
+
+                      <Text
+                        fontWeight="bold"
+                        color="white"
+                        ml="30px"
+                        _hover={{
+                          transform: "scale(1.05)",
+                          boxShadow: "lg",
+                        }}
+                      >
+                        <Box
+                          display="flex"
+                          textAlign="center" // Centraliza horizontalmente o conteúdo
+                          alignItems="center" // Centraliza verticalmente o conteúdo
+                          bg={
+                            rowItem.diasCompras <= 90
+                              ? "green.300"
+                              : rowItem.diasCompras <= 180
+                              ? "yellow.200"
+                              : "red.300"
+                          }
+                          color={
+                            rowItem.diasCompras <= 90
+                              ? "white"
+                              : rowItem.diasCompras <= 180
+                              ? "black"
+                              : "white"
+                          }
+                          w="99px"
+                          borderRadius="10px"
+                          justifyContent="center"
+                          p={3}
+                        >
+                          {`${rowItem.diasCompras} ${
+                            rowItem.diasCompras > 1 ? "dias" : "dia"
+                          }`}
+                        </Box>
+                      </Text>
+                    </>
+                  )}
+                </Box>
+              </GridItem>
+              <GridItem colSpan={1}>
+                <Box
                   bg="white"
-                  color="black"
-                  // border="1px"
-                  height="120px"
-                  resize="none"
-                  focusBorderColor="purple.700"
-                  _placeholder={{ color: "gray.400" }}
-                  onChange={(e) => {
-                    handleObsCliente(e); // Chama a função e passa o evento como argumento
-                    setRowItem({
-                      ...rowItem,
-                      obsCliente: e.target.value,
-                    });
-                  }}
-                />
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
+                  _hover={{
+                    boxShadow: "lg",
+                    borderColor: "black",
+                    transform: "scale(1.01)",
+                  }} // border="1px"
+                  p="4"
+                  borderRadius="10px"
+                  maxW="350px"
+                  minH="590px"
+                  shadow="lg"
                 >
-                  <Icon as={MdDesignServices} mr={2} /> Observação Atendimento:
-                </Text>
-                <Textarea
-                  onChange={(e) => handleObsAtendimento(e)}
-                  placeholder="Observação durante o atendimento."
-                  bg="white"
-                  color="black"
-                  height="120px"
-                  // border="1px"
-                  resize="none"
-                  focusBorderColor="purple.700"
-                  _placeholder={{ color: "gray.400" }}
-                />
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={MdMessage} mr={2} /> Msg para Nota:
-                </Text>
-                <Textarea
-                  onChange={handleMsgNota}
-                  placeholder="Mensagem para ser anexada na nota."
-                  bg="white"
-                  color="black"
-                  height="120px"
-                  // border="1px"
-                  resize="none"
-                  focusBorderColor="purple.700"
-                  _placeholder={{ color: "gray.400" }}
-                />
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
-                </Text>
-                <Input
-                  focusBorderColor="purple.700"
-                  type="date"
-                  bg="white"
-                  color="black"
-                  // value={date}
-                  placeholder="Apenas números - ddmmaaaa"
-                  // onChange={handleChangeInputDate}
-                  // borderColor="black"
-                />
-              </Box>
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Box
-                bg="white"
-                _hover={{
-                  boxShadow: "lg",
-                  borderColor: "black",
-                  transform: "scale(1.01)",
-                }} // border="1px"
-                p="4"
-                borderRadius="10px"
-                maxW="350px"
-                minH="590px"
-                shadow="lg"
-              >
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
-                </Text>
-                <Select
-                  onChange={handleOperacao}
-                  variant="flushed"
-                  bg="white"
-                  color="black"
-                  fontSize="sm"
-                >
-                  {tipoOperacaoOptions.map((option, index) => (
-                    <option
-                      key={index}
-                      value={option.value}
-                      style={{ color: "black" }}
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={IoStorefront} mr={2} /> Cliente:
+                  </Text>
+
+                  <Text
+                    color="black"
+                    ml="30px"
+                    mb={2}
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                  >
+                    {rowItem.nomeCliente}
+                  </Text>
+                  <Text
+                    color="black"
+                    ml="30px"
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                  >
+                    {rowItem.nomeFantasia &&
+                      rowItem.nomeFantasia !== rowItem.nomeCliente && (
+                        <Text>{rowItem.nomeFantasia}</Text>
+                      )}
+                  </Text>
+                  {rowItem.emailCliente !== "" ? (
+                    <>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mt={2}
+                        mb={2}
+                      >
+                        <Icon as={MdEmail} mr={2} /> Email:
+                      </Text>
+                      <Text
+                        mb={2}
+                        color="black"
+                        ml="30px"
+                        _hover={{
+                          transform: "scale(1.05)",
+                          boxShadow: "lg",
+                        }}
+                      >
+                        {rowItem.emailCliente.toLowerCase()}
+                      </Text>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={FaBarcode} mr={2} /> Código Cliente:
+                  </Text>
+
+                  <Text
+                    ml="30px"
+                    color="black"
+                    mb={2}
+                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+                  >
+                    {rowItem.codCliente}
+                  </Text>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
+                  </Text>
+
+                  {rowItem.dataCadastro === "  /  /  " ? (
+                    <Text color="gray" ml="30px" mb={2}>
+                      Nenhuma data cadastrada
+                    </Text>
+                  ) : (
+                    <Text
+                      color="black"
+                      ml="30px"
+                      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
                     >
-                      {option.label}
-                    </option>
-                  ))}
-                </Select>
-
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  mt={2}
-                  alignItems="center"
-                >
-                  <Icon as={FaRoad} mr={2} /> Tipo Frete:
-                </Text>
-                <Select
-                  onChange={handleTipoFrete}
-                  fontSize="sm"
-                  variant="flushed"
+                      {rowItem.dataCadastro}
+                    </Text>
+                  )}
+                </Box>
+              </GridItem>
+              <GridItem colSpan={1}>
+                <Box
                   bg="white"
-                  color="black" // placeholder="Selecione um frete"
+                  _hover={{
+                    boxShadow: "lg",
+                    borderColor: "black",
+                    transform: "scale(1.01)",
+                  }} // border="1px"
+                  p="4"
+                  borderRadius="10px"
+                  maxW="350px"
+                  minH="590px"
+                  shadow="lg"
                 >
-                  {tipoFreteOptions.map((option, index) => (
-                    <option
-                      key={index}
-                      value={option.value}
-                      style={{ color: "black" }}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </Select>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
+                  </Text>
+                  <Textarea
+                    placeholder="Observação relacionada ao cliente."
+                    value={rowItem.obsCliente}
+                    bg="white"
+                    color="black"
+                    // border="1px"
+                    height="120px"
+                    resize="none"
+                    focusBorderColor="purple.700"
+                    _placeholder={{ color: "gray.400" }}
+                    onChange={(e) => {
+                      handleObsCliente(e); // Chama a função e passa o evento como argumento
+                      setRowItem({
+                        ...rowItem,
+                        obsCliente: e.target.value,
+                      });
+                    }}
+                  />
 
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  mt={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaTruck} mr={2} /> Transportadora:
-                </Text>
-                <Select
-                  bg="white"
-                  color="black"
-                  variant="flushed"
-                  placeholder="Selecione uma transportadora."
-                  isSearchable
-                  fontSize="sm"
-                  onChange={handleTransportadora}
-                  value={transportadoraSelecionado}
-                >
-                  {transportadoras.map((option) => (
-                    <option key={option.codigo} value={option.codigo}>
-                      {`${option.nome} - ${option.codigo}`}
-                    </option>
-                  ))}
-                </Select>
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  mt={2}
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
-                </Text>
-
-                <Select
-                  variant="flushed"
-                  bg="white"
-                  color="black"
-                  fontSize="sm"
-                  onChange={handleCondPagamentoChange}
-                  mb={5}
-                  placeholder="Selecione a condição de pagamento."
-                >
-                  {condPagamentos.map((option, index) => (
-                    <option key={index} value={option.codigo}>
-                      {option.descricao}
-                    </option>
-                  ))}
-                </Select>
-
-                {/* Inputs adicionais */}
-                {showAdditionalInputs && (
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={MdDesignServices} mr={2} /> Observação
+                    Atendimento:
+                  </Text>
+                  <Textarea
+                    onChange={(e) => handleObsAtendimento(e)}
+                    placeholder="Observação durante o atendimento."
+                    bg="white"
+                    color="black"
+                    height="120px"
+                    // border="1px"
+                    resize="none"
+                    focusBorderColor="purple.700"
+                    _placeholder={{ color: "gray.400" }}
+                  />
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={MdMessage} mr={2} /> Msg para Nota:
+                  </Text>
+                  <Textarea
+                    onChange={handleMsgNota}
+                    placeholder="Mensagem para ser anexada na nota."
+                    bg="white"
+                    color="black"
+                    height="120px"
+                    // border="1px"
+                    resize="none"
+                    focusBorderColor="purple.700"
+                    _placeholder={{ color: "gray.400" }}
+                  />
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
+                  </Text>
+                  <Input
+                    focusBorderColor="purple.700"
+                    type="date"
+                    bg="white"
+                    color="black"
+                    // value={date}
+                    placeholder="Apenas números - ddmmaaaa"
+                    // onChange={handleChangeInputDate}
+                    // borderColor="black"
+                  />
+                </Box>
+              </GridItem>
+              <GridItem colSpan={1}>
+                {isLoading2 ? (
+                  <Center mt="65%">
+                    <Spinner size="xl" color="#1A202C" />
+                  </Center>
+                ) : (
                   <>
-                    {[1, 2, 3, 4].map((parcela) => (
-                      <Flex key={parcela} alignItems="center" mb={2}>
-                        <Text fontSize="sm" color="black" mr={2}>
-                          {`${parcela}ª parcela`}
-                        </Text>
-                        <Input type="number" bg="white" color="black" w={150} />
-                        <Text fontSize="sm" color="black" ml={2} mr={2}>
-                          Data:
-                        </Text>
-                        <Input
-                          type="date"
-                          bg="white"
-                          color="black"
-                          fontSize="sm"
-                        />
-                      </Flex>
-                    ))}
+                    <Box
+                      bg="white"
+                      _hover={{
+                        boxShadow: "lg",
+                        borderColor: "black",
+                        transform: "scale(1.01)",
+                      }} // border="1px"
+                      p="4"
+                      borderRadius="10px"
+                      maxW="350px"
+                      minH="590px"
+                      shadow="lg"
+                    >
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
+                      </Text>
+                      <Select
+                        onChange={handleOperacao}
+                        variant="flushed"
+                        bg="white"
+                        color="black"
+                        fontSize="sm"
+                      >
+                        {tipoOperacaoOptions.map((option, index) => (
+                          <option
+                            key={index}
+                            value={option.value}
+                            style={{ color: "black" }}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </Select>
+
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        mt={2}
+                        alignItems="center"
+                      >
+                        <Icon as={FaRoad} mr={2} /> Tipo Frete:
+                      </Text>
+                      <Select
+                        onChange={handleTipoFrete}
+                        fontSize="sm"
+                        variant="flushed"
+                        bg="white"
+                        color="black" // placeholder="Selecione um frete"
+                      >
+                        {tipoFreteOptions.map((option, index) => (
+                          <option
+                            key={index}
+                            value={option.value}
+                            style={{ color: "black" }}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </Select>
+
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        color="black"
+                        mb={2}
+                        mt={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={FaTruck} mr={2} /> Transportadora:
+                      </Text>
+                      <Select
+                        bg="white"
+                        color="black"
+                        variant="flushed"
+                        placeholder="Selecione uma transportadora."
+                        isSearchable
+                        fontSize="sm"
+                        onChange={handleTransportadora}
+                        value={transportadoraSelecionado}
+                      >
+                        {transportadoras.map((option) => (
+                          <option key={option.codigo} value={option.codigo}>
+                            {`${option.nome} - ${option.codigo}`}
+                          </option>
+                        ))}
+                      </Select>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        mt={2}
+                        color="black"
+                        mb={2}
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Icon as={FaDollarSign} mr={2} /> Condição Pagamento:
+                      </Text>
+
+                      <Select
+                        variant="flushed"
+                        bg="white"
+                        color="black"
+                        fontSize="sm"
+                        onChange={handleCondPagamentoChange}
+                        mb={5}
+                        placeholder="Selecione a condição de pagamento."
+                      >
+                        {condPagamentos.map((option, index) => (
+                          <option key={index} value={option.codigo}>
+                            {option.descricao}
+                          </option>
+                        ))}
+                      </Select>
+
+                      {/* Inputs adicionais */}
+                      {showAdditionalInputs && (
+                        <>
+                          {[1, 2, 3, 4].map((parcela) => (
+                            <Flex key={parcela} alignItems="center" mb={2}>
+                              <Text fontSize="sm" color="black" mr={2}>
+                                {`${parcela}ª parcela`}
+                              </Text>
+                              <Input
+                                type="number"
+                                bg="white"
+                                color="black"
+                                w={150}
+                              />
+                              <Text fontSize="sm" color="black" ml={2} mr={2}>
+                                Data:
+                              </Text>
+                              <Input
+                                type="date"
+                                bg="white"
+                                color="black"
+                                fontSize="sm"
+                              />
+                            </Flex>
+                          ))}
+                        </>
+                      )}
+                    </Box>
                   </>
                 )}
-              </Box>
-            </GridItem>
-            <GridItem colSpan={1}>
-              <Box
-                bg="white"
-                _hover={{
-                  boxShadow: "lg",
-                  borderColor: "black",
-                  transform: "scale(1.01)",
-                }} // border="1px"
-                p="4"
-                borderRadius="10px"
-                maxW="350px"
-                minH="590px"
-                shadow="lg"
-              >
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="black"
-                  mb={2}
-                  display="flex"
-                  alignItems="center"
+              </GridItem>
+              <GridItem colSpan={1}>
+                <Box
+                  bg="white"
+                  _hover={{
+                    boxShadow: "lg",
+                    borderColor: "black",
+                    transform: "scale(1.01)",
+                  }} // border="1px"
+                  p="4"
+                  borderRadius="10px"
+                  maxW="350px"
+                  minH="590px"
+                  shadow="lg"
                 >
-                  <Icon as={LuHistory} mr={2} /> Histórico de Compras:
-                </Text>
-              </Box>
-            </GridItem>
-          </Grid>
-          <Box mt={30}>
-            <ProcurarProduto
-              onFinalizarAddProdutos={handleFinalizarAddProdutos}
-              onRemoveItem={handleRemoveItem}
-              valoresSelecionados={valoresSelecionados}
-            />
-          </Box>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="black"
+                    mb={2}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={LuHistory} mr={2} /> Histórico de Compras:
+                  </Text>
+                </Box>
+              </GridItem>
+            </Grid>
+            <Box mt={30}>
+              <ProcurarProduto
+                onFinalizarAddProdutos={handleFinalizarAddProdutos}
+                onRemoveItem={handleRemoveItem}
+                valoresSelecionados={valoresSelecionados}
+              />
+            </Box>
 
-          <Box mt="30px">
-            {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+            <Box mt="30px">
+              {/* <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
                     <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                   </Text> */}
-            <Table variant="simple" bg="white">
-              <Thead
-                Thead
-                // position="sticky"
-                top="0"
-                bg="#822AA2"
-                fontWeight="bold"
-              >
-                <Tr>
-                  <Th color="white" fontSize="sm">
-                    Produto
-                  </Th>
-                  <Th color="white" fontSize="sm">
-                    Quantidade
-                  </Th>
-                  <Th color="white" fontSize="sm">
-                    Desconto (%)
-                  </Th>
-                  <Th color="white" fontSize="sm">
-                    Valor Unitário
-                  </Th>
-                  <Th color="white" fontSize="sm">
-                    Total
-                  </Th>
-                  <Th color="white" fontSize="sm">
-                    Unidade de Medida
-                  </Th>{" "}
-                  {/* Nova coluna para UM */}
-                  <Th color="white" fontSize="sm">
-                    Data
-                  </Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {valoresSelecionados.map((produto, index) => (
-                  <Tr key={index}>
-                    <Td w={250}>{produto.descricao}</Td>
-                    <Td w={100}>{produto.quantidade}</Td>
-                    <Td w={150}>
-                      <Input
-                        focusBorderColor="purple.700"
-                        border="1px"
-                        borderColor="gray.300"
-                        type="number"
-                        mt={2}
-                        w="75px"
-                        p={6}
-                        value={produto.qtd}
-                        onChange={(e) =>
-                          handleDescontoChange(index, e.target.value)
-                        }
-                      />
-                    </Td>
-                    <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
-                    {/* Usando precoUnitario */}
-                    <Td w={150}>
-                      {calcularPrecoTotal(
-                        produto.quantidade,
-                        produto.precoUnitario,
-                        produto.desconto
-                      ).toFixed(2)}
-                    </Td>{" "}
-                    {/* Usando precoTotal */}
-                    <Td w={150}>{produto.um}</Td>
-                    <Td w={150}>{obterDataAtual()}</Td>{" "}
-                    {/* Preenchendo com a data atual */}
+              <Table variant="simple" bg="white">
+                <Thead
+                  Thead
+                  // position="sticky"
+                  top="0"
+                  bg="#822AA2"
+                  fontWeight="bold"
+                >
+                  <Tr>
+                    <Th color="white" fontSize="sm">
+                      Produto
+                    </Th>
+                    <Th color="white" fontSize="sm">
+                      Quantidade
+                    </Th>
+                    <Th color="white" fontSize="sm">
+                      Desconto (%)
+                    </Th>
+                    <Th color="white" fontSize="sm">
+                      Valor Unitário
+                    </Th>
+                    <Th color="white" fontSize="sm">
+                      Total
+                    </Th>
+                    <Th color="white" fontSize="sm">
+                      Unidade de Medida
+                    </Th>{" "}
+                    {/* Nova coluna para UM */}
+                    <Th color="white" fontSize="sm">
+                      Data
+                    </Th>
                   </Tr>
-                ))}
-              </Tbody>
-              <Tfoot>
-                <Tr bg="white">
-                  <Td fontWeight="bold">TOTAL</Td>
-                  <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-                  <Td></Td>
-                  {/* <Td>
+                </Thead>
+                <Tbody>
+                  {valoresSelecionados.map((produto, index) => (
+                    <Tr key={index}>
+                      <Td w={250}>{produto.descricao}</Td>
+                      <Td w={100}>{produto.quantidade}</Td>
+                      <Td w={150}>
+                        <Input
+                          focusBorderColor="purple.700"
+                          border="1px"
+                          borderColor="gray.300"
+                          type="number"
+                          mt={2}
+                          w="75px"
+                          p={6}
+                          value={produto.qtd}
+                          onChange={(e) =>
+                            handleDescontoChange(index, e.target.value)
+                          }
+                        />
+                      </Td>
+                      <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
+                      {/* Usando precoUnitario */}
+                      <Td w={150}>
+                        {calcularPrecoTotal(
+                          produto.quantidade,
+                          produto.precoUnitario,
+                          produto.desconto
+                        ).toFixed(2)}
+                      </Td>{" "}
+                      {/* Usando precoTotal */}
+                      <Td w={150}>{produto.um}</Td>
+                      <Td w={150}>{obterDataAtual()}</Td>{" "}
+                      {/* Preenchendo com a data atual */}
+                    </Tr>
+                  ))}
+                </Tbody>
+                <Tfoot>
+                  <Tr bg="white">
+                    <Td fontWeight="bold">TOTAL</Td>
+                    <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
+                    <Td></Td>
+                    {/* <Td>
                     <Input
                       focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                       border="1px"
@@ -1179,45 +1208,46 @@ const Atendimento = () => {
                       onChange={handleDescontoTotalChange}
                     />
                   </Td> */}
-                  <Td></Td>
-                  <Td fontWeight="bold">
-                    {calcularPrecoTotalGeral().toFixed(2)}
-                  </Td>
-                  <Td></Td>
-                  <Td></Td>
-                </Tr>
-              </Tfoot>
-            </Table>
-          </Box>
-        </>
-      )}
-      <Button
-        w="100%"
-        mt={5}
-        mb={2}
-        colorScheme="purple"
-        isDisabled={isButtonDisabled()}
-        onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
-        isLoading={isLoading} // Alterado para isLoading
-        spinner={<BeatLoader size={8} color="white" />}
-        variant="outline"
-        bg="#822AA2"
-        color="white"
-        _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
-      >
-        Finaliza Atendimento
-      </Button>
-      {errorMessage && (
-        <Box mt={4}>
-          <Alert status="error" borderRadius="md">
-            <AlertIcon />
-            <Box flex="1">
-              <strong>Código:</strong> {errorMessage.code} <br />
-              <strong>Mensagem:</strong> {errorMessage.message}
+                    <Td></Td>
+                    <Td fontWeight="bold">
+                      {calcularPrecoTotalGeral().toFixed(2)}
+                    </Td>
+                    <Td></Td>
+                    <Td></Td>
+                  </Tr>
+                </Tfoot>
+              </Table>
             </Box>
-          </Alert>
-        </Box>
-      )}
+          </>
+        )}
+        <Button
+          w="100%"
+          mt={5}
+          mb={2}
+          colorScheme="purple"
+          isDisabled={isButtonDisabled()}
+          onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
+          isLoading={isLoading} // Alterado para isLoading
+          spinner={<BeatLoader size={8} color="white" />}
+          variant="outline"
+          bg="#822AA2"
+          color="white"
+          _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+        >
+          Finaliza Atendimento
+        </Button>
+        {errorMessage && (
+          <Box mt={4}>
+            <Alert status="error" borderRadius="md">
+              <AlertIcon />
+              <Box flex="1">
+                <strong>Código:</strong> {errorMessage.code} <br />
+                <strong>Mensagem:</strong> {errorMessage.message}
+              </Box>
+            </Alert>
+          </Box>
+        )}
+      </>
     </Box>
   );
 };
