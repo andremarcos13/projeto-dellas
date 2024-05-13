@@ -65,6 +65,7 @@ import enviarRequisicao from "../apis/finaliza-atendimento-api";
 import { BeatLoader } from "react-spinners";
 import { MdContactPhone } from "react-icons/md";
 import { GiMoneyStack } from "react-icons/gi";
+import { FcMoneyTransfer } from "react-icons/fc";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -1271,187 +1272,14 @@ const Atendimento = () => {
                           display="flex"
                           alignItems="center"
                         >
-                          <Icon as={FaUser} mr={2} /> Contato:
+                          <Icon as={FcMoneyTransfer} mr={2} /> Observação do
+                          Financeiro:
                         </Text>
 
-                        <Text
-                          ml="30px"
-                          color="black"
-                          mb={2}
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.nomeContato}
-                        </Text>
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mb={2}
-                          display="flex"
-                          alignItems="center"
-                        >
-                          <Icon as={MdPhone} mr={2} /> Celular:
-                        </Text>
-
-                        <Text
-                          color="black"
-                          ml="30px"
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.ddd > 0 && `(${rowItem.ddd}) `}
-                          {rowItem.celular}
-                        </Text>
-                        {rowItem.celular && (
-                          <>
-                            {(rowItem.fone &&
-                              rowItem.fone !== rowItem.celular) ||
-                            (rowItem.fone1 &&
-                              rowItem.fone1 !== rowItem.celular) ||
-                            (rowItem.fone2 &&
-                              rowItem.fone2 !== rowItem.celular) ||
-                            (rowItem.fax && rowItem.fax !== rowItem.celular) ? (
-                              <>
-                                <Text
-                                  fontSize="lg"
-                                  fontWeight="bold"
-                                  color="black"
-                                  mt={2}
-                                  mb={2}
-                                >
-                                  <Icon as={MdPhone} mr={2} />
-                                  Outros números:
-                                </Text>
-                                <Text ml="30px" color="black" mb={2}>
-                                  {rowItem.fone &&
-                                    rowItem.fone !== rowItem.celular && (
-                                      <>
-                                        {rowItem.fone}
-                                        <br />
-                                      </>
-                                    )}
-                                  {rowItem.fone1 &&
-                                    rowItem.fone1 !== rowItem.celular &&
-                                    rowItem.fone1 !== rowItem.fone && (
-                                      <>
-                                        {rowItem.fone1}
-                                        <br />
-                                      </>
-                                    )}
-                                  {rowItem.fone2 &&
-                                    rowItem.fone2 !== rowItem.celular &&
-                                    rowItem.fone2 !== rowItem.fone &&
-                                    rowItem.fone2 !== rowItem.fone1 && (
-                                      <>
-                                        {rowItem.fone2}
-                                        <br />
-                                      </>
-                                    )}
-                                  {rowItem.fax &&
-                                    rowItem.fax !== rowItem.celular &&
-                                    rowItem.fax !== rowItem.fone &&
-                                    rowItem.fax !== rowItem.fone1 &&
-                                    rowItem.fax !== rowItem.fone2 && (
-                                      <>{rowItem.fax}</>
-                                    )}
-                                </Text>
-                              </>
-                            ) : (
-                              ""
-                            )}
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="black"
-                              mb={2}
-                              display="flex"
-                              alignItems="center"
-                            >
-                              <Icon as={FaUserTag} mr={2} /> Vendedor:
-                            </Text>
-
-                            <Text
-                              color="black"
-                              ml="30px"
-                              mb={2}
-                              _hover={{
-                                transform: "scale(1.05)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              {rowItem.vendedor}
-                            </Text>
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="black"
-                              mb={2}
-                              display="flex"
-                              alignItems="center"
-                            >
-                              <Icon as={MdSell} mr={2} /> Potencial Lub:
-                            </Text>
-
-                            <Text
-                              mb={2}
-                              color="black"
-                              ml="30px"
-                              _hover={{
-                                transform: "scale(1.05)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              {rowItem.potencialLub}
-                            </Text>
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="black"
-                              mb={2}
-                              display="flex"
-                              alignItems="center"
-                            >
-                              <Icon as={FaCalendarDays} mr={2} /> Última Compra:
-                            </Text>
-
-                            <Text
-                              fontWeight="bold"
-                              color="white"
-                              ml="30px"
-                              _hover={{
-                                transform: "scale(1.05)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              <Box
-                                display="flex"
-                                textAlign="center" // Centraliza horizontalmente o conteúdo
-                                alignItems="center" // Centraliza verticalmente o conteúdo
-                                bg={
-                                  rowItem.diasCompras <= 90
-                                    ? "green.300"
-                                    : rowItem.diasCompras <= 180
-                                    ? "yellow.200"
-                                    : "red.300"
-                                }
-                                color={
-                                  rowItem.diasCompras <= 90
-                                    ? "white"
-                                    : rowItem.diasCompras <= 180
-                                    ? "black"
-                                    : "white"
-                                }
-                                w="99px"
-                                borderRadius="10px"
-                                justifyContent="center"
-                                p={3}
-                              >
-                                {`${rowItem.diasCompras} ${
-                                  rowItem.diasCompras > 1 ? "dias" : "dia"
-                                }`}
-                              </Box>
-                            </Text>
-                          </>
-                        )}
+                        <Textarea
+                          h={200}
+                          placeholder="Aqui irá conter informações financeiras sobre o cliente."
+                        />
                       </Box>
                     </GridItem>
                   </Grid>
