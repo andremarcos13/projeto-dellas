@@ -1345,7 +1345,7 @@ const Atendimento = () => {
               </Th>{" "}
               {/* Nova coluna para UM */}
               <Th color="white" fontSize="sm">
-                Data
+                Data Faturamento
               </Th>
             </Tr>
           </Thead>
