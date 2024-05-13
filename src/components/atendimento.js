@@ -2,6 +2,7 @@ import {
   Alert,
   AlertIcon,
   Center,
+  FormErrorMessage,
   Modal,
   Spinner,
   Tab,
@@ -219,7 +220,7 @@ const Atendimento = () => {
     const dia = String(data.getDate()).padStart(2, "0");
     const mes = String(data.getMonth() + 1).padStart(2, "0");
     const ano = data.getFullYear();
-    return `${dia}/${mes}/${ano}`;
+    return `${ano}-${mes}-${dia}`; // Formato do input type "date" é yyyy-mm-dd
   };
 
   // Função para calcular o total da quantidade
@@ -537,6 +538,24 @@ const Atendimento = () => {
       console.error("Erro ao finalizar atendimento:", error);
       setIsLoading(false); // Alterado para false quando houver um erro
     }
+  };
+  const [dataError, setDataError] = useState("");
+  const [dataAtualEstad, setDataAtualEstad] = useState(obterDataAtual());
+
+  const handleDataAtualChange = (e) => {
+    const newData = e.target.value;
+    console.log("newData", newData);
+    setDataAtualEstad(newData);
+    if (!validarFormatoData(newData)) {
+      setDataError("Formato de data inválido. Use dd/mm/aaaa");
+    } else {
+      setDataError("");
+    }
+  };
+
+  const validarFormatoData = (data) => {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return regex.test(data);
   };
 
   console.log("bodyApi", bodyApi);
@@ -1361,7 +1380,21 @@ const Atendimento = () => {
                 </Td>{" "}
                 {/* Usando precoTotal */}
                 <Td w={150}>{produto.um}</Td>
-                <Td w={150}>{obterDataAtual()}</Td>{" "}
+                <Td w={150}>
+                  <Input
+                    type="date"
+                    borderRadius="10px"
+                    focusBorderColor="purple.700"
+                    border="1px"
+                    borderColor="gray.300"
+                    mt={2}
+                    w="155px"
+                    p={6}
+                    value={dataAtualEstad}
+                    onChange={handleDataAtualChange}
+                    size="sm"
+                  />
+                </Td>{" "}
                 {/* Preenchendo com a data atual */}
               </Tr>
             ))}
