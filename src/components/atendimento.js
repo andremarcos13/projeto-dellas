@@ -67,6 +67,9 @@ import { BeatLoader } from "react-spinners";
 import { MdContactPhone } from "react-icons/md";
 import { GiMoneyStack } from "react-icons/gi";
 import { FcMoneyTransfer } from "react-icons/fc";
+import { FcDocument } from "react-icons/fc";
+import { FcFinePrint } from "react-icons/fc";
+import { VscTools } from "react-icons/vsc";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -606,6 +609,12 @@ const Atendimento = () => {
                 <GiMoneyStack />
               </Box>
               <strong>Financeiro</strong>
+            </Tab>
+            <Tab bg="white">
+              <Box mr="5px">
+                <VscTools />
+              </Box>
+              <strong>Ferramentas</strong>
             </Tab>
           </TabList>
           <TabPanels>
@@ -1297,9 +1306,89 @@ const Atendimento = () => {
 
                         <Textarea
                           h={200}
+                          mb={2}
                           placeholder="Aqui irá conter informações financeiras sobre o cliente."
                         />
                       </Box>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                      <Box
+                        bg="white"
+                        p="4"
+                        borderRadius="10px"
+                        maxW="350px"
+                        minH="590px"
+                        shadow="lg"
+                        _hover={{
+                          transform: "scale(1.01)",
+                          boxShadow: "lg",
+                          borderColor: "black",
+                          // border: "1px",
+                        }}
+                      >
+                        <Button
+                          fontSize="lg"
+                          fontWeight="bold"
+                          bg="#822AA2"
+                          color="white"
+                          mb={2}
+                          display="flex"
+                          alignItems="center"
+                          w="320px"
+                          _hover={{
+                            transform: "scale(1.01)",
+                            boxShadow: "lg",
+                            borderColor: "black",
+                            // border: "1px",
+                          }}
+                        >
+                          <Icon as={FcDocument} mr={2} /> Títulos Abertos
+                        </Button>
+                        <Button
+                          fontSize="lg"
+                          fontWeight="bold"
+                          bg="#822AA2"
+                          color="white"
+                          mb={2}
+                          display="flex"
+                          alignItems="center"
+                          w="320px"
+                          _hover={{
+                            transform: "scale(1.01)",
+                            boxShadow: "lg",
+                            borderColor: "black",
+                            // border: "1px",
+                          }}
+                        >
+                          <Icon as={FcFinePrint} mr={2} /> Títulos Baixados
+                        </Button>
+                      </Box>
+                    </GridItem>
+                  </Grid>
+                </>
+              )}
+            </TabPanel>
+            {/* ITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROS */}
+
+            <TabPanel>
+              {rowItem && (
+                <>
+                  <Grid templateColumns="repeat(5, 1fr)" gap={3}>
+                    <GridItem colSpan={1}>
+                      <Box
+                        bg="white"
+                        p="4"
+                        borderRadius="10px"
+                        maxW="350px"
+                        minH="590px"
+                        shadow="lg"
+                        _hover={{
+                          transform: "scale(1.01)",
+                          boxShadow: "lg",
+                          borderColor: "black",
+                          // border: "1px",
+                        }}
+                      ></Box>
                     </GridItem>
                   </Grid>
                 </>
