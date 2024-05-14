@@ -70,6 +70,7 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import { FcDocument } from "react-icons/fc";
 import { FcFinePrint } from "react-icons/fc";
 import { VscTools } from "react-icons/vsc";
+import { FaBalanceScale } from "react-icons/fa";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -1368,7 +1369,7 @@ const Atendimento = () => {
                 </>
               )}
             </TabPanel>
-            {/* ITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROSITENS FINANCEIROS */}
+            {/* ITENS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FERRAMENTAS FINANCEIROS */}
 
             <TabPanel>
               {rowItem && (
@@ -1388,7 +1389,19 @@ const Atendimento = () => {
                           borderColor: "black",
                           // border: "1px",
                         }}
-                      ></Box>
+                      >
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          color="black"
+                          mb={2}
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Icon as={FaBalanceScale} mr={2} /> Tabela de
+                          Conversão:
+                        </Text>
+                      </Box>
                     </GridItem>
                   </Grid>
                 </>
