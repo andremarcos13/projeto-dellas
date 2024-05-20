@@ -107,6 +107,8 @@ const Atendimento = () => {
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
 
+  const [historicoProdutos, setHistoricoProdutos] = useState([]);
+
   const navigate = useNavigate();
 
   console.log("globalToken atendimento", globalToken.access_token);
@@ -350,9 +352,12 @@ const Atendimento = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetchHistoricoProdutos(globalToken.access_token);
-      setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
-      console.log("getTransportadoras", transportadoras);
+      const response = await fetchHistoricoProdutos(
+        rowItem.codCliente,
+        globalToken.access_token
+      );
+      setHistoricoProdutos(response); // Supondo que o array de objetos esteja em response
+      console.log("getHistorico", transportadoras);
     } catch (error) {
       console.error(error);
       // Verificar se o erro é de autorização (401 Unauthorized)
@@ -362,8 +367,8 @@ const Atendimento = () => {
           const newToken = await getToken(username, password);
           // Refazer a chamada à função fetchHistoricoProdutos com o novo token de acesso
           const response = await fetchHistoricoProdutos(newToken.access_token);
-          setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
-          console.log("getTransportadoras", transportadoras);
+          setHistoricoProdutos(response); // Supondo que o array de objetos esteja em response.items
+          console.log("getHistorico", transportadoras);
         } catch (error) {
           console.error("Erro ao obter novo token de acesso:", error);
           // Lidar com o erro ao obter o novo token de acesso
