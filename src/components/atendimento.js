@@ -2,7 +2,9 @@ import {
   Alert,
   AlertIcon,
   Center,
+  FormControl,
   FormErrorMessage,
+  FormLabel,
   Modal,
   Spinner,
   Tab,
@@ -10,6 +12,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  VStack,
   getToken,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -72,6 +75,7 @@ import { FcFinePrint } from "react-icons/fc";
 import { VscTools } from "react-icons/vsc";
 import { FaBalanceScale } from "react-icons/fa";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
+import { format, subDays } from "date-fns";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -106,6 +110,8 @@ const Atendimento = () => {
   const { dateGlobal, setDateGlobal } = useAppContext();
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
+  const [dataInicial, setDataInicial] = useState("");
+  const [dataFinal, setDataFinal] = useState("");
 
   const [historicoProdutos, setHistoricoProdutos] = useState([]);
 
@@ -348,33 +354,38 @@ const Atendimento = () => {
     }
   };
 
-  const getHistoricoProdutos = async () => {
+  const getHistoricoProdutos = async (
+    clienteHistPedidos = rowItem.codCliente,
+    dataInicial,
+    dataFinal,
+    token = globalToken.access_token
+  ) => {
     setIsLoading(true);
 
     try {
       const response = await fetchHistoricoProdutos(
-        rowItem.codCliente,
-        globalToken.access_token
+        (clienteHistPedidos = rowItem.codCliente),
+        dataInicial,
+        dataFinal,
+        (token = globalToken.access_token)
       );
-      setHistoricoProdutos(response); // Supondo que o array de objetos esteja em response
-      console.log("getHistorico", transportadoras);
+      setHistoricoProdutos(response);
+      console.log("historico", historicoProdutos);
     } catch (error) {
       console.error(error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
       if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
         try {
           const newToken = await getToken(username, password);
-          // Refazer a chamada à função fetchHistoricoProdutos com o novo token de acesso
-          const response = await fetchHistoricoProdutos(newToken.access_token);
-          setHistoricoProdutos(response); // Supondo que o array de objetos esteja em response.items
-          console.log("getHistorico", transportadoras);
+          const response = await fetchHistoricoProdutos(
+            (clienteHistPedidos = rowItem.codCliente),
+            dataInicial,
+            dataFinal,
+            newToken.access_token
+          );
+          setHistoricoProdutos(response);
         } catch (error) {
           console.error("Erro ao obter novo token de acesso:", error);
-          // Lidar com o erro ao obter o novo token de acesso
         }
-      } else {
-        // Lidar com outros tipos de erro
       }
     } finally {
       setIsLoading(false);
@@ -387,6 +398,11 @@ const Atendimento = () => {
     console.log("loadin2", isLoading2);
 
     const fetchApis = async () => {
+      const today = format(new Date(), "dd/MM/yyyy");
+      const ninetyDaysAgo = format(subDays(new Date(), 90), "dd/MM/yyyy");
+      setDataFinal(today);
+      setDataInicial(ninetyDaysAgo);
+
       try {
         await getCondPagamentos(globalToken.access_token);
         await getTransportadoras(globalToken.access_token);
@@ -601,6 +617,16 @@ const Atendimento = () => {
   };
 
   console.log("bodyApi", bodyApi);
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Previne o comportamento padrão do formulário
+    getHistoricoProdutos(
+      rowItem.codCliente,
+      dataInicial,
+      dataFinal,
+      globalToken.access_token
+    );
+  };
 
   return (
     <Box
@@ -1293,7 +1319,7 @@ const Atendimento = () => {
                             boxShadow: "lg",
                             borderColor: "black",
                             transform: "scale(1.01)",
-                          }} // border="1px"
+                          }}
                           p="4"
                           borderRadius="10px"
                           maxW="350px"
@@ -1310,6 +1336,91 @@ const Atendimento = () => {
                           >
                             <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                           </Text>
+                          <Box p={4}>
+                            <VStack spacing={4} align="flex-start">
+                              <FormControl>
+                                <FormLabel>Data Inicial</FormLabel>
+                                <Input
+                                  type="text"
+                                  value={dataInicial}
+                                  onChange={(e) =>
+                                    setDataInicial(e.target.value)
+                                  }
+                                  placeholder="dd/mm/aaaa"
+                                />
+                              </FormControl>
+                              <FormControl>
+                                <FormLabel>Data Final</FormLabel>
+                                <Input
+                                  type="text"
+                                  value={dataFinal}
+                                  onChange={(e) => setDataFinal(e.target.value)}
+                                  placeholder="dd/mm/aaaa"
+                                />
+                              </FormControl>
+                              <Button colorScheme="blue" onClick={handleSubmit}>
+                                Buscar
+                              </Button>
+                            </VStack>
+                          </Box>
+                          <VStack spacing={4} align="stretch">
+                            {historicoProdutos.map((pedido, index) => (
+                              <Box
+                                key={index}
+                                p={4}
+                                borderWidth={1}
+                                borderRadius="md"
+                                mb={2}
+                              >
+                                <Text fontWeight="bold">
+                                  Pedido: {pedido.pedido}
+                                </Text>
+                                <Text>Vendedor: {pedido.nome_vendedor}</Text>
+                                <Text>Data de Emissão: {pedido.emissao}</Text>
+                                <Text>Cliente: {pedido.nome_cliente}</Text>
+                                <Text>Status: {pedido.status}</Text>
+                                <Text>Valor: R$ {pedido.valor.toFixed(2)}</Text>
+                                <Text>Volume: {pedido.volume}</Text>
+
+                                <Box
+                                  mt={2}
+                                  p={2}
+                                  borderWidth={1}
+                                  borderRadius="md"
+                                >
+                                  <Text fontWeight="bold">Itens:</Text>
+                                  {pedido.itens.map((item, itemIndex) => (
+                                    <Box
+                                      key={itemIndex}
+                                      mt={2}
+                                      p={2}
+                                      borderWidth={1}
+                                      borderRadius="md"
+                                    >
+                                      <Text>
+                                        Produto: {item.descricao_produto}
+                                      </Text>
+                                      <Text>Código: {item.cod_produto}</Text>
+                                      <Text>
+                                        Fornecedor: {item.nome_fornecedor}
+                                      </Text>
+                                      <Text>
+                                        Quantidade: {item.qtde_produto}
+                                      </Text>
+                                      <Text>
+                                        Preço Unitário: R${" "}
+                                        {item.preco_unitario.toFixed(2)}
+                                      </Text>
+                                      <Text>
+                                        Valor: R${" "}
+                                        {item.valor_produto.toFixed(2)}
+                                      </Text>
+                                    </Box>
+                                  ))}
+                                </Box>
+                              </Box>
+                            ))}
+                          </VStack>
                         </Box>
                       )}
                     </GridItem>

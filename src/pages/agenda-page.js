@@ -41,8 +41,6 @@ const AgendaPage = () => {
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
 
-  console.log("teste", userCod.u7_codusu);
-
   const formattedTime = currentTime.toLocaleTimeString();
 
   useEffect(() => {
