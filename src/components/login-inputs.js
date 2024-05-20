@@ -43,13 +43,9 @@ function LoginComponent() {
     try {
       const token = await getToken(username, password);
 
-      console.log("Token:", token);
-
       setGlobalToken(token);
 
       if (token && token.access_token) {
-        console.log("Login bem-sucedido.");
-        console.log("Token global:", globalToken);
         setIsLoading(false);
         navigate("/home");
       } else {
