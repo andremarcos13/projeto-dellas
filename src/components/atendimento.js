@@ -71,6 +71,7 @@ import { FcDocument } from "react-icons/fc";
 import { FcFinePrint } from "react-icons/fc";
 import { VscTools } from "react-icons/vsc";
 import { FaBalanceScale } from "react-icons/fa";
+import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -345,6 +346,36 @@ const Atendimento = () => {
     }
   };
 
+  const getHistoricoProdutos = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetchHistoricoProdutos(globalToken.access_token);
+      setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+      console.log("getTransportadoras", transportadoras);
+    } catch (error) {
+      console.error(error);
+      // Verificar se o erro é de autorização (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          const newToken = await getToken(username, password);
+          // Refazer a chamada à função fetchHistoricoProdutos com o novo token de acesso
+          const response = await fetchHistoricoProdutos(newToken.access_token);
+          setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+          console.log("getTransportadoras", transportadoras);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      } else {
+        // Lidar com outros tipos de erro
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     console.log("inicia 1o use effect loadin2");
     setIsLoading2(true);
@@ -354,6 +385,7 @@ const Atendimento = () => {
       try {
         await getCondPagamentos(globalToken.access_token);
         await getTransportadoras(globalToken.access_token);
+        await getHistoricoProdutos(globalToken.access_token);
       } catch (error) {
         // Lidar com erros, se necessário
         console.error("Erro ao buscar APIs:", error);
@@ -365,6 +397,7 @@ const Atendimento = () => {
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
             await getCondPagamentos(newToken.access_token);
             await getTransportadoras(newToken.access_token);
+            await getHistoricoProdutos(newToken.access_token);
           } catch (error) {
             console.error("Erro ao obter novo token de acesso:", error);
             // Lidar com o erro ao obter o novo token de acesso
@@ -1244,6 +1277,38 @@ const Atendimento = () => {
                       )}
                     </GridItem>
                     <GridItem colSpan={1}>
+                      {isLoading2 ? (
+                        <Center mt="65%">
+                          <Spinner size="xl" color="#1A202C" />
+                        </Center>
+                      ) : (
+                        <Box
+                          bg="white"
+                          _hover={{
+                            boxShadow: "lg",
+                            borderColor: "black",
+                            transform: "scale(1.01)",
+                          }} // border="1px"
+                          p="4"
+                          borderRadius="10px"
+                          maxW="350px"
+                          minH="590px"
+                          shadow="lg"
+                        >
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="black"
+                            mb={2}
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Icon as={LuHistory} mr={2} /> Histórico de Compras:
+                          </Text>
+                        </Box>
+                      )}
+                    </GridItem>
+                    {/* <GridItem colSpan={1}>
                       <Box
                         bg="white"
                         _hover={{
@@ -1268,7 +1333,7 @@ const Atendimento = () => {
                           <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                         </Text>
                       </Box>
-                    </GridItem>
+                    </GridItem> */}
                   </Grid>
                 </>
               )}
