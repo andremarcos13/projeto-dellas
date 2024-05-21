@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import { getToken } from "../apis/token-api";
+import { fetchToken } from "../apis/token-api";
 import { BeatLoader } from "react-spinners";
 import { MdEmail, MdLock } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
@@ -41,7 +41,7 @@ function LoginComponent() {
     }
 
     try {
-      const token = await getToken(username, password);
+      const token = await fetchToken(username, password);
 
       setGlobalToken(token);
 

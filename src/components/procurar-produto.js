@@ -43,7 +43,7 @@ import { MdPersonSearch } from "react-icons/md";
 import { FaSearchPlus } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAppContext } from "../context/AppContext";
-import { getToken } from "../apis/token-api";
+import { fetchToken } from "../apis/token-api";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -87,7 +87,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à função fetchProdutos com o novo token de acesso
           const newData = await fetchProdutos({
             search: searchTerm,
@@ -129,7 +129,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à função fetchProdutos com o novo token de acesso
           const nextPage = currentPage + 1;
           const newData = await fetchProdutos({
@@ -211,7 +211,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à função fetchPrecoDeVenda com o novo token de acesso
           const produto = selectedItem.codigo;
           const qtd = quantidade;

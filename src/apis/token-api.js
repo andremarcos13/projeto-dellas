@@ -1,4 +1,4 @@
-export async function getToken(username, password) {
+export async function fetchToken(username, password) {
   const myHeaders = new Headers();
   myHeaders.append("username", username);
   myHeaders.append("password", password);

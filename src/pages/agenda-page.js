@@ -26,7 +26,7 @@ import { FaList } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
 import { useAppContext } from "../context/AppContext";
 import Header from "../components/header";
-import { getToken } from "../apis/token-api";
+import { fetchToken } from "../apis/token-api";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -89,7 +89,7 @@ const AgendaPage = () => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à API principal com o novo token de acesso
           const response = await axios.get(
             `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,

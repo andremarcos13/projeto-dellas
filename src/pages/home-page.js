@@ -7,7 +7,7 @@ import BreadCrumbLinks from "../components/breadcumber";
 import { useAppContext } from "../context/AppContext";
 import fetchCodUser from "../apis/cod-user-api";
 import { useEffect, useState } from "react";
-import { getToken } from "../apis/token-api";
+import { fetchToken } from "../apis/token-api";
 import Header from "../components/header";
 
 const HomePage = () => {
@@ -48,7 +48,7 @@ const HomePage = () => {
 
         // Se ocorrer um erro, obter um novo token e tentar novamente
         try {
-          const newToken = await getToken(username, password); // Substitua 'password' pelo valor correto
+          const newToken = await fetchToken(username, password); // Substitua 'password' pelo valor correto
           setGlobalToken(newToken); // Atualiza o token global
           console.log("Novo token obtido:", newToken);
 

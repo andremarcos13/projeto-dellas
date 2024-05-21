@@ -14,7 +14,6 @@ import {
   TabPanels,
   Tabs,
   VStack,
-  getToken,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -77,6 +76,8 @@ import { VscTools } from "react-icons/vsc";
 import { FaBalanceScale } from "react-icons/fa";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 import { format, subDays } from "date-fns";
+
+import { fetchToken } from "../apis/token-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -204,7 +205,7 @@ const Atendimento = () => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à função fetchAgenda com o novo token de acesso
           const agendaData = await fetchAgenda(
             dateGlobal,
@@ -304,11 +305,18 @@ const Atendimento = () => {
       console.log("condPagamentos", condPagamentos);
     } catch (error) {
       console.error(error);
+
+      console.log("COND PAGAMENTOS NO ATENDIMENTO, ===>", error);
       // Verificar se o erro é de autorização (401 Unauthorized)
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          console.log("entrou no try do cond pagamentos, ===>");
+          const newToken = await fetchToken(username, password);
+          console.log(
+            "NEW TOKEN NO COND PAGAMENTOS, ===>",
+            newToken.access_token
+          );
           // Refazer a chamada à função fetchCondPagamentos com o novo token de acesso
           const response = await fetchCondPagamentos(newToken.access_token);
           setCondPagamentos(response.items); // Supondo que o array de objetos esteja em response.items
@@ -338,7 +346,7 @@ const Atendimento = () => {
       if (error.response && error.response.status === 401) {
         // Solicitar um novo token de acesso
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           // Refazer a chamada à função fetchTransportadoras com o novo token de acesso
           const response = await fetchTransportadoras(newToken.access_token);
           setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
@@ -376,7 +384,7 @@ const Atendimento = () => {
       console.error(error);
       if (error.response && error.response.status === 401) {
         try {
-          const newToken = await getToken(username, password);
+          const newToken = await fetchToken(username, password);
           const response = await fetchHistoricoProdutos(
             (clienteHistPedidos = rowItem.codCliente),
             dataInicial,
@@ -415,7 +423,7 @@ const Atendimento = () => {
         if (error.response && error.response.status === 401) {
           // Solicitar um novo token de acesso
           try {
-            const newToken = await getToken(username, password);
+            const newToken = await fetchToken(username, password);
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
             await getCondPagamentos(newToken.access_token);
             await getTransportadoras(newToken.access_token);
