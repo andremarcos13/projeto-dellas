@@ -5,6 +5,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   Modal,
   Spinner,
   Tab,
@@ -699,14 +700,14 @@ const Atendimento = () => {
                 <Divider w={520} mt={1} borderWidth={2} />
               </Text>
             </Box> */}
-                  <Grid templateColumns="repeat(5, 1fr)" gap={3}>
+                  <Grid templateColumns="repeat(4, 1fr)" gap={3}>
                     <GridItem colSpan={1}>
                       <Box
                         bg="white"
                         p="4"
                         borderRadius="10px"
                         maxW="350px"
-                        minH="590px"
+                        minH="605px"
                         shadow="lg"
                         _hover={{
                           transform: "scale(1.01)",
@@ -902,66 +903,30 @@ const Atendimento = () => {
                                 }`}
                               </Box>
                             </Text>
-                          </>
-                        )}
-                      </Box>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                      <Box
-                        bg="white"
-                        _hover={{
-                          boxShadow: "lg",
-                          borderColor: "black",
-                          transform: "scale(1.01)",
-                        }} // border="1px"
-                        p="4"
-                        borderRadius="10px"
-                        maxW="350px"
-                        minH="590px"
-                        shadow="lg"
-                      >
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mb={2}
-                          display="flex"
-                          alignItems="center"
-                        >
-                          <Icon as={IoStorefront} mr={2} /> Cliente:
-                        </Text>
-
-                        <Text
-                          color="black"
-                          ml="30px"
-                          mb={2}
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.nomeCliente}
-                        </Text>
-                        <Text
-                          color="black"
-                          ml="30px"
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.nomeFantasia &&
-                            rowItem.nomeFantasia !== rowItem.nomeCliente && (
-                              <Text>{rowItem.nomeFantasia}</Text>
-                            )}
-                        </Text>
-                        {rowItem.emailCliente !== "" ? (
-                          <>
                             <Text
                               fontSize="lg"
                               fontWeight="bold"
                               color="black"
-                              mt={2}
                               mb={2}
+                              display="flex"
+                              alignItems="center"
+                              mt={2}
                             >
-                              <Icon as={MdEmail} mr={2} /> Email:
+                              <Icon as={IoStorefront} mr={2} /> Cliente:
+                            </Text>
+
+                            <Text
+                              color="black"
+                              ml="30px"
+                              mb={2}
+                              _hover={{
+                                transform: "scale(1.05)",
+                                boxShadow: "lg",
+                              }}
+                            >
+                              {rowItem.nomeCliente}
                             </Text>
                             <Text
-                              mb={2}
                               color="black"
                               ml="30px"
                               _hover={{
@@ -969,60 +934,93 @@ const Atendimento = () => {
                                 boxShadow: "lg",
                               }}
                             >
-                              {rowItem.emailCliente.toLowerCase()}
+                              {rowItem.nomeFantasia &&
+                                rowItem.nomeFantasia !==
+                                  rowItem.nomeCliente && (
+                                  <Text>{rowItem.nomeFantasia}</Text>
+                                )}
                             </Text>
+                            {rowItem.emailCliente !== "" ? (
+                              <>
+                                <Text
+                                  fontSize="lg"
+                                  fontWeight="bold"
+                                  color="black"
+                                  mt={2}
+                                  mb={2}
+                                >
+                                  <Icon as={MdEmail} mr={2} /> Email:
+                                </Text>
+                                <Text
+                                  mb={2}
+                                  color="black"
+                                  ml="30px"
+                                  _hover={{
+                                    transform: "scale(1.05)",
+                                    boxShadow: "lg",
+                                  }}
+                                >
+                                  {rowItem.emailCliente.toLowerCase()}
+                                </Text>
+                              </>
+                            ) : (
+                              ""
+                            )}
+                            <Text
+                              fontSize="lg"
+                              fontWeight="bold"
+                              color="black"
+                              mb={2}
+                              display="flex"
+                              alignItems="center"
+                            >
+                              <Icon as={FaBarcode} mr={2} /> Código Cliente:
+                            </Text>
+
+                            <Text
+                              ml="30px"
+                              color="black"
+                              mb={2}
+                              _hover={{
+                                transform: "scale(1.05)",
+                                boxShadow: "lg",
+                              }}
+                            >
+                              {rowItem.codCliente}
+                            </Text>
+                            <Text
+                              fontSize="lg"
+                              fontWeight="bold"
+                              color="black"
+                              mb={2}
+                              display="flex"
+                              alignItems="center"
+                            >
+                              <Icon as={FaCalendarDays} mr={2} /> Data do
+                              Cadastro:
+                            </Text>
+
+                            {rowItem.dataCadastro === "  /  /  " ? (
+                              <Text color="gray" ml="30px" mb={2}>
+                                Nenhuma data cadastrada
+                              </Text>
+                            ) : (
+                              <Text
+                                color="black"
+                                ml="30px"
+                                _hover={{
+                                  transform: "scale(1.05)",
+                                  boxShadow: "lg",
+                                }}
+                              >
+                                {rowItem.dataCadastro}
+                              </Text>
+                            )}
                           </>
-                        ) : (
-                          ""
-                        )}
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mb={2}
-                          display="flex"
-                          alignItems="center"
-                        >
-                          <Icon as={FaBarcode} mr={2} /> Código Cliente:
-                        </Text>
-
-                        <Text
-                          ml="30px"
-                          color="black"
-                          mb={2}
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.codCliente}
-                        </Text>
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mb={2}
-                          display="flex"
-                          alignItems="center"
-                        >
-                          <Icon as={FaCalendarDays} mr={2} /> Data do Cadastro:
-                        </Text>
-
-                        {rowItem.dataCadastro === "  /  /  " ? (
-                          <Text color="gray" ml="30px" mb={2}>
-                            Nenhuma data cadastrada
-                          </Text>
-                        ) : (
-                          <Text
-                            color="black"
-                            ml="30px"
-                            _hover={{
-                              transform: "scale(1.05)",
-                              boxShadow: "lg",
-                            }}
-                          >
-                            {rowItem.dataCadastro}
-                          </Text>
                         )}
                       </Box>
                     </GridItem>
+
                     <GridItem colSpan={1}>
                       <Box
                         bg="white"
@@ -1034,7 +1032,7 @@ const Atendimento = () => {
                         p="4"
                         borderRadius="10px"
                         maxW="350px"
-                        minH="590px"
+                        minH="605px"
                         shadow="lg"
                       >
                         <Text
@@ -1148,7 +1146,7 @@ const Atendimento = () => {
                             p="4"
                             borderRadius="10px"
                             maxW="350px"
-                            minH="590px"
+                            minH="605px"
                             shadow="lg"
                           >
                             <Text
@@ -1322,8 +1320,9 @@ const Atendimento = () => {
                           }}
                           p="4"
                           borderRadius="10px"
-                          maxW="350px"
-                          minH="590px"
+                          maxW="700px"
+                          minW="700px"
+                          minH="605px"
                           shadow="lg"
                         >
                           <Text
@@ -1336,11 +1335,14 @@ const Atendimento = () => {
                           >
                             <Icon as={LuHistory} mr={2} /> Histórico de Compras:
                           </Text>
-                          <Box p={4}>
-                            <VStack spacing={4} align="flex-start">
+                          <Box p={2}>
+                            <HStack spacing={2} align="center">
                               <FormControl>
                                 <FormLabel>Data Inicial</FormLabel>
                                 <Input
+                                  focusBorderColor="purple.700"
+                                  fontSize="sm"
+                                  maxW="104px"
                                   type="text"
                                   value={dataInicial}
                                   onChange={(e) =>
@@ -1352,75 +1354,70 @@ const Atendimento = () => {
                               <FormControl>
                                 <FormLabel>Data Final</FormLabel>
                                 <Input
+                                  focusBorderColor="purple.700"
+                                  fontSize="sm"
+                                  maxW="104px"
                                   type="text"
                                   value={dataFinal}
                                   onChange={(e) => setDataFinal(e.target.value)}
                                   placeholder="dd/mm/aaaa"
                                 />
                               </FormControl>
-                              <Button colorScheme="blue" onClick={handleSubmit}>
+                              <Button
+                                minW="80px"
+                                alignSelf="flex-end"
+                                colorScheme="blue"
+                                variant="outline"
+                                onClick={handleSubmit}
+                              >
                                 Buscar
                               </Button>
-                            </VStack>
+                            </HStack>
                           </Box>
-                          <VStack spacing={4} align="stretch">
-                            {historicoProdutos.map((pedido, index) => (
-                              <Box
-                                key={index}
-                                p={4}
-                                borderWidth={1}
-                                borderRadius="md"
-                                mb={2}
-                              >
-                                <Text fontWeight="bold">
-                                  Pedido: {pedido.pedido}
-                                </Text>
-                                <Text>Vendedor: {pedido.nome_vendedor}</Text>
-                                <Text>Data de Emissão: {pedido.emissao}</Text>
-                                <Text>Cliente: {pedido.nome_cliente}</Text>
-                                <Text>Status: {pedido.status}</Text>
-                                <Text>Valor: R$ {pedido.valor.toFixed(2)}</Text>
-                                <Text>Volume: {pedido.volume}</Text>
-
-                                <Box
-                                  mt={2}
-                                  p={2}
-                                  borderWidth={1}
-                                  borderRadius="md"
-                                >
-                                  <Text fontWeight="bold">Itens:</Text>
-                                  {pedido.itens.map((item, itemIndex) => (
-                                    <Box
-                                      key={itemIndex}
-                                      mt={2}
-                                      p={2}
-                                      borderWidth={1}
-                                      borderRadius="md"
-                                    >
-                                      <Text>
-                                        Produto: {item.descricao_produto}
-                                      </Text>
-                                      <Text>Código: {item.cod_produto}</Text>
-                                      <Text>
-                                        Fornecedor: {item.nome_fornecedor}
-                                      </Text>
-                                      <Text>
-                                        Quantidade: {item.qtde_produto}
-                                      </Text>
-                                      <Text>
-                                        Preço Unitário: R${" "}
-                                        {item.preco_unitario.toFixed(2)}
-                                      </Text>
-                                      <Text>
-                                        Valor: R${" "}
-                                        {item.valor_produto.toFixed(2)}
-                                      </Text>
-                                    </Box>
-                                  ))}
-                                </Box>
-                              </Box>
-                            ))}
-                          </VStack>
+                          <Box
+                            p={2}
+                            overflowY="auto"
+                            maxHeight="450px"
+                            sx={{
+                              "&::-webkit-scrollbar": {
+                                width: "8px",
+                                height: "8px",
+                                backgroundColor: "white",
+                              },
+                              "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: "#888",
+                                borderRadius: "4px",
+                              },
+                              "&::-webkit-scrollbar-thumb:hover": {
+                                backgroundColor: "#555",
+                              },
+                            }}
+                          >
+                            <Table variant="striped" colorScheme="purple">
+                              <Thead>
+                                <Th>Produto</Th>
+                                <Th>Valor Unitário</Th>
+                                <Th>Volume</Th>
+                                <Th>Código</Th>
+                              </Thead>
+                              <Tbody>
+                                {historicoProdutos.map((pedido, index) => (
+                                  <React.Fragment key={index}>
+                                    {pedido.itens.map((item, itemIndex) => (
+                                      <Tr key={itemIndex}>
+                                        <Td>{item.descricao_produto}</Td>
+                                        <Td>
+                                          {item.preco_unitario.toFixed(2)}
+                                        </Td>
+                                        <Td>{item.qtde_produto}</Td>
+                                        <Td>{item.cod_produto}</Td>
+                                      </Tr>
+                                    ))}
+                                  </React.Fragment>
+                                ))}
+                              </Tbody>
+                            </Table>
+                          </Box>
                         </Box>
                       )}
                     </GridItem>
@@ -1434,8 +1431,8 @@ const Atendimento = () => {
                         }} // border="1px"
                         p="4"
                         borderRadius="10px"
-                        maxW="350px"
-                        minH="590px"
+                        minW="350px"
+                        minH="605px"
                         shadow="lg"
                       >
                         <Text
@@ -1464,8 +1461,8 @@ const Atendimento = () => {
                         bg="white"
                         p="4"
                         borderRadius="10px"
-                        maxW="350px"
-                        minH="590px"
+                        minW="350px"
+                        minH="605px"
                         shadow="lg"
                         _hover={{
                           transform: "scale(1.01)",
@@ -1499,7 +1496,7 @@ const Atendimento = () => {
                         p="4"
                         borderRadius="10px"
                         maxW="350px"
-                        minH="590px"
+                        minH="605px"
                         shadow="lg"
                         _hover={{
                           transform: "scale(1.01)",
@@ -1562,7 +1559,7 @@ const Atendimento = () => {
                         p="4"
                         borderRadius="10px"
                         maxW="350px"
-                        minH="590px"
+                        minH="605px"
                         shadow="lg"
                         _hover={{
                           transform: "scale(1.01)",
