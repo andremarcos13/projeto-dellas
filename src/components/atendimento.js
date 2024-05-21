@@ -724,25 +724,51 @@ const Atendimento = () => {
                           // border: "1px",
                         }}
                       >
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          color="black"
-                          mb={2}
-                          display="flex"
-                          alignItems="center"
-                        >
-                          <Icon as={FaUser} mr={2} /> Contato:
-                        </Text>
+                        <HStack>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="black"
+                            mb={2}
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Icon as={FaUser} mr={2} /> Contato:
+                          </Text>
 
-                        <Text
-                          ml="30px"
-                          color="black"
-                          mb={2}
-                          _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                        >
-                          {rowItem.nomeContato}
-                        </Text>
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem.nomeContato}
+                          </Text>
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="black"
+                            mb={2}
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Icon as={FaUserTag} mr={2} /> Vendedor:
+                          </Text>
+
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem.vendedor}
+                          </Text>
+                        </HStack>
+
                         <Text
                           fontSize="lg"
                           fontWeight="bold"
@@ -819,28 +845,7 @@ const Atendimento = () => {
                             ) : (
                               ""
                             )}
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="black"
-                              mb={2}
-                              display="flex"
-                              alignItems="center"
-                            >
-                              <Icon as={FaUserTag} mr={2} /> Vendedor:
-                            </Text>
 
-                            <Text
-                              color="black"
-                              ml="30px"
-                              mb={2}
-                              _hover={{
-                                transform: "scale(1.05)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              {rowItem.vendedor}
-                            </Text>
                             <Text
                               fontSize="lg"
                               fontWeight="bold"
@@ -1376,6 +1381,7 @@ const Atendimento = () => {
                                 alignSelf="flex-end"
                                 colorScheme="blue"
                                 variant="outline"
+                                isLoading={isLoading}
                                 onClick={handleSubmit}
                               >
                                 Buscar
