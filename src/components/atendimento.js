@@ -1410,9 +1410,9 @@ const Atendimento = () => {
                             <Table variant="striped" colorScheme="purple">
                               <Thead>
                                 <Th>Produto</Th>
+                                <Th>Código</Th>
                                 <Th>Valor Unitário</Th>
                                 <Th>Volume</Th>
-                                <Th>Código</Th>
                               </Thead>
                               <Tbody>
                                 {historicoProdutos.map((pedido, index) => (
@@ -1420,11 +1420,11 @@ const Atendimento = () => {
                                     {pedido.itens.map((item, itemIndex) => (
                                       <Tr key={itemIndex}>
                                         <Td>{item.descricao_produto}</Td>
+                                        <Td>{item.cod_produto}</Td>
                                         <Td>
                                           {item.preco_unitario.toFixed(2)}
                                         </Td>
                                         <Td>{item.qtde_produto}</Td>
-                                        <Td>{item.cod_produto}</Td>
                                       </Tr>
                                     ))}
                                   </React.Fragment>
@@ -1554,6 +1554,24 @@ const Atendimento = () => {
                           }}
                         >
                           <Icon as={FcFinePrint} mr={2} /> Títulos Baixados
+                        </Button>
+                        <Button
+                          fontSize="lg"
+                          fontWeight="bold"
+                          bg="#822AA2"
+                          color="white"
+                          mb={2}
+                          display="flex"
+                          alignItems="center"
+                          w="320px"
+                          _hover={{
+                            transform: "scale(1.01)",
+                            boxShadow: "lg",
+                            borderColor: "black",
+                            // border: "1px",
+                          }}
+                        >
+                          <Icon as={FcDocument} mr={2} /> Títulos Faturados
                         </Button>
                       </Box>
                     </GridItem>
