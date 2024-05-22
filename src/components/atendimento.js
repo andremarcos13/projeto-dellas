@@ -15,6 +15,7 @@ import {
   TabPanels,
   Tabs,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -644,6 +645,14 @@ const Atendimento = () => {
   const pedidosFiltrados = historicoProdutos.filter((pedido) =>
     showTipo === "NF" ? pedido.tipo === "NF" : pedido.tipo !== "NF"
   );
+
+  const [selectedPedido, setSelectedPedido] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleRowClick = (pedido) => {
+    setSelectedPedido(pedido);
+    onOpen();
+  };
 
   return (
     <Box
@@ -1438,16 +1447,23 @@ const Atendimento = () => {
                                   <Th>Tipo</Th>
                                   <Th>Código</Th>
                                   <Th>Emissão</Th>
+                                  <Th>Status</Th>
                                   <Th>Valor</Th>
                                   <Th>Volume</Th>
                                 </Tr>
                               </Thead>
                               <Tbody>
                                 {pedidosFiltrados.map((pedido, index) => (
-                                  <Tr key={index}>
+                                  <Tr
+                                    key={index}
+                                    onClick={() => handleRowClick(pedido)}
+                                    style={{ cursor: "pointer" }}
+                                    _hover={{ transform: "scale(1.05)" }}
+                                  >
                                     <Td>{pedido.tipo}</Td>
                                     <Td>{pedido.numero}</Td>
                                     <Td>{pedido.emissao}</Td>
+                                    <Td>{pedido.status}</Td>
                                     <Td>{pedido.valor}</Td>
                                     <Td>{pedido.volume}</Td>
                                   </Tr>
@@ -1457,6 +1473,51 @@ const Atendimento = () => {
                           </Box>
                         </Box>
                       )}
+                      <Modal
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        size="6xl"
+                        isCentered
+                      >
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>
+                            Detalhes -{showTipo === "NF" ? "NF" : "Pedido"}
+                          </ModalHeader>
+                          <ModalCloseButton />
+                          <ModalBody overflowY="auto">
+                            {selectedPedido && (
+                              <Table variant="striped" colorScheme="gray">
+                                <Thead>
+                                  <Tr>
+                                    <Th>Descrição</Th>
+                                    <Th>Código Produto</Th>
+                                    <Th>Valor Unitário</Th>
+                                    <Th>Quantidade</Th>
+                                    <Th>Volume</Th>
+                                  </Tr>
+                                </Thead>
+                                <Tbody>
+                                  {selectedPedido.itens.map((item, index) => (
+                                    <Tr key={index}>
+                                      <Td>{item.descricao_produto}</Td>
+                                      <Td>{item.cod_produto}</Td>
+                                      <Td>{item.preco_unitario.toFixed(2)}</Td>
+                                      <Td>{item.qtde_produto}</Td>
+                                      <Td>{item.volume_produto}</Td>
+                                    </Tr>
+                                  ))}
+                                </Tbody>
+                              </Table>
+                            )}
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button colorScheme="red" mr={3} onClick={onClose}>
+                              Fechar
+                            </Button>
+                          </ModalFooter>
+                        </ModalContent>
+                      </Modal>
                     </GridItem>
                     {/* <GridItem colSpan={1}>
                       <Box
