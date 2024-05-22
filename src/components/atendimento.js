@@ -1458,7 +1458,12 @@ const Atendimento = () => {
                                     key={index}
                                     onClick={() => handleRowClick(pedido)}
                                     style={{ cursor: "pointer" }}
-                                    _hover={{ transform: "scale(1.05)" }}
+                                    _hover={{
+                                      boxShadow: "lg",
+                                      borderColor: "black",
+                                      transform: "scale(1.05)",
+                                      fontWeight: "bold", // Adiciona o negrito ao passar o mouse
+                                    }}
                                   >
                                     <Td>{pedido.tipo}</Td>
                                     <Td>{pedido.numero}</Td>
