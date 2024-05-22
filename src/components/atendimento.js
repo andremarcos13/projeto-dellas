@@ -1,6 +1,7 @@
 import {
   Alert,
   AlertIcon,
+  Badge,
   Center,
   FormControl,
   FormErrorMessage,
@@ -76,6 +77,7 @@ import { VscTools } from "react-icons/vsc";
 import { FaBalanceScale } from "react-icons/fa";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 import { format, subDays } from "date-fns";
+import { BiShow } from "react-icons/bi";
 
 import { fetchToken } from "../apis/token-api";
 
@@ -636,6 +638,12 @@ const Atendimento = () => {
       globalToken.access_token
     );
   };
+
+  const [showTipo, setShowTipo] = useState("NF");
+
+  const pedidosFiltrados = historicoProdutos.filter((pedido) =>
+    showTipo === "NF" ? pedido.tipo === "NF" : pedido.tipo !== "NF"
+  );
 
   return (
     <Box
@@ -1387,6 +1395,23 @@ const Atendimento = () => {
                                 Buscar
                               </Button>
                             </HStack>
+                            <Button
+                              mt={5}
+                              cursor="pointer"
+                              minW="80px"
+                              alignSelf="flex-end"
+                              onClick={() =>
+                                setShowTipo(
+                                  showTipo === "NF" ? "Pedidos" : "NF"
+                                )
+                              }
+                              mb={4}
+                              colorScheme="purple"
+                              variant="outline"
+                              leftIcon={<BiShow />}
+                            >
+                              Mostrar {showTipo === "NF" ? "Pedidos" : "NF"}
+                            </Button>
                           </Box>
                           <Box
                             p={2}
@@ -1409,25 +1434,23 @@ const Atendimento = () => {
                           >
                             <Table variant="striped" colorScheme="purple">
                               <Thead>
-                                <Th>Produto</Th>
-                                <Th>Código</Th>
-                                <Th>Valor Unitário</Th>
-                                <Th>Volume</Th>
+                                <Tr>
+                                  <Th>Tipo</Th>
+                                  <Th>Código</Th>
+                                  <Th>Emissão</Th>
+                                  <Th>Valor</Th>
+                                  <Th>Volume</Th>
+                                </Tr>
                               </Thead>
                               <Tbody>
-                                {historicoProdutos.map((pedido, index) => (
-                                  <React.Fragment key={index}>
-                                    {pedido.itens.map((item, itemIndex) => (
-                                      <Tr key={itemIndex}>
-                                        <Td>{item.descricao_produto}</Td>
-                                        <Td>{item.cod_produto}</Td>
-                                        <Td>
-                                          {item.preco_unitario.toFixed(2)}
-                                        </Td>
-                                        <Td>{item.qtde_produto}</Td>
-                                      </Tr>
-                                    ))}
-                                  </React.Fragment>
+                                {pedidosFiltrados.map((pedido, index) => (
+                                  <Tr key={index}>
+                                    <Td>{pedido.tipo}</Td>
+                                    <Td>{pedido.numero}</Td>
+                                    <Td>{pedido.emissao}</Td>
+                                    <Td>{pedido.valor}</Td>
+                                    <Td>{pedido.volume}</Td>
+                                  </Tr>
                                 ))}
                               </Tbody>
                             </Table>
