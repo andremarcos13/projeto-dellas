@@ -28,6 +28,13 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Td,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  TableContainer,
+  Tbody,
 } from "@chakra-ui/react";
 import { FaPlus, FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -64,6 +71,15 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const { globalToken, setGlobalToken } = useAppContext();
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
+
+  const [descriptionFilter, setDescriptionFilter] = useState("");
+  const [codeFilter, setCodeFilter] = useState("");
+
+  const filteredResults = searchResults.filter(
+    (item) =>
+      item.descricao.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
+      item.codigo.toLowerCase().includes(codeFilter.toLowerCase())
+  );
 
   const handleSearch = async () => {
     setSelectedItem("");
@@ -287,7 +303,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       </Button>
       <Modal isOpen={isModalOpen} onClose={closeModal} size="full">
         <ModalOverlay />
-        <ModalContent maxW="60%" bg="gray.100">
+        <ModalContent bg="gray.100">
           <ModalHeader bg="#2C0E37" color="white">
             <Flex align="center">
               <MdPersonSearch />
@@ -309,8 +325,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
                 focusBorderColor="purple.700"
+                mb={2}
               />
               <Button
+                mb={2}
                 ml={4}
                 mt="10px"
                 onClick={handleSearch}
@@ -327,76 +345,124 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                 <Spinner mt={4} />
               </Center>
             ) : searchResults.length > 0 ? (
-              <Grid
-                mt={4}
-                templateColumns="repeat(auto-fit, minmax(200px, 1fr))"
-                gap={4}
+              <TableContainer
+                maxH="400px"
+                overflowY="auto"
+                sx={{
+                  "&::-webkit-scrollbar": {
+                    width: "8px",
+                    height: "8px",
+                    backgroundColor: "white",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "#888",
+                    borderRadius: "4px",
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                    backgroundColor: "#555",
+                  },
+                }}
               >
-                {searchResults.map((item, index) => (
-                  <Box
-                    bg="white"
-                    key={index}
-                    border="2px"
-                    p={2}
-                    borderColor={selectedItem === item ? "#6b3181" : "gray.200"} // Altera a cor da borda com base no item selecionado
-                    borderRadius="10px"
-                    boxShadow="md"
-                    _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-                    mb={4} // Espaçamento mínimo entre os itens
-                    onClick={() => handleItemClick(item)} // Adiciona o manipulador de clique
-                    cursor="pointer" // Altera o cursor ao passar por cima
-                  >
-                    <Flex
-                      direction="column"
-                      height="100%" // Garante que o conteúdo do Flex ocupe toda a altura
-                    >
-                      <Text
-                        fontWeight="bold"
-                        fontSize="md"
-                        mb={2}
-                        bg="#2C0E37"
-                        color="white"
-                        borderRadius="10px"
-                        p={3}
+                <Table bg="white" variant="striped" colorScheme="gray">
+                  <Thead bg="#6b3181">
+                    <Tr>
+                      <Th color="white" fontWeight="semibold" width="40%">
+                        <Flex direction="column">
+                          <span>Descrição</span>
+                          <Input
+                            focusBorderColor="purple.200"
+                            maxW="100%"
+                            bg="white"
+                            color="black"
+                            placeholder="Filtrar"
+                            size="sm"
+                            value={descriptionFilter}
+                            onChange={(e) =>
+                              setDescriptionFilter(e.target.value)
+                            }
+                            mt={2}
+                          />
+                        </Flex>
+                      </Th>
+                      <Th color="white" fontWeight="semibold" width="20%">
+                        <Flex direction="column">
+                          <span>Código</span>
+                          <Input
+                            focusBorderColor="purple.200"
+                            maxW="100%"
+                            bg="white"
+                            color="black"
+                            placeholder="Filtrar"
+                            size="sm"
+                            value={codeFilter}
+                            onChange={(e) => setCodeFilter(e.target.value)}
+                            mt={2}
+                          />
+                        </Flex>
+                      </Th>
+                      <Th color="white" fontWeight="semibold" width="20%">
+                        Tipo
+                      </Th>
+                      <Th color="white" fontWeight="semibold" width="20%">
+                        Unidade de Medida
+                      </Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {filteredResults.map((item, index) => (
+                      <Tr
+                        key={index}
+                        border="2px"
+                        borderColor={
+                          selectedItem === item ? "#6b3181" : "gray.200"
+                        }
+                        onClick={() => handleItemClick(item)}
+                        cursor="pointer"
+                        _hover={{ transform: "scale(1.01)", boxShadow: "lg" }}
                       >
-                        {item.descricao.includes(searchTerm) ? (
-                          <>
-                            {item.descricao
-                              .split(searchTerm)
-                              .map((part, index) => (
-                                <span key={index}>
-                                  {part}
-                                  {index !==
-                                    item.descricao.split(searchTerm).length -
-                                      1 && (
-                                    <span style={{ color: "red" }}>
-                                      {searchTerm}
+                        <Td width="40%">
+                          <Text
+                            fontSize="md"
+                            color="black"
+                            borderRadius="10px"
+                            p={1}
+                          >
+                            {item.descricao.includes(descriptionFilter) ? (
+                              <>
+                                {item.descricao
+                                  .split(descriptionFilter)
+                                  .map((part, index) => (
+                                    <span key={index}>
+                                      {part}
+                                      {index !==
+                                        item.descricao.split(descriptionFilter)
+                                          .length -
+                                          1 && (
+                                        <span style={{ color: "red" }}>
+                                          <strong>{descriptionFilter}</strong>
+                                        </span>
+                                      )}
                                     </span>
-                                  )}
-                                </span>
-                              ))}
-                          </>
-                        ) : (
-                          item.descricao
-                        )}
-                      </Text>
-                      <Flex alignItems="center">
-                        <Text as="u" p={1} borderRadius="10px" mb={1}>
-                          Código:
-                        </Text>
-                        <Text ml={1}>
-                          {item.codigo.includes(searchTerm) ? (
+                                  ))}
+                              </>
+                            ) : (
+                              item.descricao
+                            )}
+                          </Text>
+                        </Td>
+                        <Td width="20%">
+                          {item.codigo.includes(codeFilter) ? (
                             <>
                               {item.codigo
-                                .split(searchTerm)
+                                .split(codeFilter)
                                 .map((part, index) => (
                                   <span key={index}>
                                     {part}
                                     {index !==
-                                      item.descricao.split(searchTerm).length -
+                                      item.codigo.split(codeFilter).length -
                                         1 && (
-                                      <span style={{ color: "#822AA2" }}>
-                                        <strong>{searchTerm}</strong>
+                                      <span style={{ color: "red" }}>
+                                        <strong>{codeFilter}</strong>
                                       </span>
                                     )}
                                   </span>
@@ -405,28 +471,19 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                           ) : (
                             item.codigo
                           )}
-                        </Text>
-                      </Flex>
-                      <Flex alignItems="center">
-                        <Text as="u" p={1} borderRadius="10px" mb={1}>
-                          Tipo:
-                        </Text>
-                        <Text ml={1}>{item.tipo}</Text>
-                      </Flex>
-                      <Flex alignItems="center">
-                        <Text as="u" p={1} borderRadius="10px" mb={1}>
-                          Unidade de Medida:
-                        </Text>
-                        <Text ml={1}>{item.um}</Text>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                ))}
-              </Grid>
+                        </Td>
+                        <Td width="20%">{item.tipo}</Td>
+                        <Td width="20%">{item.um}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
             ) : (
               <Text mt={4}>Nenhum resultado encontrado.</Text>
             )}
             <Button
+              mt={4}
               onClick={loadMoreResults}
               isDisabled={!hasNextPage || isLoading}
               variant="outline"
