@@ -1,26 +1,33 @@
 import axios from "axios";
 
-// Configuração do cabeçalho
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Basic bmV4dXMuZGV2OmRlbGxhc0BuZXh1cw==",
-  },
-};
+const historicoTitulos = async (
+  token,
+  emissaoInicial,
+  emissaoFinal,
+  vencimentoInicial,
+  vencimentoFinal,
+  situacao
+) => {
+  // Configuração do cabeçalho com o token passado como argumento
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-// Dados para a requisição
-const data = {
-  emissao_inicial: "01/06/2023",
-  emissao_final: "31/12/2023",
-  vencimento_inicial: "01/01/2021",
-  vencimento_final: "31/12/2025",
-  pagamento_inicial: "",
-  pagamento_final: "",
-  situacao: "A",
-};
+  // Dados para a requisição
+  const data = {
+    emissao_inicial: emissaoInicial,
+    emissao_final: emissaoFinal,
+    vencimento_inicial: vencimentoInicial,
+    vencimento_final: vencimentoFinal,
+    pagamento_inicial: "",
+    pagamento_final: "",
+    situacao: situacao,
+  };
 
-// Função para fazer a requisição
-const historicoTitulos = async () => {
+  // Tentativa de fazer a requisição
   try {
     const response = await axios.post(
       "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/historico_titulos",
