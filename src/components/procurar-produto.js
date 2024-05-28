@@ -501,9 +501,9 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                   <>
                     <Box
                       mt={4}
-                      bg="#822AA2"
+                      bg="white"
                       p={4}
-                      color="white"
+                      color="#822AA2"
                       mb={5}
                       border="2px"
                       borderRadius={10}

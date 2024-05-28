@@ -79,6 +79,7 @@ import { FaBalanceScale } from "react-icons/fa";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 import { format, subDays } from "date-fns";
 import { BiShow } from "react-icons/bi";
+import { FcDataConfiguration } from "react-icons/fc";
 
 import { fetchToken } from "../apis/token-api";
 
@@ -1619,6 +1620,17 @@ const Atendimento = () => {
                           // border: "1px",
                         }}
                       >
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          color="black"
+                          mb={2}
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Icon as={FcDataConfiguration} mr={2} /> Títulos:
+                        </Text>
+
                         <HStack spacing={2} align="center">
                           <FormControl>
                             <FormLabel>Data Inicial</FormLabel>
