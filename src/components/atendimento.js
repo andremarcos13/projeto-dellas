@@ -118,6 +118,9 @@ const Atendimento = () => {
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
 
+  const [dataInicial2, setDataInicial2] = useState("");
+  const [dataFinal2, setDataFinal2] = useState("");
+
   const [historicoProdutos, setHistoricoProdutos] = useState([]);
 
   const navigate = useNavigate();
@@ -415,6 +418,9 @@ const Atendimento = () => {
       setDataFinal(today);
       setDataInicial(ninetyDaysAgo);
 
+      setDataFinal2(today);
+      setDataInicial2(ninetyDaysAgo);
+
       try {
         await getCondPagamentos(globalToken.access_token);
         await getTransportadoras(globalToken.access_token);
@@ -638,6 +644,11 @@ const Atendimento = () => {
       dataFinal,
       globalToken.access_token
     );
+  };
+
+  const handleSubmit2 = (event) => {
+    event.preventDefault(); // Previne o comportamento padrão do formulário
+    console.log("submit2", dataFinal2, dataInicial2);
   };
 
   const [showTipo, setShowTipo] = useState("NF");
@@ -1608,7 +1619,44 @@ const Atendimento = () => {
                           // border: "1px",
                         }}
                       >
+                        <HStack spacing={2} align="center">
+                          <FormControl>
+                            <FormLabel>Data Inicial</FormLabel>
+                            <Input
+                              focusBorderColor="purple.700"
+                              fontSize="sm"
+                              maxW="104px"
+                              type="text"
+                              value={dataInicial2}
+                              onChange={(e) => setDataInicial2(e.target.value)}
+                              placeholder="dd/mm/aaaa"
+                            />
+                          </FormControl>
+                          <FormControl>
+                            <FormLabel>Data Final</FormLabel>
+                            <Input
+                              focusBorderColor="purple.700"
+                              fontSize="sm"
+                              maxW="104px"
+                              type="text"
+                              value={dataFinal2}
+                              onChange={(e) => setDataFinal2(e.target.value)}
+                              placeholder="dd/mm/aaaa"
+                            />
+                          </FormControl>
+                          <Button
+                            minW="80px"
+                            alignSelf="flex-end"
+                            colorScheme="blue"
+                            variant="outline"
+                            isLoading={isLoading}
+                            onClick={handleSubmit2}
+                          >
+                            Buscar
+                          </Button>
+                        </HStack>
                         <Button
+                          mt="20px"
                           fontSize="lg"
                           fontWeight="bold"
                           bg="#822AA2"
