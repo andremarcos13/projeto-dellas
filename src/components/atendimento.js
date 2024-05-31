@@ -80,6 +80,7 @@ import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 import { format, subDays } from "date-fns";
 import { BiShow } from "react-icons/bi";
 import { FcDataConfiguration } from "react-icons/fc";
+import { FcComboChart } from "react-icons/fc";
 
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
@@ -1772,7 +1773,7 @@ const Atendimento = () => {
                         </Button>
 
                         <Modal
-                          size="full"
+                          size="6xl"
                           isOpen={isResponseModalOpen}
                           onClose={() => setIsResponseModalOpen(false)}
                           sx={{
@@ -1798,7 +1799,12 @@ const Atendimento = () => {
                         >
                           <ModalOverlay />
                           <ModalContent>
-                            <ModalHeader>{modalTitle}</ModalHeader>
+                            <ModalHeader bg="#2C0E37" color="white">
+                              <Flex align="center">
+                                <FcComboChart />
+                                <Text ml="15px">{modalTitle}</Text>
+                              </Flex>
+                            </ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
                               {responseData ? (
