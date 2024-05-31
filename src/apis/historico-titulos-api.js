@@ -43,6 +43,7 @@ const historicoTitulos = async (
     return response.data; // Retorna os dados da resposta
   } catch (error) {
     console.error("Erro ao fazer a requisição:", error);
+    throw error; // Lança novamente o erro para que seja tratado externamente
   }
 };
 

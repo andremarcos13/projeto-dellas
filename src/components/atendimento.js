@@ -697,21 +697,41 @@ const Atendimento = () => {
 
       console.log("Resposta da API:", responseApi);
       setModalTitle(title); // Define o título do modal com base no botão clicado
-
       setResponseData(responseApi);
       setIsResponseModalOpen(true); // Abrir o modal após receber a resposta
     } catch (error) {
       console.error("Erro ao fazer a requisição:", error);
-      setResponseData({ error: error.message });
-      setIsResponseModalOpen(true);
+      if (error.response && error.response.status === 401) {
+        console.log("Recebido status 401, tentando obter um novo token...");
+        try {
+          const newToken = await fetchToken(username, password);
+          console.log("Novo token obtido com sucesso:", newToken);
+          console.log("Refazendo a requisição com o novo token...");
+          const newResponseApi = await historicoTitulos(
+            newToken.access_token,
+            codigoCliente,
+            loja,
+            emissaoInicial,
+            emissaoFinal,
+            vencimentoInicial,
+            vencimentoFinal,
+            situacao
+          );
+          console.log("Resposta da nova requisição:", newResponseApi);
+          setModalTitle(title); // Define o título do modal com base no botão clicado
+          setResponseData(newResponseApi);
+          setIsResponseModalOpen(true);
+        } catch (error) {
+          console.error("Erro ao obter novo token de acesso:", error);
+          setResponseData({ error: error.message });
+          setIsResponseModalOpen(true);
+        }
+      } else {
+        setResponseData({ error: error.message });
+        setIsResponseModalOpen(true);
+      }
     }
   };
-
-  useEffect(() => {
-    if (responseData) {
-      console.log("Dados atualizados:", responseData);
-    }
-  }, [responseData]);
 
   return (
     <Box
