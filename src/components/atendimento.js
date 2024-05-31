@@ -82,6 +82,7 @@ import { BiShow } from "react-icons/bi";
 import { FcDataConfiguration } from "react-icons/fc";
 
 import { fetchToken } from "../apis/token-api";
+import historicoTitulos from "../apis/historico-titulos-api";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -110,6 +111,7 @@ const Atendimento = () => {
     rowItem.obsCliente
   );
   const [errorMessage, setErrorMessage] = useState(""); // Estado para armazenar a mensagem de erro
+  const [responseData, setResponseData] = useState([]);
 
   const { globalToken, setGlobalToken } = useAppContext();
 
@@ -438,6 +440,7 @@ const Atendimento = () => {
             await getCondPagamentos(newToken.access_token);
             await getTransportadoras(newToken.access_token);
             await getHistoricoProdutos(newToken.access_token);
+            await historicoTitulos(newToken.access_token);
           } catch (error) {
             console.error("Erro ao obter novo token de acesso:", error);
             // Lidar com o erro ao obter o novo token de acesso
@@ -660,11 +663,51 @@ const Atendimento = () => {
 
   const [selectedPedido, setSelectedPedido] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen2, onOpen2, onClose2 } = useDisclosure();
 
   const handleRowClick = (pedido) => {
     setSelectedPedido(pedido);
     onOpen();
   };
+
+  const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
+
+  const handleSubmit3 = async (situacao) => {
+    const emissaoInicial = dataInicial2;
+    const emissaoFinal = dataFinal2;
+    const vencimentoInicial = "";
+    const vencimentoFinal = "";
+    const codigoCliente = rowItem.codCliente;
+    const loja = "01";
+    const token = globalToken.access_token;
+
+    try {
+      const responseApi = await historicoTitulos(
+        token,
+        codigoCliente,
+        loja,
+        emissaoInicial,
+        emissaoFinal,
+        vencimentoInicial,
+        vencimentoFinal,
+        situacao
+      );
+
+      console.log("Resposta da API:", responseApi);
+      setResponseData(responseApi);
+      setIsResponseModalOpen(true); // Abrir o modal após receber a resposta
+    } catch (error) {
+      console.error("Erro ao fazer a requisição:", error);
+      setResponseData({ error: error.message });
+      setIsResponseModalOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (responseData) {
+      console.log("Dados atualizados:", responseData);
+    }
+  }, [responseData]);
 
   return (
     <Box
@@ -1656,16 +1699,16 @@ const Atendimento = () => {
                               placeholder="dd/mm/aaaa"
                             />
                           </FormControl>
-                          <Button
+                          {/* <Button
                             minW="80px"
                             alignSelf="flex-end"
                             colorScheme="blue"
                             variant="outline"
                             isLoading={isLoading}
-                            onClick={handleSubmit2}
+                            onClick={() => handleSubmit3("A")}
                           >
                             Buscar
-                          </Button>
+                          </Button> */}
                         </HStack>
                         <Button
                           mt="20px"
@@ -1681,8 +1724,8 @@ const Atendimento = () => {
                             transform: "scale(1.01)",
                             boxShadow: "lg",
                             borderColor: "black",
-                            // border: "1px",
                           }}
+                          onClick={() => handleSubmit3("A")}
                         >
                           <Icon as={FcDocument} mr={2} /> Títulos Abertos
                         </Button>
@@ -1699,8 +1742,8 @@ const Atendimento = () => {
                             transform: "scale(1.01)",
                             boxShadow: "lg",
                             borderColor: "black",
-                            // border: "1px",
                           }}
+                          onClick={() => handleSubmit3("")}
                         >
                           <Icon as={FcFinePrint} mr={2} /> Títulos Baixados
                         </Button>
@@ -1717,11 +1760,108 @@ const Atendimento = () => {
                             transform: "scale(1.01)",
                             boxShadow: "lg",
                             borderColor: "black",
-                            // border: "1px",
                           }}
+                          onClick={() => handleSubmit3("F")}
                         >
                           <Icon as={FcDocument} mr={2} /> Títulos Faturados
                         </Button>
+
+                        <Modal
+                          isOpen={isResponseModalOpen}
+                          onClose={() => setIsResponseModalOpen(false)}
+                        >
+                          <ModalOverlay />
+                          <ModalContent>
+                            <ModalHeader>Resposta da API</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                              {responseData ? (
+                                Array.isArray(responseData) &&
+                                responseData.length > 0 ? (
+                                  <div>
+                                    {responseData.map((item, index) => (
+                                      <div key={index}>
+                                        <p>
+                                          <strong>Código:</strong> {item.codigo}
+                                        </p>
+                                        <p>
+                                          <strong>Loja:</strong> {item.loja}
+                                        </p>
+                                        <p>
+                                          <strong>Vendedor:</strong>{" "}
+                                          {item.vendedor}
+                                        </p>
+                                        <p>
+                                          <strong>Razão Social:</strong>{" "}
+                                          {item.razao_social}
+                                        </p>
+                                        <p>
+                                          <strong>CNPJ:</strong> {item.cnpj}
+                                        </p>
+                                        <p>
+                                          <strong>Título:</strong> {item.titulo}
+                                        </p>
+                                        <p>
+                                          <strong>Prefixo:</strong>{" "}
+                                          {item.prefixo}
+                                        </p>
+                                        <p>
+                                          <strong>Parcela:</strong>{" "}
+                                          {item.parcela}
+                                        </p>
+                                        <p>
+                                          <strong>Tipo:</strong> {item.tipo}
+                                        </p>
+                                        <p>
+                                          <strong>Emissão:</strong>{" "}
+                                          {item.emissao}
+                                        </p>
+                                        <p>
+                                          <strong>Vencimento:</strong>{" "}
+                                          {item.vencimento}
+                                        </p>
+                                        <p>
+                                          <strong>Data Baixa:</strong>{" "}
+                                          {item.dt_baixa}
+                                        </p>
+                                        <p>
+                                          <strong>Valor Original:</strong>{" "}
+                                          {item.valor_original}
+                                        </p>
+                                        <p>
+                                          <strong>Valor Pago:</strong>{" "}
+                                          {item.valor_pago}
+                                        </p>
+                                        <p>
+                                          <strong>Valor Saldo:</strong>{" "}
+                                          {item.valor_saldo}
+                                        </p>
+                                        <hr />
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <p>
+                                    {responseData.errorMessage ||
+                                      responseData.message ||
+                                      "Não foram encontrados registros"}
+                                  </p>
+                                )
+                              ) : (
+                                <p>Carregando...</p>
+                              )}
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button
+                                colorScheme="blue"
+                                mr={3}
+                                onClick={() => setIsResponseModalOpen(false)}
+                              >
+                                Fechar
+                              </Button>
+                            </ModalFooter>
+                          </ModalContent>
+                        </Modal>
                       </Box>
                     </GridItem>
                   </Grid>

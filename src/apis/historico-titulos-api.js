@@ -2,6 +2,8 @@ import axios from "axios";
 
 const historicoTitulos = async (
   token,
+  codigoCliente,
+  loja,
   emissaoInicial,
   emissaoFinal,
   vencimentoInicial,
@@ -18,6 +20,8 @@ const historicoTitulos = async (
 
   // Dados para a requisição
   const data = {
+    codigo: codigoCliente,
+    loja: loja,
     emissao_inicial: emissaoInicial,
     emissao_final: emissaoFinal,
     vencimento_inicial: vencimentoInicial,
