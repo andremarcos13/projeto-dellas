@@ -125,6 +125,7 @@ const Atendimento = () => {
   const [dataFinal2, setDataFinal2] = useState("");
 
   const [historicoProdutos, setHistoricoProdutos] = useState([]);
+  const [modalTitle, setModalTitle] = useState("");
 
   const navigate = useNavigate();
 
@@ -672,7 +673,7 @@ const Atendimento = () => {
 
   const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
 
-  const handleSubmit3 = async (situacao) => {
+  const handleSubmit3 = async (situacao, title) => {
     const emissaoInicial = dataInicial2;
     const emissaoFinal = dataFinal2;
     const vencimentoInicial = "";
@@ -694,6 +695,8 @@ const Atendimento = () => {
       );
 
       console.log("Resposta da API:", responseApi);
+      setModalTitle(title); // Define o título do modal com base no botão clicado
+
       setResponseData(responseApi);
       setIsResponseModalOpen(true); // Abrir o modal após receber a resposta
     } catch (error) {
@@ -1725,7 +1728,7 @@ const Atendimento = () => {
                             boxShadow: "lg",
                             borderColor: "black",
                           }}
-                          onClick={() => handleSubmit3("A")}
+                          onClick={() => handleSubmit3("A", "Títulos Abertos")}
                         >
                           <Icon as={FcDocument} mr={2} /> Títulos Abertos
                         </Button>
@@ -1743,7 +1746,7 @@ const Atendimento = () => {
                             boxShadow: "lg",
                             borderColor: "black",
                           }}
-                          onClick={() => handleSubmit3("")}
+                          onClick={() => handleSubmit3("", "Títulos Baixados")}
                         >
                           <Icon as={FcFinePrint} mr={2} /> Títulos Baixados
                         </Button>
@@ -1761,85 +1764,93 @@ const Atendimento = () => {
                             boxShadow: "lg",
                             borderColor: "black",
                           }}
-                          onClick={() => handleSubmit3("F")}
+                          onClick={() =>
+                            handleSubmit3("F", "Títulos Faturados")
+                          }
                         >
                           <Icon as={FcDocument} mr={2} /> Títulos Faturados
                         </Button>
 
                         <Modal
+                          size="full"
                           isOpen={isResponseModalOpen}
                           onClose={() => setIsResponseModalOpen(false)}
+                          sx={{
+                            "&::-webkit-scrollbar": {
+                              width: "8px",
+                              height: "8px",
+                              backgroundColor: "white",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                              backgroundColor: "#888",
+                              borderRadius: "4px",
+                            },
+                            "&::-webkit-scrollbar-thumb:hover": {
+                              backgroundColor: "#555",
+                            },
+                            "&::-webkit-scrollbar-track": {
+                              backgroundColor: "transparent",
+                            },
+                            "&::-webkit-scrollbar-corner": {
+                              backgroundColor: "transparent",
+                            },
+                          }}
                         >
                           <ModalOverlay />
                           <ModalContent>
-                            <ModalHeader>Resposta da API</ModalHeader>
+                            <ModalHeader>{modalTitle}</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
                               {responseData ? (
                                 Array.isArray(responseData) &&
                                 responseData.length > 0 ? (
-                                  <div>
-                                    {responseData.map((item, index) => (
-                                      <div key={index}>
-                                        <p>
-                                          <strong>Código:</strong> {item.codigo}
-                                        </p>
-                                        <p>
-                                          <strong>Loja:</strong> {item.loja}
-                                        </p>
-                                        <p>
-                                          <strong>Vendedor:</strong>{" "}
-                                          {item.vendedor}
-                                        </p>
-                                        <p>
-                                          <strong>Razão Social:</strong>{" "}
-                                          {item.razao_social}
-                                        </p>
-                                        <p>
-                                          <strong>CNPJ:</strong> {item.cnpj}
-                                        </p>
-                                        <p>
-                                          <strong>Título:</strong> {item.titulo}
-                                        </p>
-                                        <p>
-                                          <strong>Prefixo:</strong>{" "}
-                                          {item.prefixo}
-                                        </p>
-                                        <p>
-                                          <strong>Parcela:</strong>{" "}
-                                          {item.parcela}
-                                        </p>
-                                        <p>
-                                          <strong>Tipo:</strong> {item.tipo}
-                                        </p>
-                                        <p>
-                                          <strong>Emissão:</strong>{" "}
-                                          {item.emissao}
-                                        </p>
-                                        <p>
-                                          <strong>Vencimento:</strong>{" "}
-                                          {item.vencimento}
-                                        </p>
-                                        <p>
-                                          <strong>Data Baixa:</strong>{" "}
-                                          {item.dt_baixa}
-                                        </p>
-                                        <p>
-                                          <strong>Valor Original:</strong>{" "}
-                                          {item.valor_original}
-                                        </p>
-                                        <p>
-                                          <strong>Valor Pago:</strong>{" "}
-                                          {item.valor_pago}
-                                        </p>
-                                        <p>
-                                          <strong>Valor Saldo:</strong>{" "}
-                                          {item.valor_saldo}
-                                        </p>
-                                        <hr />
-                                      </div>
-                                    ))}
-                                  </div>
+                                  <Box overflow="auto">
+                                    <Table
+                                      variant="striped"
+                                      colorScheme="purple"
+                                    >
+                                      <Thead>
+                                        <Tr>
+                                          <Th>Código</Th>
+                                          <Th>Loja</Th>
+                                          <Th>Vendedor</Th>
+                                          <Th>Razão Social</Th>
+                                          <Th>CNPJ</Th>
+                                          <Th>Título</Th>
+                                          <Th>Prefixo</Th>
+                                          <Th>Parcela</Th>
+                                          <Th>Tipo</Th>
+                                          <Th>Emissão</Th>
+                                          <Th>Vencimento</Th>
+                                          <Th>Data Baixa</Th>
+                                          <Th>Valor Original</Th>
+                                          <Th>Valor Pago</Th>
+                                          <Th>Valor Saldo</Th>
+                                        </Tr>
+                                      </Thead>
+                                      <Tbody>
+                                        {responseData.map((item, index) => (
+                                          <Tr key={index}>
+                                            <Td>{item.codigo}</Td>
+                                            <Td>{item.loja}</Td>
+                                            <Td>{item.vendedor}</Td>
+                                            <Td>{item.razao_social}</Td>
+                                            <Td>{item.cnpj}</Td>
+                                            <Td>{item.titulo}</Td>
+                                            <Td>{item.prefixo}</Td>
+                                            <Td>{item.parcela}</Td>
+                                            <Td>{item.tipo}</Td>
+                                            <Td>{item.emissao}</Td>
+                                            <Td>{item.vencimento}</Td>
+                                            <Td>{item.dt_baixa}</Td>
+                                            <Td>{item.valor_original}</Td>
+                                            <Td>{item.valor_pago}</Td>
+                                            <Td>{item.valor_saldo}</Td>
+                                          </Tr>
+                                        ))}
+                                      </Tbody>
+                                    </Table>
+                                  </Box>
                                 ) : (
                                   <p>
                                     {responseData.errorMessage ||
@@ -1851,15 +1862,6 @@ const Atendimento = () => {
                                 <p>Carregando...</p>
                               )}
                             </ModalBody>
-                            <ModalFooter>
-                              <Button
-                                colorScheme="blue"
-                                mr={3}
-                                onClick={() => setIsResponseModalOpen(false)}
-                              >
-                                Fechar
-                              </Button>
-                            </ModalFooter>
                           </ModalContent>
                         </Modal>
                       </Box>
