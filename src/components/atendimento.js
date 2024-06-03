@@ -1532,26 +1532,37 @@ const Atendimento = () => {
                                 </Tr>
                               </Thead>
                               <Tbody>
-                                {pedidosFiltrados.map((pedido, index) => (
-                                  <Tr
-                                    key={index}
-                                    onClick={() => handleRowClick(pedido)}
-                                    style={{ cursor: "pointer" }}
-                                    _hover={{
-                                      boxShadow: "lg",
-                                      borderColor: "black",
-                                      transform: "scale(1.05)",
-                                      fontWeight: "bold", // Adiciona o negrito ao passar o mouse
-                                    }}
-                                  >
-                                    <Td>{pedido.tipo}</Td>
-                                    <Td>{pedido.numero}</Td>
-                                    <Td>{pedido.emissao}</Td>
-                                    <Td>{pedido.status}</Td>
-                                    <Td>{pedido.valor}</Td>
-                                    <Td>{pedido.volume}</Td>
+                                {pedidosFiltrados.length > 0 ? (
+                                  pedidosFiltrados.map((pedido, index) => (
+                                    <Tr
+                                      key={index}
+                                      onClick={() => handleRowClick(pedido)}
+                                      style={{ cursor: "pointer" }}
+                                      _hover={{
+                                        boxShadow: "lg",
+                                        borderColor: "black",
+                                        transform: "scale(1.05)",
+                                        fontWeight: "bold", // Adiciona o negrito ao passar o mouse
+                                      }}
+                                    >
+                                      <Td>{pedido.tipo}</Td>
+                                      <Td>{pedido.numero}</Td>
+                                      <Td>{pedido.emissao}</Td>
+                                      <Td>{pedido.status}</Td>
+                                      <Td>{pedido.valor}</Td>
+                                      <Td>{pedido.volume}</Td>
+                                    </Tr>
+                                  ))
+                                ) : (
+                                  <Tr>
+                                    <Td colSpan={6} textAlign="center">
+                                      <strong>
+                                        Não foi encontrado nenhum registro na
+                                        data informada
+                                      </strong>
+                                    </Td>
                                   </Tr>
-                                ))}
+                                )}
                               </Tbody>
                             </Table>
                           </Box>
@@ -1568,11 +1579,11 @@ const Atendimento = () => {
                           <ModalHeader bg="#2C0E37" color="white">
                             <Flex align="center">
                               <FcDocument />
-                              Detalhes -{showTipo === "NF" ? "NF" : "Pedido"}
+                              Detalhes - {showTipo === "NF" ? "NF" : "Pedido"}
                             </Flex>
                           </ModalHeader>
 
-                          <ModalCloseButton />
+                          <ModalCloseButton color="white" />
                           <ModalBody overflowY="auto">
                             {selectedPedido && (
                               <>
@@ -1613,7 +1624,12 @@ const Atendimento = () => {
                             )}
                           </ModalBody>
                           <ModalFooter>
-                            <Button colorScheme="red" mr={3} onClick={onClose}>
+                            <Button
+                              colorScheme="red"
+                              variant="outline"
+                              mr={3}
+                              onClick={onClose}
+                            >
                               Fechar
                             </Button>
                           </ModalFooter>
@@ -1810,7 +1826,7 @@ const Atendimento = () => {
                         </Button>
 
                         <Modal
-                          size="6xl"
+                          size="7xl"
                           isOpen={isResponseModalOpen}
                           onClose={() => setIsResponseModalOpen(false)}
                           sx={{
@@ -1842,16 +1858,13 @@ const Atendimento = () => {
                                 <Text ml="15px">{modalTitle}</Text>
                               </Flex>
                             </ModalHeader>
-                            <ModalCloseButton />
+                            <ModalCloseButton color="white" />
                             <ModalBody>
                               {responseData ? (
                                 Array.isArray(responseData) &&
                                 responseData.length > 0 ? (
                                   <Box overflow="auto">
-                                    <Table
-                                      variant="striped"
-                                      colorScheme="purple"
-                                    >
+                                    <Table variant="striped" colorScheme="gray">
                                       <Thead>
                                         <Tr>
                                           <Th>Código</Th>
