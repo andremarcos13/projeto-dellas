@@ -1565,34 +1565,51 @@ const Atendimento = () => {
                       >
                         <ModalOverlay />
                         <ModalContent>
-                          <ModalHeader>
-                            Detalhes -{showTipo === "NF" ? "NF" : "Pedido"}
+                          <ModalHeader bg="#2C0E37" color="white">
+                            <Flex align="center">
+                              <FcDocument />
+                              Detalhes -{showTipo === "NF" ? "NF" : "Pedido"}
+                            </Flex>
                           </ModalHeader>
+
                           <ModalCloseButton />
                           <ModalBody overflowY="auto">
                             {selectedPedido && (
-                              <Table variant="striped" colorScheme="gray">
-                                <Thead>
-                                  <Tr>
-                                    <Th>Descrição</Th>
-                                    <Th>Código Produto</Th>
-                                    <Th>Valor Unitário</Th>
-                                    <Th>Quantidade</Th>
-                                    <Th>Volume</Th>
-                                  </Tr>
-                                </Thead>
-                                <Tbody>
-                                  {selectedPedido.itens.map((item, index) => (
-                                    <Tr key={index}>
-                                      <Td>{item.descricao_produto}</Td>
-                                      <Td>{item.cod_produto}</Td>
-                                      <Td>{item.preco_unitario.toFixed(2)}</Td>
-                                      <Td>{item.qtde_produto}</Td>
-                                      <Td>{item.volume_produto}</Td>
-                                    </Tr>
-                                  ))}
-                                </Tbody>
-                              </Table>
+                              <>
+                                {selectedPedido.itens.length > 0 ? (
+                                  <Table variant="striped" colorScheme="gray">
+                                    <Thead>
+                                      <Tr>
+                                        <Th>Descrição</Th>
+                                        <Th>Código Produto</Th>
+                                        <Th>Valor Unitário</Th>
+                                        <Th>Quantidade</Th>
+                                        <Th>Volume</Th>
+                                      </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                      {selectedPedido.itens.map(
+                                        (item, index) => (
+                                          <Tr key={index}>
+                                            <Td>{item.descricao_produto}</Td>
+                                            <Td>{item.cod_produto}</Td>
+                                            <Td>
+                                              {item.preco_unitario.toFixed(2)}
+                                            </Td>
+                                            <Td>{item.qtde_produto}</Td>
+                                            <Td>{item.volume_produto}</Td>
+                                          </Tr>
+                                        )
+                                      )}
+                                    </Tbody>
+                                  </Table>
+                                ) : (
+                                  <p>
+                                    Não foi encontrado nenhum registro na data
+                                    informada
+                                  </p>
+                                )}
+                              </>
                             )}
                           </ModalBody>
                           <ModalFooter>
