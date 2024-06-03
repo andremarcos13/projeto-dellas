@@ -666,6 +666,7 @@ const Atendimento = () => {
   const [selectedPedido, setSelectedPedido] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen2, onOpen2, onClose2 } = useDisclosure();
+  const [isLoading3, setIsLoading3] = useState(false); // Alterado para false inicialmente
 
   const handleRowClick = (pedido) => {
     setSelectedPedido(pedido);
@@ -683,6 +684,8 @@ const Atendimento = () => {
     const loja = "01";
     const token = globalToken.access_token;
 
+    setIsLoading3(true);
+
     try {
       const responseApi = await historicoTitulos(
         token,
@@ -699,10 +702,14 @@ const Atendimento = () => {
       setModalTitle(title); // Define o título do modal com base no botão clicado
       setResponseData(responseApi);
       setIsResponseModalOpen(true); // Abrir o modal após receber a resposta
+
+      setIsLoading3(false);
     } catch (error) {
       console.error("Erro ao fazer a requisição:", error);
       if (error.response && error.response.status === 401) {
         console.log("Recebido status 401, tentando obter um novo token...");
+        setIsLoading3(true);
+
         try {
           const newToken = await fetchToken(username, password);
           console.log("Novo token obtido com sucesso:", newToken);
@@ -721,16 +728,20 @@ const Atendimento = () => {
           setModalTitle(title); // Define o título do modal com base no botão clicado
           setResponseData(newResponseApi);
           setIsResponseModalOpen(true);
+          setIsLoading3(false);
         } catch (error) {
           console.error("Erro ao obter novo token de acesso:", error);
           setResponseData({ error: error.message });
           setIsResponseModalOpen(true);
+          setIsLoading3(false);
         }
       } else {
         setResponseData({ error: error.message });
         setIsResponseModalOpen(true);
+        setIsLoading3(false);
       }
     }
+    setIsLoading3(false);
   };
 
   return (
@@ -767,7 +778,7 @@ const Atendimento = () => {
         </Box>
 
         <Tabs colorScheme="purple" size="md" isFitted variant="soft-rounded">
-          <TabList mb="1em">
+          <TabList mb="1px" w="250px">
             <Tab bg="white">
               <Box mr="5px">
                 <MdContactPhone />
@@ -1768,6 +1779,7 @@ const Atendimento = () => {
                           </Button> */}
                         </HStack>
                         <Button
+                          isLoading={isLoading3}
                           mt="20px"
                           fontSize="lg"
                           fontWeight="bold"
@@ -1787,6 +1799,7 @@ const Atendimento = () => {
                           <Icon as={FcDocument} mr={2} /> Títulos Abertos
                         </Button>
                         <Button
+                          isLoading={isLoading3}
                           fontSize="lg"
                           fontWeight="bold"
                           bg="#822AA2"
@@ -1805,6 +1818,7 @@ const Atendimento = () => {
                           <Icon as={FcFinePrint} mr={2} /> Títulos Baixados
                         </Button>
                         <Button
+                          isLoading={isLoading3}
                           fontSize="lg"
                           fontWeight="bold"
                           bg="#822AA2"
