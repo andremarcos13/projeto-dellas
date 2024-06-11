@@ -35,6 +35,11 @@ import {
   Th,
   TableContainer,
   Tbody,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
 import { FaPlus, FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -315,173 +320,197 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
           </Center>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center" justify="center">
-              <Input
-                flex="1"
-                mt="10px"
-                placeholder="Digite o nome do produto"
-                value={searchTerm}
-                bg="white"
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                focusBorderColor="purple.700"
-                mb={2}
-              />
-              <Button
-                mb={2}
-                ml={4}
-                mt="10px"
-                onClick={handleSearch}
-                colorScheme="blue"
-                bg="white"
-                variant="outline"
-                leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
-              >
-                Buscar
-              </Button>
-            </Flex>
-            {isLoading ? (
-              <Center mt="5%">
-                <Spinner mt={4} />
-              </Center>
-            ) : searchResults.length > 0 ? (
-              <TableContainer
-                maxH="400px"
-                overflowY="auto"
-                sx={{
-                  "&::-webkit-scrollbar": {
-                    width: "8px",
-                    height: "8px",
-                    backgroundColor: "white",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "#888",
-                    borderRadius: "4px",
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                    backgroundColor: "#555",
-                  },
-                }}
-              >
-                <Table bg="white" variant="striped" colorScheme="gray">
-                  <Thead bg="#6b3181">
-                    <Tr>
-                      <Th color="white" fontWeight="semibold" width="40%">
-                        <Flex direction="column">
-                          <span>Descrição</span>
-                          <Input
-                            focusBorderColor="purple.200"
-                            maxW="100%"
-                            bg="white"
-                            color="black"
-                            placeholder="Filtrar"
-                            size="sm"
-                            value={descriptionFilter}
-                            onChange={(e) =>
-                              setDescriptionFilter(e.target.value)
-                            }
-                            mt={2}
-                          />
-                        </Flex>
-                      </Th>
-                      <Th color="white" fontWeight="semibold" width="20%">
-                        <Flex direction="column">
-                          <span>Código</span>
-                          <Input
-                            focusBorderColor="purple.200"
-                            maxW="100%"
-                            bg="white"
-                            color="black"
-                            placeholder="Filtrar"
-                            size="sm"
-                            value={codeFilter}
-                            onChange={(e) => setCodeFilter(e.target.value)}
-                            mt={2}
-                          />
-                        </Flex>
-                      </Th>
-                      <Th color="white" fontWeight="semibold" width="20%">
-                        Tipo
-                      </Th>
-                      <Th color="white" fontWeight="semibold" width="20%">
-                        Unidade de Medida
-                      </Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {filteredResults.map((item, index) => (
-                      <Tr
-                        key={index}
-                        border="2px"
-                        borderColor={
-                          selectedItem === item ? "#6b3181" : "gray.200"
-                        }
-                        onClick={() => handleItemClick(item)}
-                        cursor="pointer"
-                        _hover={{ transform: "scale(1.01)", boxShadow: "lg" }}
-                      >
-                        <Td width="40%">
-                          <Text
-                            fontSize="md"
-                            color="black"
-                            borderRadius="10px"
-                            p={1}
-                          >
-                            {item.descricao.includes(descriptionFilter) ? (
-                              <>
-                                {item.descricao
-                                  .split(descriptionFilter)
-                                  .map((part, index) => (
-                                    <span key={index}>
-                                      {part}
-                                      {index !==
-                                        item.descricao.split(descriptionFilter)
-                                          .length -
-                                          1 && (
-                                        <span style={{ color: "red" }}>
-                                          <strong>{descriptionFilter}</strong>
+            <Tabs variant="soft-rounded" colorScheme="green">
+              <TabList>
+                <Tab>Tab 1</Tab>
+                <Tab>Tab 2</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Flex align="center" justify="center">
+                    <Input
+                      flex="1"
+                      mt="10px"
+                      placeholder="Digite o nome do produto"
+                      value={searchTerm}
+                      bg="white"
+                      onChange={handleInputChange}
+                      onKeyPress={handleKeyPress}
+                      focusBorderColor="purple.700"
+                      mb={2}
+                    />
+                    <Button
+                      mb={2}
+                      ml={4}
+                      mt="10px"
+                      onClick={handleSearch}
+                      colorScheme="blue"
+                      bg="white"
+                      variant="outline"
+                      leftIcon={<FaSearch />} // Usando o ícone de busca da react-icons
+                    >
+                      Buscar
+                    </Button>
+                  </Flex>
+                  {isLoading ? (
+                    <Center mt="5%">
+                      <Spinner mt={4} />
+                    </Center>
+                  ) : searchResults.length > 0 ? (
+                    <TableContainer
+                      maxH="400px"
+                      overflowY="auto"
+                      sx={{
+                        "&::-webkit-scrollbar": {
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "white",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          backgroundColor: "#888",
+                          borderRadius: "4px",
+                        },
+                        "&::-webkit-scrollbar-thumb:hover": {
+                          backgroundColor: "#555",
+                        },
+                      }}
+                    >
+                      <Table bg="white" variant="striped" colorScheme="gray">
+                        <Thead bg="#6b3181">
+                          <Tr>
+                            <Th color="white" fontWeight="semibold" width="40%">
+                              <Flex direction="column">
+                                <span>Descrição</span>
+                                <Input
+                                  focusBorderColor="purple.200"
+                                  maxW="100%"
+                                  bg="white"
+                                  color="black"
+                                  placeholder="Filtrar"
+                                  size="sm"
+                                  value={descriptionFilter}
+                                  onChange={(e) =>
+                                    setDescriptionFilter(e.target.value)
+                                  }
+                                  mt={2}
+                                />
+                              </Flex>
+                            </Th>
+                            <Th color="white" fontWeight="semibold" width="20%">
+                              <Flex direction="column">
+                                <span>Código</span>
+                                <Input
+                                  focusBorderColor="purple.200"
+                                  maxW="100%"
+                                  bg="white"
+                                  color="black"
+                                  placeholder="Filtrar"
+                                  size="sm"
+                                  value={codeFilter}
+                                  onChange={(e) =>
+                                    setCodeFilter(e.target.value)
+                                  }
+                                  mt={2}
+                                />
+                              </Flex>
+                            </Th>
+                            <Th color="white" fontWeight="semibold" width="20%">
+                              Tipo
+                            </Th>
+                            <Th color="white" fontWeight="semibold" width="20%">
+                              Unidade de Medida
+                            </Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {filteredResults.map((item, index) => (
+                            <Tr
+                              key={index}
+                              border="2px"
+                              borderColor={
+                                selectedItem === item ? "#6b3181" : "gray.200"
+                              }
+                              onClick={() => handleItemClick(item)}
+                              cursor="pointer"
+                              _hover={{
+                                transform: "scale(1.01)",
+                                boxShadow: "lg",
+                              }}
+                            >
+                              <Td width="40%">
+                                <Text
+                                  fontSize="md"
+                                  color="black"
+                                  borderRadius="10px"
+                                  p={1}
+                                >
+                                  {item.descricao.includes(
+                                    descriptionFilter
+                                  ) ? (
+                                    <>
+                                      {item.descricao
+                                        .split(descriptionFilter)
+                                        .map((part, index) => (
+                                          <span key={index}>
+                                            {part}
+                                            {index !==
+                                              item.descricao.split(
+                                                descriptionFilter
+                                              ).length -
+                                                1 && (
+                                              <span style={{ color: "red" }}>
+                                                <strong>
+                                                  {descriptionFilter}
+                                                </strong>
+                                              </span>
+                                            )}
+                                          </span>
+                                        ))}
+                                    </>
+                                  ) : (
+                                    item.descricao
+                                  )}
+                                </Text>
+                              </Td>
+                              <Td width="20%">
+                                {item.codigo.includes(codeFilter) ? (
+                                  <>
+                                    {item.codigo
+                                      .split(codeFilter)
+                                      .map((part, index) => (
+                                        <span key={index}>
+                                          {part}
+                                          {index !==
+                                            item.codigo.split(codeFilter)
+                                              .length -
+                                              1 && (
+                                            <span style={{ color: "red" }}>
+                                              <strong>{codeFilter}</strong>
+                                            </span>
+                                          )}
                                         </span>
-                                      )}
-                                    </span>
-                                  ))}
-                              </>
-                            ) : (
-                              item.descricao
-                            )}
-                          </Text>
-                        </Td>
-                        <Td width="20%">
-                          {item.codigo.includes(codeFilter) ? (
-                            <>
-                              {item.codigo
-                                .split(codeFilter)
-                                .map((part, index) => (
-                                  <span key={index}>
-                                    {part}
-                                    {index !==
-                                      item.codigo.split(codeFilter).length -
-                                        1 && (
-                                      <span style={{ color: "red" }}>
-                                        <strong>{codeFilter}</strong>
-                                      </span>
-                                    )}
-                                  </span>
-                                ))}
-                            </>
-                          ) : (
-                            item.codigo
-                          )}
-                        </Td>
-                        <Td width="20%">{item.tipo}</Td>
-                        <Td width="20%">{item.um}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <Text mt={4}>Nenhum resultado encontrado.</Text>
-            )}
+                                      ))}
+                                  </>
+                                ) : (
+                                  item.codigo
+                                )}
+                              </Td>
+                              <Td width="20%">{item.tipo}</Td>
+                              <Td width="20%">{item.um}</Td>
+                            </Tr>
+                          ))}
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  ) : (
+                    <Text mt={4}>Nenhum resultado encontrado.</Text>
+                  )}{" "}
+                </TabPanel>
+                <TabPanel>
+                  <p>two!</p>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
             <Button
               mt={4}
               onClick={loadMoreResults}
