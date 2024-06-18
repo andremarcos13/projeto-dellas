@@ -853,7 +853,7 @@ const Atendimento = () => {
                           >
                             {rowItem.nomeContato}
                           </Text>
-                          <Text
+                          {/* <Text
                             fontSize="lg"
                             fontWeight="bold"
                             color="black"
@@ -862,9 +862,9 @@ const Atendimento = () => {
                             alignItems="center"
                           >
                             <Icon as={FaUserTag} mr={2} /> Vendedor:
-                          </Text>
+                          </Text> */}
 
-                          <Text
+                          {/* <Text
                             color="black"
                             mb={2}
                             _hover={{
@@ -873,7 +873,7 @@ const Atendimento = () => {
                             }}
                           >
                             {rowItem.vendedor}
-                          </Text>
+                          </Text> */}
                         </HStack>
 
                         <Text
