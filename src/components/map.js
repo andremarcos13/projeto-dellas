@@ -49,10 +49,7 @@ function Map() {
       <Header />
       <Center>
         <Box mt="50px">
-          <LoadScript
-            googleMapsApiKey="AIzaSyCIsNeum4LpNvkxnPw_WG1dO_nfrev5oaY"
-            libraries={["places"]}
-          >
+          <LoadScript googleMapsApiKey="" libraries={["places"]}>
             <SearchBox onPlaceSelected={handlePlaceSelected} />
             <GoogleMap
               mapContainerStyle={containerStyle}
