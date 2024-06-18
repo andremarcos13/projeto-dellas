@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -41,6 +41,8 @@ import {
   TabPanels,
   TabPanel,
   Heading,
+  Toast,
+  useToast,
 } from "@chakra-ui/react";
 import { FaPlus, FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -90,6 +92,9 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
   const oneYearAgo = format(subYears(new Date(), 1), "dd/MM/yyyy");
   const thirtyDaysAgo = format(subDays(new Date(), 30), "dd/MM/yyyy");
+
+  const toast = useToast();
+  const toastIdRef = React.useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -347,6 +352,17 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   );
   // console.log("data procurar produtos", groupedByFornecedor);
 
+  const copyCodeToClipboard = (code) => {
+    navigator.clipboard.writeText(code);
+    toast({
+      title: "Código copiado!",
+      description: `${code}`,
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
   return (
     <>
       <Button
@@ -446,6 +462,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                                             transform: "scale(1.02)",
                                           }}
                                           key={`${idx}-${pIdx}`}
+                                          onClick={() =>
+                                            copyCodeToClipboard(
+                                              produto.cod_produto
+                                            )
+                                          }
                                         >
                                           <Td>{produto.cod_produto}</Td>
                                           <Td>{produto.descricao_produto}</Td>
