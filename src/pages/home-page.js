@@ -9,6 +9,7 @@ import fetchCodUser from "../apis/cod-user-api";
 import { useEffect, useState } from "react";
 import { fetchToken } from "../apis/token-api";
 import Header from "../components/header";
+import { FaMap } from "react-icons/fa";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
@@ -79,6 +80,9 @@ const HomePage = () => {
   const handleRoute = () => {
     navigate("/agenda");
   };
+  const handleRoute2 = () => {
+    navigate("/maps");
+  };
 
   return (
     // bg="rgba(0,0,0,0.5)"
@@ -104,7 +108,7 @@ const HomePage = () => {
           >
             AGENDA
           </Button>
-          <Button
+          {/* <Button
             size="lg"
             width="200px"
             height="200px"
@@ -114,11 +118,11 @@ const HomePage = () => {
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-            // onClick={handleRoute}
+            leftIcon={<Icon as={FaMap} boxSize={8} />}
+            onClick={handleRoute2}
           >
-            EM CONSTRUÇÃO
-          </Button>
+            MAPA
+          </Button> */}
           <Button
             size="lg"
             width="200px"
@@ -130,7 +134,7 @@ const HomePage = () => {
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
             leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-            // onClick={handleRoute}
+            onClick={handleRoute2}
           >
             EM CONSTRUÇÃO
           </Button>
