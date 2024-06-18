@@ -40,6 +40,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Heading,
 } from "@chakra-ui/react";
 import { FaPlus, FaSearch, FaTimes } from "react-icons/fa"; // Importando ícones da react-icons
 import fetchProdutos from "../apis/produtos-api";
@@ -56,6 +57,9 @@ import { FaSearchPlus } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAppContext } from "../context/AppContext";
 import { fetchToken } from "../apis/token-api";
+import { MdSearch, MdThumbUp } from "react-icons/md";
+import { format, subDays, subYears } from "date-fns";
+import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,6 +83,31 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
   const [descriptionFilter, setDescriptionFilter] = useState("");
   const [codeFilter, setCodeFilter] = useState("");
+
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const { rowItem, setRowItem } = useAppContext();
+
+  const oneYearAgo = format(subYears(new Date(), 1), "dd/MM/yyyy");
+  const thirtyDaysAgo = format(subDays(new Date(), 30), "dd/MM/yyyy");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await fetchHistoricoProdutos(
+          rowItem.codCliente,
+          oneYearAgo,
+          thirtyDaysAgo,
+          globalToken.access_token
+        );
+        setData(result);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredResults = searchResults.filter(
     (item) =>
@@ -295,6 +324,29 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
   console.log("valoresSelecionados filho", valoresSelecionados);
 
+  const nfItems = (data || []).filter((item) => item.tipo === "NF");
+
+  const groupedByFornecedor = nfItems.reduce((acc, item) => {
+    item.itens.forEach((produto) => {
+      const fornecedor = produto.nome_fornecedor || "Fornecedor Desconhecido";
+      if (!acc[fornecedor]) {
+        acc[fornecedor] = [];
+      }
+      acc[fornecedor].push({
+        ...item,
+        produtos: item.itens.filter((p) => p.nome_fornecedor === fornecedor),
+      });
+    });
+    return acc;
+  }, {});
+
+  console.log("data procurar produtos nfitems", nfItems);
+  console.log(
+    "data procurar produtos nfitems2",
+    Object.keys(groupedByFornecedor).length
+  );
+  // console.log("data procurar produtos", groupedByFornecedor);
+
   return (
     <>
       <Button
@@ -320,12 +372,111 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
           </Center>
           <ModalCloseButton />
           <ModalBody>
-            <Tabs variant="soft-rounded" colorScheme="green">
+            <Tabs
+              variant="soft-rounded"
+              colorScheme="purple"
+              bg="gray.200"
+              borderRadius="10px"
+              borderColor="gray"
+              p={3}
+            >
               <TabList>
-                <Tab>Tab 1</Tab>
-                <Tab>Tab 2</Tab>
+                <Tab>
+                  <MdThumbUp style={{ marginRight: "8px" }} />
+                  Produtos Sugeridos
+                </Tab>
+                <Tab>
+                  <MdSearch style={{ marginRight: "8px" }} />
+                  Pesquisar Produtos
+                </Tab>
               </TabList>
               <TabPanels>
+                {/* AQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUIAQUI */}
+                <TabPanel>
+                  <Tabs align="center" colorScheme="purple">
+                    <TabList>
+                      {Object.keys(groupedByFornecedor).map((fornecedor) => (
+                        <Tab key={fornecedor}>{fornecedor}</Tab>
+                      ))}
+                    </TabList>
+                    <TabPanels>
+                      {Object.keys(groupedByFornecedor).length > 0 ? (
+                        Object.keys(groupedByFornecedor).map(
+                          (fornecedor, index) => (
+                            <TabPanel key={fornecedor}>
+                              <Table
+                                bg="white"
+                                variant="striped"
+                                colorScheme="gray"
+                              >
+                                <Thead bg="#6b3181">
+                                  <Tr key={index}>
+                                    <Th color="white" fontWeight="semibold">
+                                      Código Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Descrição Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Tipo Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Valor Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Quantidade Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Volume Produto
+                                    </Th>
+                                    <Th color="white" fontWeight="semibold">
+                                      Desconto Produto
+                                    </Th>
+                                  </Tr>
+                                </Thead>
+                                <Tbody>
+                                  {groupedByFornecedor[fornecedor].map(
+                                    (item, idx) =>
+                                      item.produtos.map((produto, pIdx) => (
+                                        <Tr
+                                          style={{ cursor: "pointer" }}
+                                          _hover={{
+                                            boxShadow: "lg",
+                                            borderColor: "black",
+                                            transform: "scale(1.02)",
+                                          }}
+                                          key={`${idx}-${pIdx}`}
+                                        >
+                                          <Td>{produto.cod_produto}</Td>
+                                          <Td>{produto.descricao_produto}</Td>
+                                          <Td>{produto.tipo_produto}</Td>
+                                          <Td>R$ {produto.valor_produto}</Td>
+                                          <Td>{produto.qtde_produto}</Td>
+                                          <Td>{produto.volume_produto}</Td>
+                                          <Td>{produto.desconto_produto}</Td>
+                                        </Tr>
+                                      ))
+                                  )}
+                                </Tbody>
+                              </Table>
+                            </TabPanel>
+                          )
+                        )
+                      ) : (
+                        <TabPanel>
+                          <div
+                            style={{ textAlign: "center", marginTop: "20px" }}
+                          >
+                            <strong>
+                              Não foi possível sugerir produtos ao cliente.
+                            </strong>
+                          </div>
+                        </TabPanel>
+                      )}
+                    </TabPanels>
+                  </Tabs>
+                </TabPanel>
+
                 <TabPanel>
                   <Flex align="center" justify="center">
                     <Input
@@ -505,25 +656,23 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                   ) : (
                     <Text mt={4}>Nenhum resultado encontrado.</Text>
                   )}{" "}
-                </TabPanel>
-                <TabPanel>
-                  <p>two!</p>
+                  <Button
+                    mt={4}
+                    onClick={loadMoreResults}
+                    isDisabled={!hasNextPage || isLoading}
+                    variant="outline"
+                    bg="white"
+                    colorScheme="blue"
+                    leftIcon={<FaSearchPlus />} // Usando o ícone de busca da react-icons
+                  >
+                    {hasNextPage
+                      ? "Carregar mais resultados"
+                      : "Não há mais produtos com o código selecionado"}
+                  </Button>
                 </TabPanel>
               </TabPanels>
             </Tabs>
-            <Button
-              mt={4}
-              onClick={loadMoreResults}
-              isDisabled={!hasNextPage || isLoading}
-              variant="outline"
-              bg="white"
-              colorScheme="blue"
-              leftIcon={<FaSearchPlus />} // Usando o ícone de busca da react-icons
-            >
-              {hasNextPage
-                ? "Carregar mais resultados"
-                : "Não há mais produtos com o código selecionado"}
-            </Button>
+
             <Flex justify="space-between">
               <Box flexBasis="45%">
                 {selectedItem && (
