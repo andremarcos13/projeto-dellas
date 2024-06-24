@@ -130,6 +130,16 @@ const Atendimento = () => {
 
   const navigate = useNavigate();
 
+  console.log("username", username);
+
+  const checkUser = () => {
+    if (username === "" || password === "") {
+      navigate("/"); // Limpar selectedItem ao clicar no botão Voltar
+    }
+  };
+
+  checkUser();
+
   console.log("globalToken atendimento", globalToken.access_token);
 
   // const closeModal = () => {

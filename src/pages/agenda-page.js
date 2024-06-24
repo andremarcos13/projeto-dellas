@@ -27,6 +27,7 @@ import { IoCall } from "react-icons/io5";
 import { useAppContext } from "../context/AppContext";
 import Header from "../components/header";
 import { fetchToken } from "../apis/token-api";
+import { useNavigate } from "react-router-dom";
 
 const AgendaPage = () => {
   const [agendaData, setAgendaData] = useState([]);
@@ -41,88 +42,113 @@ const AgendaPage = () => {
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
 
+  const navigate = useNavigate();
+
+  console.log("username", username);
+
+  const checkUser = () => {
+    if (username === "" || password === "") {
+      navigate("/"); // Limpar selectedItem ao clicar no botão Voltar
+    }
+  };
+
+  checkUser();
+
   const formattedTime = currentTime.toLocaleTimeString();
 
   useEffect(() => {
+    const fetchData = async () => {
+      console.log("entrou aqui");
+
+      setIsLoading(true);
+      let formattedDateToUse = ""; // Definir formattedDateToUse fora do bloco try-catch
+
+      try {
+        console.log("tentou aqui");
+
+        if (dateGlobal) {
+          formattedDateToUse = format(dateGlobal, "yyyyMMdd");
+        } else {
+          formattedDateToUse = format(selectedDate, "yyyyMMdd");
+        }
+        console.log("chama api");
+
+        const response = await axios.get(
+          `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
+          {
+            params: {
+              data_inicial: formattedDateToUse,
+              usuario: userCod,
+              empresa: "01",
+              filial: "01",
+            },
+            headers: {
+              Authorization: `Bearer ${globalToken.access_token}`,
+            },
+          }
+        );
+        setAgendaData(response.data);
+        console.log("api", response.data);
+        setError(null);
+      } catch (error) {
+        console.log("deu erro");
+
+        console.error(error);
+
+        if (error.response && error.response.status === 401) {
+          // Erro de autorização, tentar obter um novo token
+          console.log("Tentando obter novo token...");
+          try {
+            const newToken = await fetchToken(username, password);
+            // Refazer a chamada à API principal com o novo token de acesso
+            const response = await axios.get(
+              `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
+              {
+                params: {
+                  data_inicial: formattedDateToUse,
+                  usuario: userCod,
+                  empresa: "01",
+                  filial: "01",
+                },
+                headers: {
+                  Authorization: `Bearer ${newToken.access_token}`,
+                },
+              }
+            );
+            setAgendaData(response.data);
+            console.log("api", response.data);
+            setError(null);
+          } catch (error) {
+            console.error("Erro ao obter novo token de acesso:", error);
+            setError(
+              "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
+            );
+          }
+        } else {
+          setError(
+            "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
+          );
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchData();
     console.log("agendaData", agendaData);
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
     return () => clearInterval(timer);
-  }, [selectedDate]);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    let formattedDateToUse = ""; // Definir formattedDateToUse fora do bloco try-catch
-    try {
-      if (dateGlobal) {
-        formattedDateToUse = format(dateGlobal, "yyyyMMdd");
-      } else {
-        formattedDateToUse = format(selectedDate, "yyyyMMdd");
-      }
-
-      console.log(formattedDateToUse);
-
-      console.log("globalTokenglobalTokenglobalToken", globalToken);
-
-      const response = await axios.get(
-        `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
-        {
-          params: {
-            data_inicial: formattedDateToUse,
-            usuario: userCod,
-            empresa: "01",
-            filial: "01",
-          },
-          headers: {
-            Authorization: `Bearer ${globalToken.access_token}`,
-          },
-        }
-      );
-      setAgendaData(response.data);
-      console.log("api", response.data);
-      setError(null);
-    } catch (error) {
-      console.error(error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
-        try {
-          const newToken = await fetchToken(username, password);
-          // Refazer a chamada à API principal com o novo token de acesso
-          const response = await axios.get(
-            `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
-            {
-              params: {
-                data_inicial: formattedDateToUse, // Usar formattedDateToUse aqui
-                usuario: userCod,
-                empresa: "01",
-                filial: "01",
-              },
-              headers: {
-                Authorization: `Bearer ${newToken.access_token}`,
-              },
-            }
-          );
-          setAgendaData(response.data);
-          console.log("api", response.data);
-          setError(null);
-        } catch (error) {
-          console.error("Erro ao obter novo token de acesso:", error);
-          setError(
-            "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
-          );
-        }
-      } else {
-        setError(
-          "Erro ao buscar dados da API. Por favor, tente novamente mais tarde."
-        );
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [
+    selectedDate,
+    dateGlobal,
+    userCod,
+    globalToken,
+    username,
+    password,
+    fetchToken,
+  ]); // Certifique-se de incluir todas as dependências
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
