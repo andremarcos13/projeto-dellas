@@ -134,7 +134,7 @@ const Atendimento = () => {
 
   const checkUser = () => {
     if (username === "" || password === "") {
-      navigate("/"); // Limpar selectedItem ao clicar no botão Voltar
+      navigate("/error"); // Limpar selectedItem ao clicar no botão Voltar
     }
   };
 

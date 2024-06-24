@@ -4,6 +4,7 @@ import HomePage from "./pages/home-page";
 import AgendaPage from "./pages/agenda-page";
 import AtendimentoPage from "./pages/atendimento-page";
 import Map from "./components/map";
+import ErrorPage from "./pages/error-page";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/agenda" element={<AgendaPage />} />
         <Route path="/atendimento/:index" element={<AtendimentoPage />} />
         <Route path="/maps" element={<Map />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

@@ -12,7 +12,7 @@ const AtendimentoPage = () => {
   const navigate = useNavigate();
 
   if (username === "" || password === "") {
-    navigate("/"); // Limpar selectedItem ao clicar no botão Voltar
+    navigate("/error"); // Limpar selectedItem ao clicar no botão Voltar
   }
 
   return (
