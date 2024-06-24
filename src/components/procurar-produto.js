@@ -211,6 +211,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     if (event.key === "Enter") {
       handleSearch();
     }
+    setCodeFilter("");
+    setDescriptionFilter("");
   };
 
   const handleInputChange = (event) => {
