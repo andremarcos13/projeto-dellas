@@ -2,8 +2,11 @@ import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import LoginComponent from "../components/login-inputs";
 import { CiUnlock } from "react-icons/ci";
 import imagelogo from "../images/205677077_207379361390501_3299387424663450272_n-removebg-preview.png";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   return (
     <Flex
       minHeight="100vh"
@@ -38,6 +41,7 @@ const LoginPage = () => {
           maxH="230px"
           mb="2" // Adiciona margem na parte inferior da imagem
           mx="auto" // Centraliza a imagem horizontalmente
+          onClick={() => navigate("/admin")}
         />
         {/* <Heading as="h1" size="lg" color="gray.800">
           Bem-vindo!
