@@ -1,12 +1,19 @@
-import React from "react";
-import { Box, Button, HStack, Switch, Text, VStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  HStack,
+  Radio,
+  RadioGroup,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
 const AdminPage = () => {
   const { useRestTest, setUseRestTest } = useAppContext();
-
-  console.log("useRestTest", useRestTest);
+  const [selectedValue, setSelectedValue] = useState("1"); // Estado para controlar o valor selecionado
 
   const navigate = useNavigate();
 
@@ -14,9 +21,11 @@ const AdminPage = () => {
     navigate("/");
   };
 
-  const handleSwitchChange = (event) => {
-    setUseRestTest(event.target.checked);
+  const handleSwitchChange = (value) => {
+    setSelectedValue(value); // Atualiza o valor selecionado
+    setUseRestTest(value); // Define useRestTest com base no valor selecionado
   };
+  console.log("useRestTest", useRestTest);
 
   return (
     <Box
@@ -31,13 +40,16 @@ const AdminPage = () => {
     >
       <VStack>
         <HStack spacing={4} align="center">
-          <Text>Produção</Text>
-          <Switch
-            size="lg"
-            isChecked={useRestTest}
-            onChange={handleSwitchChange}
-          />
-          <Text>Teste</Text>
+          <RadioGroup value={selectedValue} onChange={handleSwitchChange}>
+            <Stack spacing={5} direction="row">
+              <Radio colorScheme="green" value="1">
+                Produção
+              </Radio>
+              <Radio colorScheme="red" value="2">
+                Teste
+              </Radio>
+            </Stack>
+          </RadioGroup>
         </HStack>
         <Button mt={3} onClick={handleGoHome}>
           Voltar

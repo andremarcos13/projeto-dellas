@@ -41,6 +41,7 @@ const AgendaPage = () => {
   const { globalToken, setGlobalToken } = useAppContext();
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
+  const { useRestTest, setUseRestTest } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -60,6 +61,10 @@ const AgendaPage = () => {
     const fetchData = async () => {
       console.log("entrou aqui");
 
+      const baseUrl = useRestTest
+        ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+        : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+
       setIsLoading(true);
       let formattedDateToUse = ""; // Definir formattedDateToUse fora do bloco try-catch
 
@@ -73,20 +78,17 @@ const AgendaPage = () => {
         }
         console.log("chama api");
 
-        const response = await axios.get(
-          `https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/agenda/operador`,
-          {
-            params: {
-              data_inicial: formattedDateToUse,
-              usuario: userCod,
-              empresa: "01",
-              filial: "01",
-            },
-            headers: {
-              Authorization: `Bearer ${globalToken.access_token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseUrl}agenda/operador`, {
+          params: {
+            data_inicial: formattedDateToUse,
+            usuario: userCod,
+            empresa: "01",
+            filial: "01",
+          },
+          headers: {
+            Authorization: `Bearer ${globalToken.access_token}`,
+          },
+        });
         setAgendaData(response.data);
         console.log("api", response.data);
         setError(null);

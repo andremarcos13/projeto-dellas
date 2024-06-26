@@ -11,7 +11,7 @@ const AppContextProvider = ({ children }) => {
   const [password, setPassword] = useState("");
   const [globalToken, setGlobalToken] = useState("");
   const [userCod, setUserCod] = useState({});
-  const [useRestTest, setUseRestTest] = useState(false);
+  const [useRestTest, setUseRestTest] = useState("1");
 
   return (
     <AppContext.Provider

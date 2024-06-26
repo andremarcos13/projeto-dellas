@@ -1,22 +1,27 @@
 import axios from "axios";
 
-const fetchCondPagamentos = async (token) => {
+const fetchCondPagamentos = async (token, useRestTest) => {
+  const baseUrl = useRestTest
+    ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+    : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+  const apiUrl = `${baseUrl}api/v1/condicao_pagamento`;
+
+  console.log("useRestTest:", useRestTest);
+  console.log("Using URL:", apiUrl);
+
   try {
-    const response = await axios.get(
-      "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/condicao_pagamento",
-      {
-        params: {
-          empresa: "01",
-          filial: "01",
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(apiUrl, {
+      params: {
+        empresa: "01",
+        filial: "01",
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching payment conditions:", error);
     throw error;
   }
 };

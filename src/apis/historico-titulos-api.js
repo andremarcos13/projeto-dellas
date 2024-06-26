@@ -8,8 +8,15 @@ const historicoTitulos = async (
   emissaoFinal,
   vencimentoInicial,
   vencimentoFinal,
-  situacao
+  situacao,
+  useRestTest
 ) => {
+  // Determina a URL base com base no valor de useRestTest
+  const baseUrl =
+    useRestTest === "1"
+      ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+
   // Configuração do cabeçalho com o token passado como argumento
   const config = {
     headers: {
@@ -34,11 +41,10 @@ const historicoTitulos = async (
   // Tentativa de fazer a requisição
   try {
     const response = await axios.post(
-      "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/historico_titulos",
+      `${baseUrl}historico_titulos`,
       data,
       config
     );
-
     console.log(response.data);
     return response.data; // Retorna os dados da resposta
   } catch (error) {

@@ -1,4 +1,10 @@
-export async function fetchToken(username, password) {
+export async function fetchToken(username, password, useRestTest) {
+  // Determina a URL base com base no valor de useRestTest igual a 1
+  const baseUrl =
+    useRestTest === "1"
+      ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+
   const myHeaders = new Headers();
   myHeaders.append("username", username);
   myHeaders.append("password", password);
@@ -9,8 +15,7 @@ export async function fetchToken(username, password) {
     redirect: "follow",
   };
 
-  const apiUrl =
-    "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/oauth2/v1/token?grant_type=password";
+  const apiUrl = `${baseUrl}api/oauth2/v1/token?grant_type=password`;
 
   try {
     const response = await fetch(apiUrl, requestOptions);
