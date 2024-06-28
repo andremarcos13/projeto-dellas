@@ -1,4 +1,13 @@
-import { VStack, Button, Icon, SimpleGrid, Box, Link } from "@chakra-ui/react";
+import {
+  VStack,
+  Button,
+  Icon,
+  SimpleGrid,
+  Box,
+  Link,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
 import { MdEvent, MdDateRange, MdList, MdAssignment } from "react-icons/md";
 import UserDataHome from "../components/user-data-home";
 import { useNavigate } from "react-router-dom";
@@ -18,38 +27,37 @@ const HomePage = () => {
   const { userCod, setUserCod } = useAppContext();
   const { globalToken, setGlobalToken } = useAppContext();
   const { password, setPassword } = useAppContext();
+  const [userFound, setUserFound] = useState(false); // Variável de controle para interromper a chamada da API
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log("username home", username);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       try {
-        let hasNext = true;
-        let page = 1;
+        const response = await fetchCodUser(globalToken.access_token);
+        const { items, hasNext: next } = response;
 
-        while (hasNext) {
-          const response = await fetchCodUser(globalToken.access_token, page);
-          const { items, hasNext: next } = response;
+        // Verificar se encontramos o usuário
+        const user = items.find((item) => item.u7_nome.includes(username));
+        if (user) {
+          console.log("Usuário encontrado:", userCod);
+          setUserData(user);
+          setUserCod(user.u7_codusu);
+          setUserFound(true); // Define que o usuário foi encontrado e interrompe a chamada da API
 
-          console.log(`Página ${page}:`, items); // Console log para mostrar os itens da página
-
-          // Verificar se encontramos o usuário
-          const user = items.find((item) => item.u7_nome.includes(username));
-          if (user) {
-            console.log("Usuário encontrado:", userCod);
-            setUserData(user);
-            setUserCod(user.u7_codusu);
-            console.log("userCoduserCod", userCod);
-            hasNext = false;
-          }
-
-          page++;
+          console.log("userCoduserCod", userCod);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
+        setIsLoading(true);
 
         // Se ocorrer um erro, obter um novo token e tentar novamente
         try {
+          setIsLoading(true);
+
           const newToken = await fetchToken(username, password); // Substitua 'password' pelo valor correto
           setGlobalToken(newToken); // Atualiza o token global
           console.log("Novo token obtido:", newToken);
@@ -65,6 +73,8 @@ const HomePage = () => {
             setUserData(user);
             setUserCod(user.u7_codusu);
             console.log("userCoduserCod", userCod);
+            setUserFound(true); // Define que o usuário foi encontrado e interrompe a chamada da API
+            setIsLoading(false);
           }
         } catch (tokenError) {
           console.error("Erro ao obter novo token:", tokenError);
@@ -74,7 +84,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [globalToken.access_token, username, setGlobalToken]);
+  }, [globalToken.access_token, username, setGlobalToken, setUserFound]);
 
   const navigate = useNavigate();
 
@@ -99,24 +109,29 @@ const HomePage = () => {
         <Header />
         <UserDataHome />
       </Box>
-      <VStack spacing="6" h="50vh" justifyContent="center">
-        <SimpleGrid columns={[1, 2, 4]} spacingX="8" spacingY="6">
-          <Button
-            size="lg"
-            width="200px"
-            height="200px"
-            borderRadius="20px"
-            colorScheme="gray"
-            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-            padding="4" // Adicionando padding interno para controlar o espaçamento
-            boxShadow="md"
-            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={MdEvent} boxSize={8} />}
-            onClick={handleRoute}
-          >
-            AGENDA
-          </Button>
-          {/* <Button
+      {isLoading ? (
+        <Center mt="15%">
+          <Spinner size="xl" color="#1A202C" />
+        </Center>
+      ) : (
+        <VStack spacing="6" h="50vh" justifyContent="center">
+          <SimpleGrid columns={[1, 2, 4]} spacingX="8" spacingY="6">
+            <Button
+              size="lg"
+              width="200px"
+              height="200px"
+              borderRadius="20px"
+              colorScheme="gray"
+              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
+              padding="4" // Adicionando padding interno para controlar o espaçamento
+              boxShadow="md"
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+              leftIcon={<Icon as={MdEvent} boxSize={8} />}
+              onClick={handleRoute}
+            >
+              AGENDA
+            </Button>
+            {/* <Button
             size="lg"
             width="200px"
             height="200px"
@@ -131,54 +146,55 @@ const HomePage = () => {
           >
             MAPA
           </Button> */}
-          <Button
-            size="lg"
-            width="200px"
-            height="200px"
-            borderRadius="20px"
-            colorScheme="gray"
-            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-            padding="4" // Adicionando padding interno para controlar o espaçamento
-            boxShadow="md"
-            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={RiCustomerService2Fill} boxSize={8} />}
-            onClick={handleRoute3}
-          >
-            REALIZAR
-            <br /> ATENDIMENTO
-          </Button>
-          <Button
-            size="lg"
-            width="200px"
-            height="200px"
-            borderRadius="20px"
-            colorScheme="gray"
-            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-            padding="4" // Adicionando padding interno para controlar o espaçamento
-            boxShadow="md"
-            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-            // onClick={handleRoute}
-          >
-            EM CONSTRUÇÃO
-          </Button>
-          <Button
-            size="lg"
-            width="200px"
-            height="200px"
-            borderRadius="20px"
-            colorScheme="gray"
-            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-            padding="4" // Adicionando padding interno para controlar o espaçamento
-            boxShadow="md"
-            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-            // onClick={handleRoute}
-          >
-            EM CONSTRUÇÃO
-          </Button>
-        </SimpleGrid>
-      </VStack>
+            <Button
+              size="lg"
+              width="200px"
+              height="200px"
+              borderRadius="20px"
+              colorScheme="gray"
+              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
+              padding="4" // Adicionando padding interno para controlar o espaçamento
+              boxShadow="md"
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+              leftIcon={<Icon as={RiCustomerService2Fill} boxSize={8} />}
+              onClick={handleRoute3}
+            >
+              REALIZAR
+              <br /> ATENDIMENTO
+            </Button>
+            {/* <Button
+              size="lg"
+              width="200px"
+              height="200px"
+              borderRadius="20px"
+              colorScheme="gray"
+              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
+              padding="4" // Adicionando padding interno para controlar o espaçamento
+              boxShadow="md"
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+              leftIcon={<Icon as={IoConstruct} boxSize={8} />}
+              // onClick={handleRoute}
+            >
+              EM CONSTRUÇÃO
+            </Button>
+            <Button
+              size="lg"
+              width="200px"
+              height="200px"
+              borderRadius="20px"
+              colorScheme="gray"
+              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
+              padding="4" // Adicionando padding interno para controlar o espaçamento
+              boxShadow="md"
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
+              leftIcon={<Icon as={IoConstruct} boxSize={8} />}
+              // onClick={handleRoute}
+            >
+              EM CONSTRUÇÃO
+            </Button> */}
+          </SimpleGrid>
+        </VStack>
+      )}
     </Box>
   );
 };
