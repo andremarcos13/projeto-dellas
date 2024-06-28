@@ -18,7 +18,7 @@ const fetchCodUser = async (token) => {
         alias: "SU7",
         fields: "U7_NOME,U7_CODUSU",
         Page: 1,
-        PageSize: 550,
+        PageSize: 150,
       },
       headers: {
         Authorization: `Bearer ${token}`,
