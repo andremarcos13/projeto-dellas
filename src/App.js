@@ -6,6 +6,7 @@ import AtendimentoPage from "./pages/atendimento-page";
 import Map from "./components/map";
 import ErrorPage from "./pages/error-page";
 import AdminPage from "./pages/admin-page";
+import AtendimentoAvulso from "./pages/atendimento-avulso";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/maps" element={<Map />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/atendimento" element={<AdminPage />} />
+        <Route path="/atendimento" element={<AtendimentoAvulso />} />
       </Routes>
     </Router>
   );
