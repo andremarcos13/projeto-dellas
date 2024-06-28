@@ -3,9 +3,13 @@ import LoginComponent from "../components/login-inputs";
 import { CiUnlock } from "react-icons/ci";
 import imagelogo from "../images/205677077_207379361390501_3299387424663450272_n-removebg-preview.png";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { useRestTest, setUseRestTest } = useAppContext();
+
+  console.log("userRestTest", useRestTest);
 
   return (
     <Flex

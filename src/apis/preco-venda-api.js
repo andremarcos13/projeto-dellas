@@ -5,11 +5,12 @@ const fetchPrecoDeVenda = async ({
   produto,
   qtd,
   token,
-  useRestTest,
 }) => {
+  const useRestTest = localStorage.getItem("useRestTest");
+
   // Determina a URL base com base no valor de useRestTest
   const baseUrl =
-    useRestTest === "1"
+    useRestTest === "2"
       ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
       : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
 

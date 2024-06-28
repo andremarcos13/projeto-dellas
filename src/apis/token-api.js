@@ -1,7 +1,11 @@
-export async function fetchToken(username, password, useRestTest) {
-  // Determina a URL base com base no valor de useRestTest igual a 1
+export async function fetchToken(username, password) {
+  // Obtém o valor de useRestTest do localStorage
+  const useRestTest = localStorage.getItem("useRestTest");
+
+  console.log("useRestTest no token", useRestTest);
+
   const baseUrl =
-    useRestTest === "1"
+    useRestTest === "2"
       ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
       : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
 

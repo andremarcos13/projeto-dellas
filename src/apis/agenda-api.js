@@ -1,9 +1,11 @@
 import axios from "axios";
 
-const fetchAgenda = async (appContext, token, useRestTest) => {
+const fetchAgenda = async (appContext, token) => {
+  const useRestTest = localStorage.getItem("useRestTest");
+
   const { dateGlobal } = appContext;
   const baseUrl =
-    useRestTest === "1"
+    useRestTest === "2"
       ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
       : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
 

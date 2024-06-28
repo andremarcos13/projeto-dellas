@@ -1,9 +1,12 @@
 import axios from "axios";
 
-const fetchCondPagamentos = async (token, useRestTest) => {
-  const baseUrl = useRestTest
-    ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
-    : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+const fetchCondPagamentos = async (token) => {
+  const useRestTest = localStorage.getItem("useRestTest");
+
+  const baseUrl =
+    useRestTest === "2"
+      ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
   const apiUrl = `${baseUrl}api/v1/condicao_pagamento`;
 
   console.log("useRestTest:", useRestTest);

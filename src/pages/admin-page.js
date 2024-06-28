@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,23 +9,29 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
 
 const AdminPage = () => {
-  const { useRestTest, setUseRestTest } = useAppContext();
-  const [selectedValue, setSelectedValue] = useState("1"); // Estado para controlar o valor selecionado
+  const [selectedValue, setSelectedValue] = useState(
+    localStorage.getItem("useRestTest") || ""
+  );
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("useRestTest", selectedValue);
+  }, [selectedValue]);
+
+  console.log("useRestTest log", selectedValue);
 
   const handleGoHome = () => {
     navigate("/");
   };
 
   const handleSwitchChange = (value) => {
-    setSelectedValue(value); // Atualiza o valor selecionado
-    setUseRestTest(value); // Define useRestTest com base no valor selecionado
+    setSelectedValue(value);
   };
-  console.log("useRestTest", useRestTest);
+
+  console.log("useRestTest", selectedValue);
 
   return (
     <Box
