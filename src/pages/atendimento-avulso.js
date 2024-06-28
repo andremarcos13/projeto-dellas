@@ -84,7 +84,7 @@ const AtendimentoAvulso = () => {
       item.municipio.toLowerCase().includes(municipioFilter.toLowerCase())
   );
   return (
-    <>
+    <Box bg="gray.100" h="100vh">
       <Header />
       <Box>
         <Box mt={8} ml={5}>
@@ -93,17 +93,21 @@ const AtendimentoAvulso = () => {
             {/* Formulário envolvendo o conteúdo */}
             <HStack spacing={4}>
               <Input
-                placeholder="Search"
+                placeholder="Digite o nome do cliente"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 w={350}
                 mr={3}
                 onKeyDown={handleEnterPress}
+                bg="white"
+                focusBorderColor="#822AA2"
               />
               <Button
                 ref={buttonRef}
                 leftIcon={<FaSearch />}
-                colorScheme="blue"
+                color="#822AA2"
+                borderColor="#822AA2"
+                _hover={{ bg: "#F0DFF7" }}
                 variant="outline"
                 bg="white"
                 onClick={handlePesquisar}
@@ -127,7 +131,7 @@ const AtendimentoAvulso = () => {
             </Center>
           ) : (
             <Box>
-              <Table colorScheme="purple">
+              <Table colorScheme="purple" bg="white">
                 <Thead bg="#822AA2">
                   <Tr>
                     <Th color="white">
@@ -223,7 +227,7 @@ const AtendimentoAvulso = () => {
           )}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
