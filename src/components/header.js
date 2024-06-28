@@ -8,11 +8,11 @@ function Header() {
   const useRestTest = localStorage.getItem("useRestTest");
 
   const headerBgColor = useRestTest === "2" ? "red.500" : "#2C0E37";
-
+  const headerText = useRestTest === "2" ? "Dellas - ambiente test" : "Dellas";
   return (
     <Flex p="4" bg={headerBgColor} color="white" alignItems="center">
       <Box>
-        <Heading size="md">Dellas</Heading>
+        <Heading size="md">{headerText}</Heading>
       </Box>
       <Spacer />
       <Box>
