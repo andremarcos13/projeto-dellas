@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { fetchToken } from "../apis/token-api";
 import Header from "../components/header";
 import { FaMap } from "react-icons/fa";
+import { RiCustomerService2Fill } from "react-icons/ri";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
@@ -83,6 +84,9 @@ const HomePage = () => {
   const handleRoute2 = () => {
     navigate("/maps");
   };
+  const handleRoute3 = () => {
+    navigate("/atendimento");
+  };
 
   return (
     // bg="rgba(0,0,0,0.5)"
@@ -133,10 +137,11 @@ const HomePage = () => {
             padding="4" // Adicionando padding interno para controlar o espaçamento
             boxShadow="md"
             _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-            onClick={handleRoute2}
+            leftIcon={<Icon as={RiCustomerService2Fill} boxSize={8} />}
+            onClick={handleRoute3}
           >
-            EM CONSTRUÇÃO
+            REALIZAR
+            <br /> ATENDIMENTO
           </Button>
           <Button
             size="lg"

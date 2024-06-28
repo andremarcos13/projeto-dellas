@@ -18,6 +18,7 @@ function App() {
         <Route path="/maps" element={<Map />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/atendimento" element={<AdminPage />} />
       </Routes>
     </Router>
   );
