@@ -78,6 +78,10 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
+  if (username === "" || password === "") {
+    navigate("/error"); // Limpar selectedItem ao clicar no botão Voltar
+  }
+
   const handleRoute = () => {
     navigate("/agenda");
   };
