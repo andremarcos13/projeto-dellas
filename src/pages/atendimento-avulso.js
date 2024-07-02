@@ -17,12 +17,19 @@ import {
   Tbody,
   Td,
   Flex,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import Header from "../components/header";
 
 const AtendimentoAvulso = () => {
-  const { username, password, token, globalToken } = useAppContext();
+  const { username, password, token, globalToken, rowItem, setRowItem } =
+    useAppContext();
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
   const [search, setSearch] = useState("");
@@ -33,6 +40,10 @@ const AtendimentoAvulso = () => {
   const [descriptionFilter, setDescriptionFilter] = useState("");
   const [nomeFilter, setNomeFilter] = useState("");
   const [municipioFilter, setMunicipioFilter] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const cancelRef = useRef();
+  const [selectedCliente, setSelectedCliente] = useState(null);
 
   if (username === "" || password === "") {
     navigate("/error");
@@ -77,12 +88,26 @@ const AtendimentoAvulso = () => {
     }
   };
 
+  const handleRowClick = (cliente) => {
+    setSelectedCliente(cliente);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    setRowItem(selectedCliente);
+    console.log("Cliente selecionado:", selectedCliente);
+    const clienteIndex = clientes.indexOf(selectedCliente);
+    navigate(`/atendimento/${clienteIndex}`); // Navega para a rota dinâmica
+    setIsModalOpen(false);
+  };
+
   const filteredResults = clientes.filter(
     (item) =>
       item.codigo.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
       item.nome.toLowerCase().includes(nomeFilter.toLowerCase()) &&
       item.municipio.toLowerCase().includes(municipioFilter.toLowerCase())
   );
+
   return (
     <Box bg="gray.100" h="100vh">
       <Header />
@@ -197,15 +222,13 @@ const AtendimentoAvulso = () => {
                     filteredResults.map((cliente, index) => (
                       <Tr
                         key={index}
-                        // onClick={() => handleRowClick(pedido)}
+                        onClick={() => handleRowClick(cliente)}
                         style={{ cursor: "pointer" }}
                         _hover={{
                           boxShadow: "lg",
                           borderColor: "black",
                           bg: "#F0DFF7",
                           color: "black",
-                          // transform: "scale(1.01)",
-                          // fontWeight: "bold", // Adiciona o negrito ao passar o mouse
                         }}
                       >
                         <Td>{cliente.codigo}</Td>
@@ -227,6 +250,33 @@ const AtendimentoAvulso = () => {
           )}
         </Box>
       </Box>
+
+      <AlertDialog
+        isOpen={isModalOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Confirmação
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Deseja iniciar um lançamento para este cliente?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={() => setIsModalOpen(false)}>
+                Não
+              </Button>
+              <Button colorScheme="blue" onClick={handleConfirm} ml={3}>
+                Sim
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 };
