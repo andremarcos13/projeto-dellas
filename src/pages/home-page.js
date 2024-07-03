@@ -41,6 +41,8 @@ const HomePage = () => {
 
         // Verificar se encontramos o usuário
         const user = items.find((item) => item.u7_nome.includes(username));
+        setIsLoading(false);
+
         if (user) {
           console.log("Usuário encontrado:", userCod);
           setUserData(user);
@@ -78,13 +80,15 @@ const HomePage = () => {
           }
         } catch (tokenError) {
           console.error("Erro ao obter novo token:", tokenError);
+          setIsLoading(false);
+
           // Trate o erro ao obter o novo token conforme necessário
         }
       }
     };
 
     fetchData();
-  }, [globalToken.access_token, username, setGlobalToken, setUserFound]);
+  }, []);
 
   const navigate = useNavigate();
 
