@@ -132,6 +132,7 @@ const Atendimento1 = () => {
 
   const [contatos, setContatos] = useState([]);
   const [operadores, setOperadores] = useState([]);
+  const [selectedOperador, setSelectedOperador] = useState(null);
 
   const navigate = useNavigate();
 
@@ -593,7 +594,7 @@ const Atendimento1 = () => {
       !condPagamentoSelecionado ||
       !operacaoSelecionada ||
       !msgNotaSelecionada ||
-      !obsClienteSelecionada ||
+      // !obsClienteSelecionada ||
       !obsAtendimentoSelecionada ||
       !transportadoraSelecionado ||
       !tipoFreteSelecionado ||
@@ -641,12 +642,16 @@ const Atendimento1 = () => {
     return false; // Caso contrário, o botão deve ser habilitado
   };
 
+  const codigoDoContato = contatos.length > 0 ? contatos[0].codigo : "";
+
+  console.log("codigoDoContato", codigoDoContato);
+
   const bodyApi = {
     cliente: rowItem.codigo,
     loja: rowItem.loja,
-    // contato: contatos[0].codigo,
-    // vendedor: contatos[0].nome,
-    // operador: rowItem.codOperador,
+    contato: codigoDoContato,
+    vendedor: selectedOperador ? selectedOperador.codusuario : "",
+    operador: selectedOperador ? selectedOperador.codigo : "",
     condpag: condPagamentoSelecionado,
     tabela: "L02",
     operacao: operacaoSelecionada,
@@ -823,8 +828,14 @@ const Atendimento1 = () => {
     setIsLoading3(false);
   };
 
+  const handleSelectChange = (event) => {
+    const selectedCodigo = event.target.value;
+    const operador = operadores.find((op) => op.codigo === selectedCodigo);
+    setSelectedOperador(operador);
+  };
+
   console.log("contatos ->>>", contatos);
-  console.log("row item contatos ->", rowItem);
+  console.log("row item cliente contatos ->", rowItem);
   console.log("operadores", operadores);
 
   return (
@@ -846,7 +857,7 @@ const Atendimento1 = () => {
         >
           Voltar
         </Button>
-        {/* <Box
+        <Box
           bg="#2C0E37"
           color="white"
           mb={3}
@@ -854,12 +865,32 @@ const Atendimento1 = () => {
           borderRadius={5}
           shadow="lg"
         >
-           <Text size="4xl" mb="25px" ml={3}>
-              <strong>{`Operador: ${rowItem.nomeOperador} - ${rowItem.codOperador} - Lista: ${rowItem.codLista}`}</strong>
-             
-            </Text> 
+          <HStack>
+            <FormControl>
+              <FormLabel mt={1} ml={3} htmlFor="operadores">
+                Operador:
+              </FormLabel>
+              <Select
+                ml={3}
+                color="black"
+                id="operadores"
+                bg="white"
+                w="330px"
+                focusBorderColor="#822AA2"
+                onChange={handleSelectChange}
+                placeholder="Selecione um operador"
+                mb={1}
+              >
+                {operadores.map((operador) => (
+                  <option key={operador.codigo} value={operador.codigo}>
+                    {operador.nome}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </HStack>
           <Divider w={520} mt={1} borderWidth={2} />
-        </Box> */}
+        </Box>
 
         <Tabs colorScheme="purple" size="md" isFitted variant="soft-rounded">
           <TabList mb="1px" w="250px">
@@ -2063,14 +2094,13 @@ const Atendimento1 = () => {
           w="100%"
           mt={5}
           mb={2}
-          colorScheme="purple"
+          colorScheme="green"
           isDisabled={isButtonDisabled()}
           onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
           isLoading={isLoading} // Alterado para isLoading
           spinner={<BeatLoader size={8} color="white" />}
-          variant="outline"
-          bg="#822AA2"
-          color="white"
+          // variant="outline"
+          // color="white"
           _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
         >
           Finaliza Atendimento
