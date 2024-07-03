@@ -97,7 +97,7 @@ const AtendimentoAvulso = () => {
     setRowItem(selectedCliente);
     console.log("Cliente selecionado:", selectedCliente);
     const clienteIndex = clientes.indexOf(selectedCliente);
-    navigate(`/atendimento/${clienteIndex}`); // Navega para a rota dinâmica
+    navigate(`/atendimento-1`); // Navega para a rota dinâmica
     setIsModalOpen(false);
   };
 
