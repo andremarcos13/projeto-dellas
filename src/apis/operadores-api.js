@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchOperadores = async (empresa = "01", filial = "01", token) => {
+const fetchOperadores = async ({ empresa = "01", filial = "01", token }) => {
   const apiUrl =
     "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/operadores";
 
@@ -14,10 +14,9 @@ const fetchOperadores = async (empresa = "01", filial = "01", token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao buscar operadores:", error);
     throw error;
   }
 };
