@@ -1,11 +1,16 @@
 import axios from "axios";
 
 const fetchOperadores = async ({ empresa = "01", filial = "01", token }) => {
-  const apiUrl =
-    "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/api/v1/operadores";
+  const useRestTest = localStorage.getItem("useRestTest");
+
+  // Determina a URL base com base no valor de useRestTest
+  const baseUrl =
+    useRestTest === "2"
+      ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
+      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
 
   try {
-    const response = await axios.get(apiUrl, {
+    const response = await axios.get(`${baseUrl}api/v1/operadores`, {
       params: {
         empresa,
         filial,
