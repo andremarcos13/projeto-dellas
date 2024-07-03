@@ -85,6 +85,7 @@ import { FcComboChart } from "react-icons/fc";
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
 import fetchContatos from "../apis/contatos-api";
+import fetchOperadores from "../apis/operadores-api";
 
 const Atendimento1 = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -130,6 +131,7 @@ const Atendimento1 = () => {
   const [modalTitle, setModalTitle] = useState("");
 
   const [contatos, setContatos] = useState([]);
+  const [operadores, setOperadores] = useState([]);
 
   const navigate = useNavigate();
 
@@ -445,6 +447,21 @@ const Atendimento1 = () => {
     }
   };
 
+  const getOperadores = async () => {
+    try {
+      const data = await fetchOperadores({
+        empresa: "01",
+        filial: "01",
+        token: globalToken.access_token,
+      });
+
+      setOperadores(data.items);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     console.log("inicia 1o use effect loadin2");
     setIsLoading2(true);
@@ -472,6 +489,11 @@ const Atendimento1 = () => {
           loja: "01",
           token: globalToken.access_token,
         });
+        await getOperadores({
+          empresa: "01",
+          filial: "01",
+          token: globalToken.access_token,
+        });
       } catch (error) {
         // Lidar com erros, se necessário
         console.error("Erro ao buscar APIs:", error);
@@ -492,6 +514,11 @@ const Atendimento1 = () => {
               pageSize: 10000,
               cliente: rowItem.codigo,
               loja: "01",
+              token: newToken.access_token,
+            });
+            await getOperadores({
+              empresa: "01",
+              filial: "01",
               token: newToken.access_token,
             });
           } catch (error) {
@@ -798,6 +825,8 @@ const Atendimento1 = () => {
 
   console.log("contatos ->>>", contatos);
   console.log("row item contatos ->", rowItem);
+  console.log("operadores", operadores);
+
   return (
     <Box
       bg="rgba(0, 0, 0, 0.1)" // Cor de fundo cinza com opacidade
