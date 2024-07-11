@@ -156,96 +156,110 @@ const AtendimentoAvulso = () => {
             </Center>
           ) : (
             <Box>
-              <Table colorScheme="purple" bg="white">
-                <Thead bg="#822AA2">
-                  <Tr>
-                    <Th color="white">
-                      {" "}
-                      <Flex direction="column">
-                        <span>Código</span>
-                        <Input
-                          focusBorderColor="purple.200"
-                          maxW="120px"
-                          bg="white"
-                          color="black"
-                          placeholder="Filtrar"
-                          size="sm"
-                          value={descriptionFilter}
-                          onChange={(e) => setDescriptionFilter(e.target.value)}
-                          mt={2}
-                        />
-                      </Flex>
-                    </Th>
-                    <Th color="white">
-                      {" "}
-                      <Flex direction="column">
-                        <span>Nome</span>
-                        <Input
-                          focusBorderColor="purple.200"
-                          maxW="120px"
-                          bg="white"
-                          color="black"
-                          placeholder="Filtrar"
-                          size="sm"
-                          value={nomeFilter}
-                          onChange={(e) => setNomeFilter(e.target.value)}
-                          mt={2}
-                        />
-                      </Flex>
-                    </Th>
-                    <Th color="white">Nome Fantasia</Th>
-                    <Th color="white">Estado</Th>
-                    <Th color="white">
-                      {" "}
-                      <Flex direction="column">
-                        <span>Município</span>
-                        <Input
-                          focusBorderColor="purple.200"
-                          maxW="120px"
-                          bg="white"
-                          color="black"
-                          placeholder="Filtrar"
-                          size="sm"
-                          value={municipioFilter}
-                          onChange={(e) => setMunicipioFilter(e.target.value)}
-                          mt={2}
-                        />
-                      </Flex>
-                    </Th>
-                    <Th color="white">Observação</Th>
-                    <Th color="white">Código Transportadora</Th>
-                    <Th color="white">Código Grupo Venda</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {clientes.length > 0 ? (
-                    filteredResults.map((cliente, index) => (
-                      <Tr
-                        key={index}
-                        onClick={() => handleRowClick(cliente)}
-                        style={{ cursor: "pointer" }}
-                        _hover={{
-                          boxShadow: "lg",
-                          borderColor: "black",
-                          bg: "#F0DFF7",
-                          color: "black",
-                        }}
-                      >
-                        <Td>{cliente.codigo}</Td>
-                        <Td>{cliente.nome}</Td>
-                        <Td>{cliente.nomefantasia}</Td>
-                        <Td>{cliente.estado}</Td>
-                        <Td>{cliente.municipio}</Td>
-                        <Td>{cliente.observacao}</Td>
-                        <Td>{cliente.codtransp}</Td>
-                        <Td>{cliente.codgrupovenda}</Td>
+              {clientes.length > 0 ? (
+                <Table colorScheme="purple" bg="white">
+                  <Thead bg="#822AA2">
+                    <Tr>
+                      <Th color="white">
+                        {" "}
+                        <Flex direction="column">
+                          <span>Código</span>
+                          <Input
+                            focusBorderColor="purple.200"
+                            maxW="120px"
+                            bg="white"
+                            color="black"
+                            placeholder="Filtrar"
+                            size="sm"
+                            value={descriptionFilter}
+                            onChange={(e) =>
+                              setDescriptionFilter(e.target.value)
+                            }
+                            mt={2}
+                          />
+                        </Flex>
+                      </Th>
+                      <Th color="white">
+                        {" "}
+                        <Flex direction="column">
+                          <span>Nome</span>
+                          <Input
+                            focusBorderColor="purple.200"
+                            maxW="120px"
+                            bg="white"
+                            color="black"
+                            placeholder="Filtrar"
+                            size="sm"
+                            value={nomeFilter}
+                            onChange={(e) => setNomeFilter(e.target.value)}
+                            mt={2}
+                          />
+                        </Flex>
+                      </Th>
+                      <Th color="white">Nome Fantasia</Th>
+                      <Th color="white">Estado</Th>
+                      <Th color="white">
+                        {" "}
+                        <Flex direction="column">
+                          <span>Município</span>
+                          <Input
+                            focusBorderColor="purple.200"
+                            maxW="120px"
+                            bg="white"
+                            color="black"
+                            placeholder="Filtrar"
+                            size="sm"
+                            value={municipioFilter}
+                            onChange={(e) => setMunicipioFilter(e.target.value)}
+                            mt={2}
+                          />
+                        </Flex>
+                      </Th>
+                      <Th color="white">Observação</Th>
+                      <Th color="white">Código Transportadora</Th>
+                      <Th color="white">Código Grupo Venda</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {filteredResults.length > 0 ? (
+                      filteredResults.map((cliente, index) => (
+                        <Tr
+                          key={index}
+                          onClick={() => handleRowClick(cliente)}
+                          style={{ cursor: "pointer" }}
+                          _hover={{
+                            boxShadow: "lg",
+                            borderColor: "black",
+                            bg: "#F0DFF7",
+                            color: "black",
+                          }}
+                        >
+                          <Td>{cliente.codigo}</Td>
+                          <Td>{cliente.nome}</Td>
+                          <Td>{cliente.nomefantasia}</Td>
+                          <Td>{cliente.estado}</Td>
+                          <Td>{cliente.municipio}</Td>
+                          <Td>{cliente.observacao}</Td>
+                          <Td>{cliente.codtransp}</Td>
+                          <Td>{cliente.codgrupovenda}</Td>
+                        </Tr>
+                      ))
+                    ) : (
+                      <Tr>
+                        <Td colSpan="8">
+                          <Text align="center">Nenhum cliente encontrado</Text>
+                        </Td>
                       </Tr>
-                    ))
-                  ) : (
-                    <Text>Nenhum cliente encontrado</Text>
-                  )}
-                </Tbody>
-              </Table>
+                    )}
+                  </Tbody>
+                </Table>
+              ) : (
+                <Center mt="20%">
+                  <Text fontSize="xl">
+                    Nenhum cliente com este nome encontrado.
+                  </Text>
+                </Center>
+              )}
             </Box>
           )}
         </Box>
