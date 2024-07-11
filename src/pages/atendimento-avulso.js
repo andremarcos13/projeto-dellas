@@ -45,6 +45,12 @@ const AtendimentoAvulso = () => {
   const cancelRef = useRef();
   const [selectedCliente, setSelectedCliente] = useState(null);
 
+  useEffect(() => {
+    if (username === "" || password === "") {
+      navigate("/error");
+    }
+  }, [username]);
+
   if (username === "" || password === "") {
     navigate("/error");
   }
