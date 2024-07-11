@@ -480,7 +480,7 @@ const Atendimento1 = () => {
       try {
         await getCondPagamentos(globalToken.access_token);
         await getTransportadoras(globalToken.access_token);
-        await getHistoricoProdutos(globalToken.access_token);
+        // await getHistoricoProdutos(globalToken.access_token);
         await getContatos({
           empresa: "01",
           filial: "01",
@@ -506,8 +506,8 @@ const Atendimento1 = () => {
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
             await getCondPagamentos(newToken.access_token);
             await getTransportadoras(newToken.access_token);
-            await getHistoricoProdutos(newToken.access_token);
-            await historicoTitulos(newToken.access_token);
+            // await getHistoricoProdutos(newToken.access_token);
+            // await historicoTitulos(newToken.access_token);
             await getContatos({
               empresa: "01",
               filial: "01",

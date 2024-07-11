@@ -90,6 +90,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [error, setError] = useState(null);
   const { rowItem, setRowItem } = useAppContext();
 
+  console.log(
+    "rowItem no pegando historico de produtos no procurar produto",
+    rowItem
+  );
+
   const oneYearAgo = format(subYears(new Date(), 1), "dd/MM/yyyy");
   const thirtyDaysAgo = format(subDays(new Date(), 30), "dd/MM/yyyy");
 
@@ -98,13 +103,18 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(
+        "pegando historico de produtos no procurar produto",
+        rowItem.codCliente
+      );
       try {
         const result = await fetchHistoricoProdutos(
-          rowItem.codCliente,
+          rowItem.codigo,
           oneYearAgo,
           thirtyDaysAgo,
           globalToken.access_token
         );
+        console.log(" pegando historico,", result);
         setData(result);
       } catch (error) {
         setError(error);
@@ -332,6 +342,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   console.log("valoresSelecionados filho", valoresSelecionados);
 
   const nfItems = (data || []).filter((item) => item.tipo === "NF");
+  console.log("nfItems ---------->", nfItems);
 
   const groupedByFornecedor = nfItems.reduce((acc, item) => {
     item.itens.forEach((produto) => {

@@ -439,7 +439,7 @@ const Atendimento = () => {
       try {
         await getCondPagamentos(globalToken.access_token);
         await getTransportadoras(globalToken.access_token);
-        await getHistoricoProdutos(globalToken.access_token);
+        // await getHistoricoProdutos(globalToken.access_token);
       } catch (error) {
         // Lidar com erros, se necessário
         console.error("Erro ao buscar APIs:", error);
@@ -451,8 +451,8 @@ const Atendimento = () => {
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
             await getCondPagamentos(newToken.access_token);
             await getTransportadoras(newToken.access_token);
-            await getHistoricoProdutos(newToken.access_token);
-            await historicoTitulos(newToken.access_token);
+            // await getHistoricoProdutos(newToken.access_token);
+            // await historicoTitulos(newToken.access_token);
           } catch (error) {
             console.error("Erro ao obter novo token de acesso:", error);
             // Lidar com o erro ao obter o novo token de acesso
