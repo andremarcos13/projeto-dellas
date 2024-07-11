@@ -35,7 +35,7 @@ function Header() {
         display="flex"
         alignItems="center"
       >
-        <Box position="relative" display="flex" alignItems="center">
+        <Box position="relative" display="flex" alignItems="center" p={3}>
           <Link
             ml="4"
             onClick={handleStartAtendimento}
@@ -46,17 +46,6 @@ function Header() {
           <Box ml="4">
             <FaHeadphones size="24px" />
           </Box>
-          <Box
-            position="absolute"
-            bottom="-4px"
-            left="0"
-            right="0"
-            height="4px"
-            bg="rgba(255, 255, 255, 0.2)"
-            opacity="0"
-            transition="opacity 0.3s"
-            _groupHover={{ opacity: "1" }}
-          />
         </Box>
       </Box>
       <Box>
