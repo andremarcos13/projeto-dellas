@@ -31,54 +31,74 @@ const HomePage = () => {
   const { userCod, setUserCod } = useAppContext();
   const { globalToken, setGlobalToken } = useAppContext();
   const { password, setPassword } = useAppContext();
-  const [userFound, setUserFound] = useState(false); // Variável de controle para interromper a chamada da API
+  const [userFound, setUserFound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   console.log("username home", username);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
+      setIsLoading(true);
+      const response = await fetchCodUser(globalToken.access_token);
+
       try {
-        console.log("Fetching user data...");
-        const response = await fetchCodUser(globalToken.access_token);
-        console.log("User data fetched:", response);
+        // Verificar se os dados já estão no sessionStorage
+        const storedTransportadoras = sessionStorage.getItem("transportadoras");
+        const storedCondPagamentos = sessionStorage.getItem("condPagamentos");
+        const storedOperadores = sessionStorage.getItem("operadores");
+        const storedVendedores = sessionStorage.getItem("vendedores");
 
-        const response_trans = await fetchTransportadoras(
-          globalToken.access_token
-        );
-        console.log("Transportadoras fetched:", response_trans);
+        if (
+          !storedTransportadoras ||
+          !storedCondPagamentos ||
+          !storedOperadores ||
+          !storedVendedores
+        ) {
+          console.log("Fetching user data...");
+          console.log("User data fetched:", response);
 
-        const response_cond = await fetchCondPagamentos(
-          globalToken.access_token
-        );
-        console.log("Condições de Pagamento fetched:", response_cond);
+          const response_trans = await fetchTransportadoras(
+            globalToken.access_token
+          );
+          console.log("Transportadoras fetched:", response_trans);
 
-        const response_operadores = await fetchOperadores({
-          empresa: "01",
-          filial: "01",
-          token: globalToken.access_token,
-        });
+          const response_cond = await fetchCondPagamentos(
+            globalToken.access_token
+          );
+          console.log("Condições de Pagamento fetched:", response_cond);
 
-        const response_vendedores = await fetchVendedores({
-          empresa: "01",
-          filial: "01",
-          token: globalToken.access_token,
-        });
+          const response_operadores = await fetchOperadores({
+            empresa: "01",
+            filial: "01",
+            token: globalToken.access_token,
+          });
+          console.log("Operadores fetched:", response_operadores);
 
-        console.log("Operadores fetched:", response_operadores);
+          const response_vendedores = await fetchVendedores({
+            empresa: "01",
+            filial: "01",
+            token: globalToken.access_token,
+          });
+          console.log("Vendedores fetched:", response_vendedores);
 
-        const vendedoresString = JSON.stringify(response_vendedores.items);
-        sessionStorage.setItem("vendedores", vendedoresString);
-
-        const operadoresString = JSON.stringify(response_operadores.items);
-        sessionStorage.setItem("operadores", operadoresString);
-
-        const transportadorasString = JSON.stringify(response_trans.items);
-        sessionStorage.setItem("transportadoras", transportadorasString);
-
-        const condPagamentosString = JSON.stringify(response_cond.items);
-        sessionStorage.setItem("condPagamentos", condPagamentosString);
+          // Armazenar dados no sessionStorage
+          sessionStorage.setItem(
+            "vendedores",
+            JSON.stringify(response_vendedores.items)
+          );
+          sessionStorage.setItem(
+            "operadores",
+            JSON.stringify(response_operadores.items)
+          );
+          sessionStorage.setItem(
+            "transportadoras",
+            JSON.stringify(response_trans.items)
+          );
+          sessionStorage.setItem(
+            "condPagamentos",
+            JSON.stringify(response_cond.items)
+          );
+        }
 
         const { items } = response;
         const user = items.find((item) => item.u7_nome.includes(username));
@@ -111,31 +131,27 @@ const HomePage = () => {
           console.error("Erro ao obter novo token:", tokenError);
         }
       } finally {
-        console.log("Setting isLoading to false");
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [globalToken, password, setGlobalToken, setUserCod, username]);
+
   const navigate = useNavigate();
 
   if (username === "" || password === "") {
-    navigate("/error"); // Limpar selectedItem ao clicar no botão Voltar
+    navigate("/error");
   }
 
   const handleRoute = () => {
     navigate("/agenda");
-  };
-  const handleRoute2 = () => {
-    navigate("/maps");
   };
   const handleRoute3 = () => {
     navigate("/atendimento");
   };
 
   return (
-    // bg="rgba(0,0,0,0.5)"
     <Box minHeight="100vh" py="0" px="0" bg="rgba(0,0,0,0.1)">
       <Box>
         <Header />
@@ -154,8 +170,8 @@ const HomePage = () => {
               height="200px"
               borderRadius="20px"
               colorScheme="gray"
-              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-              padding="4" // Adicionando padding interno para controlar o espaçamento
+              fontSize="lg"
+              padding="4"
               boxShadow="md"
               _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
               leftIcon={<Icon as={MdEvent} boxSize={8} />}
@@ -163,29 +179,14 @@ const HomePage = () => {
             >
               AGENDA
             </Button>
-            {/* <Button
-            size="lg"
-            width="200px"
-            height="200px"
-            borderRadius="20px"
-            colorScheme="gray"
-            fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-            padding="4" // Adicionando padding interno para controlar o espaçamento
-            boxShadow="md"
-            _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-            leftIcon={<Icon as={FaMap} boxSize={8} />}
-            onClick={handleRoute2}
-          >
-            MAPA
-          </Button> */}
             <Button
               size="lg"
               width="200px"
               height="200px"
               borderRadius="20px"
               colorScheme="gray"
-              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-              padding="4" // Adicionando padding interno para controlar o espaçamento
+              fontSize="lg"
+              padding="4"
               boxShadow="md"
               _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
               leftIcon={<Icon as={RiCustomerService2Fill} boxSize={8} />}
@@ -194,36 +195,6 @@ const HomePage = () => {
               REALIZAR
               <br /> ATENDIMENTO
             </Button>
-            {/* <Button
-              size="lg"
-              width="200px"
-              height="200px"
-              borderRadius="20px"
-              colorScheme="gray"
-              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-              padding="4" // Adicionando padding interno para controlar o espaçamento
-              boxShadow="md"
-              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-              leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-              // onClick={handleRoute}
-            >
-              EM CONSTRUÇÃO
-            </Button>
-            <Button
-              size="lg"
-              width="200px"
-              height="200px"
-              borderRadius="20px"
-              colorScheme="gray"
-              fontSize="lg" // Reduzindo o tamanho da fonte para "lg"
-              padding="4" // Adicionando padding interno para controlar o espaçamento
-              boxShadow="md"
-              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
-              leftIcon={<Icon as={IoConstruct} boxSize={8} />}
-              // onClick={handleRoute}
-            >
-              EM CONSTRUÇÃO
-            </Button> */}
           </SimpleGrid>
         </VStack>
       )}
