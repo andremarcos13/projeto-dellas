@@ -132,9 +132,19 @@ const Atendimento1 = () => {
 
   const [contatos, setContatos] = useState([]);
   const [operadores, setOperadores] = useState([]);
-  const [selectedOperador, setSelectedOperador] = useState(null);
+  const [selectedOperador, setSelectedOperador] = useState("");
 
   const navigate = useNavigate();
+
+  const storedTransportadoras = sessionStorage.getItem("transportadoras");
+  const storedCondPagamentos = sessionStorage.getItem("condPagamentos");
+  const storedOperadores = sessionStorage.getItem("operadores");
+
+  console.log("jc socorro", storedOperadores);
+
+  const parsedTransportadoras = JSON.parse(storedTransportadoras);
+  const parsedCondPagamentos = JSON.parse(storedCondPagamentos);
+  const parsedOperadores = JSON.parse(storedOperadores);
 
   console.log("username", username);
 
@@ -478,8 +488,8 @@ const Atendimento1 = () => {
       setDataInicial2(ninetyDaysAgo);
 
       try {
-        await getCondPagamentos(globalToken.access_token);
-        await getTransportadoras(globalToken.access_token);
+        // await getCondPagamentos(globalToken.access_token);
+        // await getTransportadoras(globalToken.access_token);
         // await getHistoricoProdutos(globalToken.access_token);
         await getContatos({
           empresa: "01",
@@ -490,11 +500,11 @@ const Atendimento1 = () => {
           loja: "01",
           token: globalToken.access_token,
         });
-        await getOperadores({
-          empresa: "01",
-          filial: "01",
-          token: globalToken.access_token,
-        });
+        // await getOperadores({
+        //   empresa: "01",
+        //   filial: "01",
+        //   token: globalToken.access_token,
+        // });
       } catch (error) {
         // Lidar com erros, se necessário
         console.error("Erro ao buscar APIs:", error);
@@ -504,8 +514,8 @@ const Atendimento1 = () => {
           try {
             const newToken = await fetchToken(username, password);
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
-            await getCondPagamentos(newToken.access_token);
-            await getTransportadoras(newToken.access_token);
+            // await getCondPagamentos(newToken.access_token);
+            // await getTransportadoras(newToken.access_token);
             // await getHistoricoProdutos(newToken.access_token);
             // await historicoTitulos(newToken.access_token);
             await getContatos({
@@ -517,11 +527,11 @@ const Atendimento1 = () => {
               loja: "01",
               token: newToken.access_token,
             });
-            await getOperadores({
-              empresa: "01",
-              filial: "01",
-              token: newToken.access_token,
-            });
+            // await getOperadores({
+            //   empresa: "01",
+            //   filial: "01",
+            //   token: newToken.access_token,
+            // });
           } catch (error) {
             console.error("Erro ao obter novo token de acesso:", error);
             // Lidar com o erro ao obter o novo token de acesso
@@ -593,12 +603,11 @@ const Atendimento1 = () => {
       // !rowItem.codOperador ||
       !condPagamentoSelecionado ||
       !operacaoSelecionada ||
-      !msgNotaSelecionada ||
+      // !msgNotaSelecionada ||
       // !obsClienteSelecionada ||
       !obsAtendimentoSelecionada ||
       !transportadoraSelecionado ||
-      !tipoFreteSelecionado ||
-      valoresSelecionados.length === 0
+      !tipoFreteSelecionado
     ) {
       // Verifica qual estado específico está vazio ou indefinido e imprime no console
       if (!rowItem.codCliente)
@@ -625,17 +634,6 @@ const Atendimento1 = () => {
         console.log("tipoFreteSelecionado está vazio ou indefinido");
       if (valoresSelecionados.length === 0)
         console.log("valoresSelecionados está vazio");
-      if (
-        valoresSelecionados.some(
-          (produto) =>
-            !produto.codigo ||
-            !produto.quantidade ||
-            produto.desconto === undefined
-        )
-      )
-        console.log(
-          "Algum produto em valoresSelecionados está com campos vazios ou indefinidos"
-        );
 
       return true; // Se algum estado estiver vazio ou indefinido, o botão deve ser desabilitado
     }
@@ -648,10 +646,10 @@ const Atendimento1 = () => {
 
   const bodyApi = {
     cliente: rowItem.codigo,
-    loja: rowItem.loja,
+    loja: rowItem.loja || "01",
     contato: codigoDoContato,
-    vendedor: selectedOperador ? selectedOperador.codusuario : "",
-    operador: selectedOperador ? selectedOperador.codigo : "",
+    // vendedor: "" || selectedOperador.codusuario,
+    operador: selectedOperador,
     condpag: condPagamentoSelecionado,
     tabela: "L02",
     operacao: operacaoSelecionada,
@@ -677,8 +675,12 @@ const Atendimento1 = () => {
       };
     }),
   };
+
+  console.log("bodyApibodyApi", bodyApi);
+
   const handleClickFinalizaAtendimento = async () => {
     setIsLoading(true); // Alterado para true ao iniciar o login
+    setErrorMessage("");
 
     try {
       // Chama a função enviarRequisicao com o requestBody necessário
@@ -830,13 +832,16 @@ const Atendimento1 = () => {
 
   const handleSelectChange = (event) => {
     const selectedCodigo = event.target.value;
-    const operador = operadores.find((op) => op.codigo === selectedCodigo);
-    setSelectedOperador(operador);
+    setSelectedOperador(selectedCodigo);
   };
+
+  console.log("setSelectedOperador", selectedOperador);
 
   console.log("contatos ->>>", contatos);
   console.log("row item cliente contatos ->", rowItem);
   console.log("operadores", operadores);
+
+  console.log("bodyApi", bodyApi);
 
   return (
     <Box
@@ -881,7 +886,7 @@ const Atendimento1 = () => {
                 placeholder="Selecione um operador"
                 mb={1}
               >
-                {operadores.map((operador) => (
+                {parsedOperadores.map((operador) => (
                   <option key={operador.codigo} value={operador.codigo}>
                     {operador.nome}
                   </option>
@@ -1339,7 +1344,7 @@ const Atendimento1 = () => {
                               onChange={handleTransportadora}
                               value={transportadoraSelecionado}
                             >
-                              {transportadoras.map((option) => (
+                              {parsedTransportadoras.map((option) => (
                                 <option
                                   key={option.codigo}
                                   value={option.codigo}
@@ -1370,7 +1375,7 @@ const Atendimento1 = () => {
                               mb={5}
                               placeholder="Selecione a condição de pagamento."
                             >
-                              {condPagamentos.map((option, index) => (
+                              {parsedCondPagamentos.map((option, index) => (
                                 <option key={index} value={option.codigo}>
                                   {option.descricao}
                                 </option>
