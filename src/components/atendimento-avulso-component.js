@@ -81,6 +81,7 @@ import { format, subDays } from "date-fns";
 import { BiShow } from "react-icons/bi";
 import { FcDataConfiguration } from "react-icons/fc";
 import { FcComboChart } from "react-icons/fc";
+import { FaUserTie } from "react-icons/fa6";
 
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
@@ -133,18 +134,21 @@ const Atendimento1 = () => {
   const [contatos, setContatos] = useState([]);
   const [operadores, setOperadores] = useState([]);
   const [selectedOperador, setSelectedOperador] = useState("");
+  const [selectedVendedor, setSelectedVendedor] = useState("");
 
   const navigate = useNavigate();
 
   const storedTransportadoras = sessionStorage.getItem("transportadoras");
   const storedCondPagamentos = sessionStorage.getItem("condPagamentos");
   const storedOperadores = sessionStorage.getItem("operadores");
+  const storedVendedores = sessionStorage.getItem("vendedores");
 
   console.log("jc socorro", storedOperadores);
 
   const parsedTransportadoras = JSON.parse(storedTransportadoras);
   const parsedCondPagamentos = JSON.parse(storedCondPagamentos);
   const parsedOperadores = JSON.parse(storedOperadores);
+  const parsedVendedores = JSON.parse(storedVendedores);
 
   console.log("username", username);
 
@@ -648,7 +652,7 @@ const Atendimento1 = () => {
     cliente: rowItem.codigo,
     loja: rowItem.loja || "01",
     contato: codigoDoContato,
-    // vendedor: "" || selectedOperador.codusuario,
+    vendedor: selectedVendedor,
     operador: selectedOperador,
     condpag: condPagamentoSelecionado,
     tabela: "L02",
@@ -835,6 +839,12 @@ const Atendimento1 = () => {
     setSelectedOperador(selectedCodigo);
   };
 
+  const handleSelectChangeVendedores = (event) => {
+    const selectedCodigo = event.target.value;
+    console.log(selectedCodigo);
+    setSelectedVendedor(selectedCodigo);
+  };
+
   console.log("setSelectedOperador", selectedOperador);
 
   console.log("contatos ->>>", contatos);
@@ -956,6 +966,39 @@ const Atendimento1 = () => {
                             // border: "1px",
                           }}
                         >
+                          <FormControl>
+                            <FormLabel mt={1} htmlFor="vendedores">
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="black"
+                                mb={2}
+                                display="flex"
+                                alignItems="center"
+                              >
+                                <Icon as={FaUserTie} mr={2} /> Vendedor:
+                              </Text>
+                            </FormLabel>
+                            <Select
+                              color="black"
+                              id="operadores"
+                              bg="white"
+                              w="300px"
+                              focusBorderColor="#822AA2"
+                              onChange={handleSelectChangeVendedores}
+                              placeholder="Selecione um vendedor"
+                              mb={1}
+                            >
+                              {parsedVendedores.map((operador) => (
+                                <option
+                                  key={operador.codigo}
+                                  value={operador.codigo}
+                                >
+                                  {operador.nome}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
                           <Text
                             fontSize="lg"
                             fontWeight="bold"
