@@ -63,7 +63,7 @@ const AtendimentoAvulso = () => {
         token: globalToken.access_token,
       });
 
-      if (data && data.items) {
+      if (data.items) {
         setClientes(data.items);
         setHasNext(data.hasNext);
         setRemainingRecords(data.remainingRecords);
