@@ -142,6 +142,18 @@ const Atendimento = () => {
 
   console.log("globalToken atendimento", globalToken.access_token);
 
+  const storedTransportadoras = sessionStorage.getItem("transportadoras");
+  const storedCondPagamentos = sessionStorage.getItem("condPagamentos");
+
+  console.log("jc socorro", storedTransportadoras);
+  const parsedTransportadoras = JSON.parse(storedTransportadoras);
+  const parsedCondPagamentos = JSON.parse(storedCondPagamentos);
+
+  console.log("jc socorro2 ", parsedCondPagamentos);
+
+  // const parsedTransportadoras = JSON.parse(storedTransportadoras);
+  // setTransportadoras(parsedTransportadoras);
+
   // const closeModal = () => {
   //   setSelectedItem(null);
   // };
@@ -354,35 +366,36 @@ const Atendimento = () => {
     }
   };
 
-  const getTransportadoras = async () => {
-    setIsLoading(true);
+  // Log the parsed data to the console
+  // const getTransportadoras = async () => {
+  //   setIsLoading(true);
 
-    try {
-      const response = await fetchTransportadoras(globalToken.access_token);
-      setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
-      console.log("getTransportadoras", transportadoras);
-    } catch (error) {
-      console.error(error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
-        try {
-          const newToken = await fetchToken(username, password);
-          // Refazer a chamada à função fetchTransportadoras com o novo token de acesso
-          const response = await fetchTransportadoras(newToken.access_token);
-          setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
-          console.log("getTransportadoras", transportadoras);
-        } catch (error) {
-          console.error("Erro ao obter novo token de acesso:", error);
-          // Lidar com o erro ao obter o novo token de acesso
-        }
-      } else {
-        // Lidar com outros tipos de erro
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     const response = await fetchTransportadoras(globalToken.access_token);
+  //     setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+  //     console.log("getTransportadoras", transportadoras);
+  //   } catch (error) {
+  //     console.error(error);
+  //     // Verificar se o erro é de autorização (401 Unauthorized)
+  //     if (error.response && error.response.status === 401) {
+  //       // Solicitar um novo token de acesso
+  //       try {
+  //         const newToken = await fetchToken(username, password);
+  //         // Refazer a chamada à função fetchTransportadoras com o novo token de acesso
+  //         const response = await fetchTransportadoras(newToken.access_token);
+  //         setTransportadoras(response.items); // Supondo que o array de objetos esteja em response.items
+  //         console.log("getTransportadoras", transportadoras);
+  //       } catch (error) {
+  //         console.error("Erro ao obter novo token de acesso:", error);
+  //         // Lidar com o erro ao obter o novo token de acesso
+  //       }
+  //     } else {
+  //       // Lidar com outros tipos de erro
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const getHistoricoProdutos = async (
     clienteHistPedidos = rowItem.codCliente,
@@ -437,8 +450,8 @@ const Atendimento = () => {
       setDataInicial2(ninetyDaysAgo);
 
       try {
-        await getCondPagamentos(globalToken.access_token);
-        await getTransportadoras(globalToken.access_token);
+        // await getCondPagamentos(globalToken.access_token);
+        // await getTransportadoras(globalToken.access_token);
         // await getHistoricoProdutos(globalToken.access_token);
       } catch (error) {
         // Lidar com erros, se necessário
@@ -449,8 +462,8 @@ const Atendimento = () => {
           try {
             const newToken = await fetchToken(username, password);
             // Refazer as chamadas às funções getCondPagamentos e getTransportadoras com o novo token de acesso
-            await getCondPagamentos(newToken.access_token);
-            await getTransportadoras(newToken.access_token);
+            // await getCondPagamentos(newToken.access_token);
+            // await getTransportadoras(newToken.access_token);
             // await getHistoricoProdutos(newToken.access_token);
             // await historicoTitulos(newToken.access_token);
           } catch (error) {
@@ -1357,7 +1370,7 @@ const Atendimento = () => {
                               onChange={handleTransportadora}
                               value={transportadoraSelecionado}
                             >
-                              {transportadoras.map((option) => (
+                              {parsedTransportadoras.map((option) => (
                                 <option
                                   key={option.codigo}
                                   value={option.codigo}
@@ -1388,7 +1401,7 @@ const Atendimento = () => {
                               mb={5}
                               placeholder="Selecione a condição de pagamento."
                             >
-                              {condPagamentos.map((option, index) => (
+                              {parsedCondPagamentos.map((option, index) => (
                                 <option key={index} value={option.codigo}>
                                   {option.descricao}
                                 </option>
