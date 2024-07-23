@@ -23,6 +23,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import fetchTransportadoras from "../apis/transportadoras-api";
 import fetchCondPagamentos from "../apis/cond-pagamento";
 import fetchOperadores from "../apis/operadores-api";
+import fetchVendedores from "../apis/vendedores-api";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
@@ -58,7 +59,17 @@ const HomePage = () => {
           filial: "01",
           token: globalToken.access_token,
         });
+
+        const response_vendedores = await fetchVendedores({
+          empresa: "01",
+          filial: "01",
+          token: globalToken.access_token,
+        });
+
         console.log("Operadores fetched:", response_operadores);
+
+        const vendedoresString = JSON.stringify(response_vendedores.items);
+        sessionStorage.setItem("vendedores", vendedoresString);
 
         const operadoresString = JSON.stringify(response_operadores.items);
         sessionStorage.setItem("operadores", operadoresString);
