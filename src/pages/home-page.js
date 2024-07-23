@@ -20,6 +20,9 @@ import { fetchToken } from "../apis/token-api";
 import Header from "../components/header";
 import { FaMap } from "react-icons/fa";
 import { RiCustomerService2Fill } from "react-icons/ri";
+import fetchTransportadoras from "../apis/transportadoras-api";
+import fetchCondPagamentos from "../apis/cond-pagamento";
+import fetchOperadores from "../apis/operadores-api";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
@@ -36,60 +39,74 @@ const HomePage = () => {
     setIsLoading(true);
     const fetchData = async () => {
       try {
+        console.log("Fetching user data...");
         const response = await fetchCodUser(globalToken.access_token);
-        const { items, hasNext: next } = response;
+        console.log("User data fetched:", response);
 
-        // Verificar se encontramos o usuário
+        const response_trans = await fetchTransportadoras(
+          globalToken.access_token
+        );
+        console.log("Transportadoras fetched:", response_trans);
+
+        const response_cond = await fetchCondPagamentos(
+          globalToken.access_token
+        );
+        console.log("Condições de Pagamento fetched:", response_cond);
+
+        const response_operadores = await fetchOperadores({
+          empresa: "01",
+          filial: "01",
+          token: globalToken.access_token,
+        });
+        console.log("Operadores fetched:", response_operadores);
+
+        const operadoresString = JSON.stringify(response_operadores.items);
+        sessionStorage.setItem("operadores", operadoresString);
+
+        const transportadorasString = JSON.stringify(response_trans.items);
+        sessionStorage.setItem("transportadoras", transportadorasString);
+
+        const condPagamentosString = JSON.stringify(response_cond.items);
+        sessionStorage.setItem("condPagamentos", condPagamentosString);
+
+        const { items } = response;
         const user = items.find((item) => item.u7_nome.includes(username));
-        setIsLoading(false);
 
         if (user) {
-          console.log("Usuário encontrado:", userCod);
           setUserData(user);
           setUserCod(user.u7_codusu);
-          setUserFound(true); // Define que o usuário foi encontrado e interrompe a chamada da API
-
-          console.log("userCoduserCod", userCod);
-          setIsLoading(false);
+          setUserFound(true);
         }
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
-        setIsLoading(true);
 
-        // Se ocorrer um erro, obter um novo token e tentar novamente
         try {
-          setIsLoading(true);
+          console.log("Fetching new token...");
+          const newToken = await fetchToken(username, password);
+          setGlobalToken(newToken);
+          console.log("New token obtained:", newToken);
 
-          const newToken = await fetchToken(username, password); // Substitua 'password' pelo valor correto
-          setGlobalToken(newToken); // Atualiza o token global
-          console.log("Novo token obtido:", newToken);
-
-          // Após obter o novo token, fazer uma nova requisição com o token atualizado
           const newResponse = await fetchCodUser(newToken.access_token, 1);
-          const { items } = newResponse;
+          console.log("New user data fetched:", newResponse);
 
-          // Verificar se encontramos o usuário
+          const { items } = newResponse;
           const user = items.find((item) => item.u7_nome.includes(username));
           if (user) {
-            console.log("Usuário encontrado:", userCod);
             setUserData(user);
             setUserCod(user.u7_codusu);
-            console.log("userCoduserCod", userCod);
-            setUserFound(true); // Define que o usuário foi encontrado e interrompe a chamada da API
-            setIsLoading(false);
+            setUserFound(true);
           }
         } catch (tokenError) {
           console.error("Erro ao obter novo token:", tokenError);
-          setIsLoading(false);
-
-          // Trate o erro ao obter o novo token conforme necessário
         }
+      } finally {
+        console.log("Setting isLoading to false");
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
   const navigate = useNavigate();
 
   if (username === "" || password === "") {
