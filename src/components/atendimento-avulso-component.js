@@ -82,11 +82,15 @@ import { BiShow } from "react-icons/bi";
 import { FcDataConfiguration } from "react-icons/fc";
 import { FcComboChart } from "react-icons/fc";
 import { FaUserTie } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
 
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
 import fetchContatos from "../apis/contatos-api";
 import fetchOperadores from "../apis/operadores-api";
+
+import { useToast } from "@chakra-ui/react";
 
 const Atendimento1 = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -136,6 +140,10 @@ const Atendimento1 = () => {
   const [selectedOperador, setSelectedOperador] = useState("");
   const [selectedVendedor, setSelectedVendedor] = useState("");
 
+  const [numeroAtendimento, setNumeroAtendimento] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toast = useToast();
   const navigate = useNavigate();
 
   const storedTransportadoras = sessionStorage.getItem("transportadoras");
@@ -567,6 +575,7 @@ const Atendimento1 = () => {
 
   const handleOperacao = (event) => {
     setOperacaoSelecionada(event.target.value);
+    console.log("operacaoSelecionada", operacaoSelecionada);
   };
 
   const handleMsgNota = (event) => {
@@ -683,34 +692,42 @@ const Atendimento1 = () => {
   console.log("bodyApibodyApi", bodyApi);
 
   const handleClickFinalizaAtendimento = async () => {
-    setIsLoading(true); // Alterado para true ao iniciar o login
+    setIsLoading(true);
     setErrorMessage("");
 
     try {
-      // Chama a função enviarRequisicao com o requestBody necessário
       const resposta = await enviarRequisicao(
         bodyApi,
         globalToken.access_token
       );
       console.log("Resposta da requisição:", resposta);
-      setIsLoading(false); // Alterado para false quando houver um erro
+      setIsLoading(false);
 
-      // Faça o que for necessário com a resposta da requisição...
+      const numeroAtendimento = resposta.numero_atendimento;
+      console.log("numeroAtendimento", numeroAtendimento);
+
+      if (numeroAtendimento !== "") {
+        setNumeroAtendimento(numeroAtendimento);
+        setIsModalOpen(true);
+      }
     } catch (error) {
-      // Verifique se a resposta contém a mensagem de erro
       if (error.response && error.response.data) {
-        setErrorMessage(error.response.data); // Define a mensagem de erro recebida da API
-        setIsLoading(false); // Alterado para false quando houver um erro
+        setErrorMessage(error.response.data);
       } else {
         setErrorMessage(
           "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
         );
-        setIsLoading(false); // Alterado para false quando houver um erro
       }
       console.error("Erro ao finalizar atendimento:", error);
-      setIsLoading(false); // Alterado para false quando houver um erro
+      setIsLoading(false);
     }
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate("/home");
+  };
+
   const [dataError, setDataError] = useState("");
   const [dataAtualEstad, setDataAtualEstad] = useState(obterDataAtual());
 
@@ -2164,6 +2181,29 @@ const Atendimento1 = () => {
             </Alert>
           </Box>
         )}
+        <Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="#2C0E37" color="white">
+              <Flex align="center">
+                <FaCheckCircle />
+                <Text ml={3}>Atendimento Finalizado</Text>
+              </Flex>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text mt={3}>
+                Número de Atendimento: <strong>{numeroAtendimento}</strong>
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="green" mr={3} onClick={closeModal}>
+                <GoHome />
+                <Text ml={3}>Voltar para página inicial</Text>
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </>
     </Box>
   );
