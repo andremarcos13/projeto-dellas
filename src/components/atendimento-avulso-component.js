@@ -103,8 +103,8 @@ const Atendimento1 = () => {
   const [condPagamentos, setCondPagamentos] = useState([]);
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
   const [dadosAtendimento, setDadosAtendimento] = useState([]);
-  const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("1");
-  const [operacaoSelecionada, setOperacaoSelecionada] = useState("1");
+  const [condPagamentoSelecionado, setCondPagamentoSelecionado] = useState("");
+  const [operacaoSelecionada, setOperacaoSelecionada] = useState(1);
   const [msgNotaSelecionada, setMsgNotaSelecionada] = useState("");
   const [obsAtendimentoSelecionada, setObsAtendimentoSelecionada] =
     useState("");
@@ -608,14 +608,18 @@ const Atendimento1 = () => {
 
   console.log("contato ->>", contatos.nome);
 
+  console.log("condPagamentoSelecionado", condPagamentoSelecionado);
+
   const isButtonDisabled = () => {
     // Verifica se algum estado necessário está vazio ou indefinido
     if (
-      !rowItem.codigo ||
+      // !rowItem.codigo ||
       // !contatos[0].codigo ||
       // !rowItem.codOperador ||
       !condPagamentoSelecionado ||
       !operacaoSelecionada ||
+      !selectedOperador ||
+      !selectedVendedor ||
       // !msgNotaSelecionada ||
       // !obsClienteSelecionada ||
       !obsAtendimentoSelecionada ||
