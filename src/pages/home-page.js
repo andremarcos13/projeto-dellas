@@ -4,22 +4,18 @@ import {
   Icon,
   SimpleGrid,
   Box,
-  Link,
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import { MdEvent, MdDateRange, MdList, MdAssignment } from "react-icons/md";
+import { MdEvent } from "react-icons/md";
 import UserDataHome from "../components/user-data-home";
 import { useNavigate } from "react-router-dom";
-import { IoConstruct } from "react-icons/io5";
-import BreadCrumbLinks from "../components/breadcumber";
+import { RiCustomerService2Fill } from "react-icons/ri";
 import { useAppContext } from "../context/AppContext";
 import fetchCodUser from "../apis/cod-user-api";
 import { useEffect, useState } from "react";
 import { fetchToken } from "../apis/token-api";
 import Header from "../components/header";
-import { FaMap } from "react-icons/fa";
-import { RiCustomerService2Fill } from "react-icons/ri";
 import fetchTransportadoras from "../apis/transportadoras-api";
 import fetchCondPagamentos from "../apis/cond-pagamento";
 import fetchOperadores from "../apis/operadores-api";
@@ -27,10 +23,10 @@ import fetchVendedores from "../apis/vendedores-api";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
-  const { username, setUsername } = useAppContext();
+  const { username } = useAppContext();
   const { userCod, setUserCod } = useAppContext();
   const { globalToken, setGlobalToken } = useAppContext();
-  const { password, setPassword } = useAppContext();
+  const { password } = useAppContext();
   const [userFound, setUserFound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,10 +35,21 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const response = await fetchCodUser(globalToken.access_token);
 
       try {
-        // Verificar se os dados já estão no sessionStorage
+        if (!userCod) {
+          const response = await fetchCodUser(globalToken.access_token);
+          const { items } = response;
+          const user = items.find((item) => item.u7_nome.includes(username));
+          if (user) {
+            setUserData(user);
+            setUserCod(user.u7_codusu);
+            setUserFound(true);
+          }
+        } else {
+          setUserFound(true);
+        }
+
         const storedTransportadoras = sessionStorage.getItem("transportadoras");
         const storedCondPagamentos = sessionStorage.getItem("condPagamentos");
         const storedOperadores = sessionStorage.getItem("operadores");
@@ -54,8 +61,7 @@ const HomePage = () => {
           !storedOperadores ||
           !storedVendedores
         ) {
-          console.log("Fetching user data...");
-          console.log("User data fetched:", response);
+          console.log("Fetching additional data...");
 
           const response_trans = await fetchTransportadoras(
             globalToken.access_token
@@ -81,7 +87,6 @@ const HomePage = () => {
           });
           console.log("Vendedores fetched:", response_vendedores);
 
-          // Armazenar dados no sessionStorage
           sessionStorage.setItem(
             "vendedores",
             JSON.stringify(response_vendedores.items)
@@ -99,18 +104,8 @@ const HomePage = () => {
             JSON.stringify(response_cond.items)
           );
         }
-
-        const { items } = response;
-        const user = items.find((item) => item.u7_nome.includes(username));
-
-        if (user) {
-          setUserData(user);
-          setUserCod(user.u7_codusu);
-          setUserFound(true);
-        }
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
-
         try {
           console.log("Fetching new token...");
           const newToken = await fetchToken(username, password);
@@ -136,7 +131,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [globalToken, password, setGlobalToken, setUserCod, username]);
+  }, [globalToken, password, setGlobalToken, setUserCod, username, userCod]);
 
   const navigate = useNavigate();
 
@@ -147,6 +142,7 @@ const HomePage = () => {
   const handleRoute = () => {
     navigate("/agenda");
   };
+
   const handleRoute3 = () => {
     navigate("/atendimento");
   };
