@@ -28,8 +28,16 @@ import { FaSearch } from "react-icons/fa";
 import Header from "../components/header";
 
 const AtendimentoAvulso = () => {
-  const { username, password, token, globalToken, rowItem, setRowItem } =
-    useAppContext();
+  const {
+    username,
+    password,
+    token,
+    globalToken,
+    rowItem,
+    setRowItem,
+    clienteCodigo,
+    setClienteCodigo,
+  } = useAppContext();
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
   const [search, setSearch] = useState("");
@@ -79,6 +87,8 @@ const AtendimentoAvulso = () => {
     }
   };
 
+  console.log("cliente codigo", clienteCodigo);
+
   const handlePesquisar = (event) => {
     event.preventDefault();
     setDescriptionFilter("");
@@ -102,6 +112,8 @@ const AtendimentoAvulso = () => {
   const handleConfirm = () => {
     setRowItem(selectedCliente);
     console.log("Cliente selecionado:", selectedCliente);
+    setClienteCodigo(selectedCliente.codigo);
+    console.log("Cliente selecionado: codigo", clienteCodigo);
     const clienteIndex = clientes.indexOf(selectedCliente);
     navigate(`/atendimento-1`); // Navega para a rota dinâmica
     setIsModalOpen(false);
