@@ -93,7 +93,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
 
   console.log(
     "rowItem no pegando historico de produtos no procurar produto",
-    rowItem
+    rowItem["loja  "]
   );
 
   const oneYearAgo = format(subYears(new Date(), 1), "dd/MM/yyyy");
@@ -255,7 +255,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       const produto = selectedItem.codigo;
       const qtd = quantidade;
       const cliente = rowItem.codCliente || clienteCodigo;
-      const loja = rowItem.lojaCliente || rowItem["loja "];
+      const loja = rowItem.lojaCliente || rowItem["loja  "];
       console.log("loja", rowItem.codlojaCliente);
       const response = await fetchPrecoDeVenda({
         loja,

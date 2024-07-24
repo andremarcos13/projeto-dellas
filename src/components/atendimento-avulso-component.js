@@ -49,7 +49,7 @@ import {
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaLuggageCart, FaUser } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
 import { FaCalendarDays, FaShop } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
@@ -944,6 +944,12 @@ const Atendimento1 = () => {
                 <VscTools />
               </Box>
               <strong>Ferramentas</strong>
+            </Tab>
+            <Tab bg="white">
+              <Box mr="5px">
+                <FaLuggageCart />
+              </Box>
+              <strong>Produtos</strong>
             </Tab>
           </TabList>
           <TabPanels>
@@ -2073,106 +2079,106 @@ const Atendimento1 = () => {
                 </>
               )}
             </TabPanel>
-          </TabPanels>
-        </Tabs>
+            <TabPanel>
+              {rowItem && (
+                <Box h="60vh">
+                  <Box mt={15} mb={15} ml={5}>
+                    <ProcurarProduto
+                      onFinalizarAddProdutos={handleFinalizarAddProdutos}
+                      onRemoveItem={handleRemoveItem}
+                      valoresSelecionados={valoresSelecionados}
+                    />
+                  </Box>
 
-        <Box mt={15} mb={15} ml={5}>
-          <ProcurarProduto
-            onFinalizarAddProdutos={handleFinalizarAddProdutos}
-            onRemoveItem={handleRemoveItem}
-            valoresSelecionados={valoresSelecionados}
-          />
-        </Box>
-
-        <Table variant="simple" bg="white">
-          <Thead
-            Thead
-            // position="sticky"
-            top="0"
-            bg="#822AA2"
-            fontWeight="bold"
-          >
-            <Tr>
-              <Th color="white" fontSize="sm">
-                Produto
-              </Th>
-              <Th color="white" fontSize="sm">
-                Quantidade
-              </Th>
-              <Th color="white" fontSize="sm">
-                Desconto (%)
-              </Th>
-              <Th color="white" fontSize="sm">
-                Valor Unitário
-              </Th>
-              <Th color="white" fontSize="sm">
-                Total
-              </Th>
-              <Th color="white" fontSize="sm">
-                Unidade de Medida
-              </Th>{" "}
-              {/* Nova coluna para UM */}
-              <Th color="white" fontSize="sm">
-                Data Faturamento
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {valoresSelecionados.map((produto, index) => (
-              <Tr key={index}>
-                <Td w={250}>{produto.descricao}</Td>
-                <Td w={100}>{produto.quantidade}</Td>
-                <Td w={150}>
-                  <Input
-                    focusBorderColor="purple.700"
-                    border="1px"
-                    borderColor="gray.300"
-                    type="number"
-                    mt={2}
-                    w="75px"
-                    p={6}
-                    value={produto.qtd}
-                    onChange={(e) =>
-                      handleDescontoChange(index, e.target.value)
-                    }
-                  />
-                </Td>
-                <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
-                {/* Usando precoUnitario */}
-                <Td w={150}>
-                  {calcularPrecoTotal(
-                    produto.quantidade,
-                    produto.precoUnitario,
-                    produto.desconto
-                  ).toFixed(2)}
-                </Td>{" "}
-                {/* Usando precoTotal */}
-                <Td w={150}>{produto.um}</Td>
-                <Td w={150}>
-                  <Input
-                    type="date"
-                    borderRadius="10px"
-                    focusBorderColor="purple.700"
-                    border="1px"
-                    borderColor="gray.300"
-                    mt={2}
-                    w="155px"
-                    p={6}
-                    value={dataAtualEstad}
-                    onChange={handleDataAtualChange}
-                    size="sm"
-                  />
-                </Td>{" "}
-                {/* Preenchendo com a data atual */}
-              </Tr>
-            ))}
-          </Tbody>
-          <Tfoot>
-            <Tr bg="white">
-              <Td fontWeight="bold">TOTAL</Td>
-              <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-              <Td></Td>
-              {/* <Td>
+                  <Table variant="simple" bg="white">
+                    <Thead
+                      Thead
+                      // position="sticky"
+                      top="0"
+                      bg="#822AA2"
+                      fontWeight="bold"
+                    >
+                      <Tr>
+                        <Th color="white" fontSize="sm">
+                          Produto
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Quantidade
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Desconto (%)
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Valor Unitário
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Total
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Unidade de Medida
+                        </Th>{" "}
+                        {/* Nova coluna para UM */}
+                        <Th color="white" fontSize="sm">
+                          Data Faturamento
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {valoresSelecionados.map((produto, index) => (
+                        <Tr key={index}>
+                          <Td w={250}>{produto.descricao}</Td>
+                          <Td w={100}>{produto.quantidade}</Td>
+                          <Td w={150}>
+                            <Input
+                              focusBorderColor="purple.700"
+                              border="1px"
+                              borderColor="gray.300"
+                              type="number"
+                              mt={2}
+                              w="75px"
+                              p={6}
+                              value={produto.qtd}
+                              onChange={(e) =>
+                                handleDescontoChange(index, e.target.value)
+                              }
+                            />
+                          </Td>
+                          <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
+                          {/* Usando precoUnitario */}
+                          <Td w={150}>
+                            {calcularPrecoTotal(
+                              produto.quantidade,
+                              produto.precoUnitario,
+                              produto.desconto
+                            ).toFixed(2)}
+                          </Td>{" "}
+                          {/* Usando precoTotal */}
+                          <Td w={150}>{produto.um}</Td>
+                          <Td w={150}>
+                            <Input
+                              type="date"
+                              borderRadius="10px"
+                              focusBorderColor="purple.700"
+                              border="1px"
+                              borderColor="gray.300"
+                              mt={2}
+                              w="155px"
+                              p={6}
+                              value={dataAtualEstad}
+                              onChange={handleDataAtualChange}
+                              size="sm"
+                            />
+                          </Td>{" "}
+                          {/* Preenchendo com a data atual */}
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr bg="white">
+                        <Td fontWeight="bold">TOTAL</Td>
+                        <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
+                        <Td></Td>
+                        {/* <Td>
                       <Input
                         focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
                         border="1px"
@@ -2185,13 +2191,20 @@ const Atendimento1 = () => {
                         onChange={handleDescontoTotalChange}
                       />
                     </Td> */}
-              <Td></Td>
-              <Td fontWeight="bold">{calcularPrecoTotalGeral().toFixed(2)}</Td>
-              <Td></Td>
-              <Td></Td>
-            </Tr>
-          </Tfoot>
-        </Table>
+                        <Td></Td>
+                        <Td fontWeight="bold">
+                          {calcularPrecoTotalGeral().toFixed(2)}
+                        </Td>
+                        <Td></Td>
+                        <Td></Td>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </Box>
+              )}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
 
         <Tooltip
           label={messages.map((msg, index) => (
