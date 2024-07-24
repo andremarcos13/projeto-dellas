@@ -14,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -613,50 +614,39 @@ const Atendimento1 = () => {
   console.log("condPagamentoSelecionado", condPagamentoSelecionado);
 
   const isButtonDisabled = () => {
-    // Verifica se algum estado necessário está vazio ou indefinido
-    if (
-      // !rowItem.codigo ||
-      // !contatos[0].codigo ||
-      // !rowItem.codOperador ||
-      !condPagamentoSelecionado ||
-      !operacaoSelecionada ||
-      !selectedOperador ||
-      !selectedVendedor ||
-      // !msgNotaSelecionada ||
-      // !obsClienteSelecionada ||
-      !obsAtendimentoSelecionada ||
-      !transportadoraSelecionado ||
-      !tipoFreteSelecionado
-    ) {
-      // Verifica qual estado específico está vazio ou indefinido e imprime no console
-      if (!rowItem.codCliente)
-        console.log("rowItem.codCliente está vazio ou indefinido");
-      if (!rowItem.contato)
-        console.log("rowItem.contato está vazio ou indefinido");
-      if (!rowItem.vendedor)
-        console.log("rowItem.vendedor está vazio ou indefinido");
-      if (!rowItem.codOperador)
-        console.log("rowItem.codOperador está vazio ou indefinido");
-      if (!condPagamentoSelecionado)
-        console.log("condPagamentoSelecionado está vazio ou indefinido");
-      if (!operacaoSelecionada)
-        console.log("operacaoSelecionada está vazio ou indefinido");
-      if (!msgNotaSelecionada)
-        console.log("msgNotaSelecionada está vazio ou indefinido");
-      if (!obsClienteSelecionada)
-        console.log("obsClienteSelecionada está vazio ou indefinido");
-      if (!obsAtendimentoSelecionada)
-        console.log("obsAtendimentoSelecionada está vazio ou indefinido");
-      if (!transportadoraSelecionado)
-        console.log("transportadoraSelecioando está vazio ou indefinido");
-      if (!tipoFreteSelecionado)
-        console.log("tipoFreteSelecionado está vazio ou indefinido");
-      if (valoresSelecionados.length === 0)
-        console.log("valoresSelecionados está vazio");
+    let disabled = false;
+    let messages = [];
 
-      return true; // Se algum estado estiver vazio ou indefinido, o botão deve ser desabilitado
+    if (!condPagamentoSelecionado) {
+      messages.push("Condição de pagamento está vazio ou indefinido.");
+      disabled = true;
     }
-    return false; // Caso contrário, o botão deve ser habilitado
+    if (!operacaoSelecionada) {
+      messages.push("Operação está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!selectedOperador) {
+      messages.push("Operador está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!selectedVendedor) {
+      messages.push("Vendedor está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!obsAtendimentoSelecionada) {
+      messages.push("Observação do atendimento está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!transportadoraSelecionado) {
+      messages.push("Transportadora está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!tipoFreteSelecionado) {
+      messages.push("Tipo do frete está vazio ou indefinido.");
+      disabled = true;
+    }
+
+    return { disabled, messages };
   };
 
   const codigoDoContato = contatos.length > 0 ? contatos[0].codigo : "";
@@ -870,11 +860,13 @@ const Atendimento1 = () => {
 
   console.log("setSelectedOperador", selectedOperador);
 
-  console.log("contatos ->>>", contatos);
+  console.log("contatos ------>", contatos);
   console.log("row item cliente contatos ->", rowItem);
   console.log("operadores", operadores);
 
   console.log("bodyApi", bodyApi);
+
+  const { disabled, messages } = isButtonDisabled();
 
   return (
     <Box
@@ -906,7 +898,10 @@ const Atendimento1 = () => {
           <HStack>
             <FormControl>
               <FormLabel mt={1} ml={3} htmlFor="operadores">
-                Operador:
+                Operador
+                <Box as="span" color="red" ml={1}>
+                  *
+                </Box>
               </FormLabel>
               <Select
                 ml={3}
@@ -999,7 +994,10 @@ const Atendimento1 = () => {
                                 display="flex"
                                 alignItems="center"
                               >
-                                <Icon as={FaUserTie} mr={2} /> Vendedor:
+                                <Icon as={FaUserTie} mr={2} /> Vendedor
+                                <Box as="span" color="red" ml={1}>
+                                  *
+                                </Box>
                               </Text>
                             </FormLabel>
                             <Select
@@ -1067,7 +1065,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={MdPhone} mr={2} /> Tel:
+                            <Icon as={MdPhone} mr={2} /> Tel
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1095,7 +1093,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={MdPhone} mr={2} /> Tel II:
+                            <Icon as={MdPhone} mr={2} /> Tel II
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1123,7 +1121,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={IoStorefront} mr={2} /> Cliente:
+                            <Icon as={IoStorefront} mr={2} /> Cliente
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1151,7 +1149,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={FaCity} mr={2} /> Município:
+                            <Icon as={FaCity} mr={2} /> Município
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1179,7 +1177,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={FaShop} mr={2} /> Loja:
+                            <Icon as={FaShop} mr={2} /> Loja
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1207,7 +1205,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={FaBarcode} mr={2} /> Código Cliente:
+                            <Icon as={FaBarcode} mr={2} /> Código Cliente
                           </Text>
                           <Text
                             color="black"
@@ -1245,7 +1243,7 @@ const Atendimento1 = () => {
                           display="flex"
                           alignItems="center"
                         >
-                          <Icon as={IoEyeSharp} mr={2} /> Observação Cliente:
+                          <Icon as={IoEyeSharp} mr={2} /> Observação Cliente
                         </Text>
                         <Textarea
                           placeholder="Observação relacionada ao cliente."
@@ -1274,8 +1272,11 @@ const Atendimento1 = () => {
                           display="flex"
                           alignItems="center"
                         >
-                          <Icon as={MdDesignServices} mr={2} /> Observação
-                          Atendimento:
+                          <Icon as={MdDesignServices} mr={2} /> Observação do
+                          Atendimento
+                          <Box as="span" color="red" ml={1}>
+                            *
+                          </Box>
                         </Text>
                         <Textarea
                           onChange={(e) => handleObsAtendimento(e)}
@@ -1296,7 +1297,7 @@ const Atendimento1 = () => {
                           display="flex"
                           alignItems="center"
                         >
-                          <Icon as={MdMessage} mr={2} /> Msg para Nota:
+                          <Icon as={MdMessage} mr={2} /> Msg para Nota
                         </Text>
                         <Textarea
                           onChange={handleMsgNota}
@@ -1317,7 +1318,7 @@ const Atendimento1 = () => {
                           display="flex"
                           alignItems="center"
                         >
-                          <Icon as={FaCalendarDays} mr={2} /> Data de Retorno:
+                          <Icon as={FaCalendarDays} mr={2} /> Data de Retorno
                         </Text>
                         <Input
                           focusBorderColor="purple.700"
@@ -1359,7 +1360,10 @@ const Atendimento1 = () => {
                               display="flex"
                               alignItems="center"
                             >
-                              <Icon as={FaMoneyCheckDollar} mr={2} /> Operação:
+                              <Icon as={FaMoneyCheckDollar} mr={2} /> Operação
+                              <Box as="span" color="red" ml={1}>
+                                *
+                              </Box>
                             </Text>
                             <Select
                               onChange={handleOperacao}
@@ -1388,7 +1392,10 @@ const Atendimento1 = () => {
                               mt={2}
                               alignItems="center"
                             >
-                              <Icon as={FaRoad} mr={2} /> Tipo Frete:
+                              <Icon as={FaRoad} mr={2} /> Tipo Frete
+                              <Box as="span" color="red" ml={1}>
+                                *
+                              </Box>
                             </Text>
                             <Select
                               onChange={handleTipoFrete}
@@ -1417,7 +1424,10 @@ const Atendimento1 = () => {
                               display="flex"
                               alignItems="center"
                             >
-                              <Icon as={FaTruck} mr={2} /> Transportadora:
+                              <Icon as={FaTruck} mr={2} /> Transportadora
+                              <Box as="span" color="red" ml={1}>
+                                *
+                              </Box>
                             </Text>
                             <Select
                               bg="white"
@@ -1448,7 +1458,10 @@ const Atendimento1 = () => {
                               alignItems="center"
                             >
                               <Icon as={FaDollarSign} mr={2} /> Condição
-                              Pagamento:
+                              Pagamento
+                              <Box as="span" color="red" ml={1}>
+                                *
+                              </Box>
                             </Text>
 
                             <Select
@@ -1535,7 +1548,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={LuHistory} mr={2} /> Histórico de Compras:
+                            <Icon as={LuHistory} mr={2} /> Histórico de Compras
                           </Text>
                           <Box p={2}>
                             <HStack spacing={2} align="center">
@@ -2180,21 +2193,28 @@ const Atendimento1 = () => {
           </Tfoot>
         </Table>
 
-        <Button
-          w="100%"
-          mt={5}
-          mb={2}
-          colorScheme="green"
-          isDisabled={isButtonDisabled()}
-          onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
-          isLoading={isLoading} // Alterado para isLoading
-          spinner={<BeatLoader size={8} color="white" />}
-          // variant="outline"
-          // color="white"
-          _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+        <Tooltip
+          label={messages.map((msg, index) => (
+            <div key={index}>{msg}</div>
+          ))}
+          isDisabled={!disabled}
+          hasArrow
+          bg="red.300"
         >
-          Finaliza Atendimento
-        </Button>
+          <Button
+            w="100%"
+            mt={5}
+            mb={2}
+            colorScheme="green"
+            isDisabled={disabled}
+            onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
+            isLoading={isLoading} // Alterado para isLoading
+            spinner={<BeatLoader size={8} color="white" />}
+            _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+          >
+            Finaliza Atendimento
+          </Button>
+        </Tooltip>
         {errorMessage && (
           <Box mt={4}>
             <Alert status="error" borderRadius="md">
