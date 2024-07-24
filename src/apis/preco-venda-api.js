@@ -1,11 +1,6 @@
 import axios from "axios";
 
-const fetchPrecoDeVenda = async ({
-  cliente = "391158",
-  produto,
-  qtd,
-  token,
-}) => {
+const fetchPrecoDeVenda = async ({ loja, cliente, produto, qtd, token }) => {
   const useRestTest = localStorage.getItem("useRestTest");
 
   // Determina a URL base com base no valor de useRestTest
@@ -22,7 +17,7 @@ const fetchPrecoDeVenda = async ({
       params: {
         empresa: "01",
         filial: "01",
-        loja: "00",
+        loja: loja,
         cliente: cliente,
         produto: produto,
         quantidade: qtd,
