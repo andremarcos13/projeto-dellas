@@ -32,6 +32,8 @@ const HomePage = () => {
 
   console.log("username home", username);
 
+  console.log("userCod", userCod);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
