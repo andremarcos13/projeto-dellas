@@ -48,7 +48,7 @@ import {
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaStore, FaUser } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
@@ -975,7 +975,6 @@ const Atendimento = () => {
                             ) : (
                               ""
                             )}
-
                             <Text
                               fontSize="lg"
                               fontWeight="bold"
@@ -986,7 +985,6 @@ const Atendimento = () => {
                             >
                               <Icon as={MdSell} mr={2} /> Potencial Lub:
                             </Text>
-
                             <Text
                               mb={2}
                               color="black"
@@ -1008,7 +1006,6 @@ const Atendimento = () => {
                             >
                               <Icon as={FaCalendarDays} mr={2} /> Última Compra:
                             </Text>
-
                             <Text
                               fontWeight="bold"
                               color="white"
@@ -1057,7 +1054,6 @@ const Atendimento = () => {
                             >
                               <Icon as={IoStorefront} mr={2} /> Cliente:
                             </Text>
-
                             <Text
                               color="black"
                               ml="30px"
@@ -1109,28 +1105,50 @@ const Atendimento = () => {
                             ) : (
                               ""
                             )}
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              color="black"
-                              mb={2}
-                              display="flex"
-                              alignItems="center"
-                            >
-                              <Icon as={FaBarcode} mr={2} /> Código Cliente:
-                            </Text>
-
-                            <Text
-                              ml="30px"
-                              color="black"
-                              mb={2}
-                              _hover={{
-                                transform: "scale(1.05)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              {rowItem.codCliente}
-                            </Text>
+                            <HStack>
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="black"
+                                mb={2}
+                                display="flex"
+                                alignItems="center"
+                              >
+                                <Icon as={FaBarcode} mr={2} /> Código Cliente:
+                              </Text>
+                              <Text
+                                ml="0px"
+                                color="black"
+                                mb={2}
+                                _hover={{
+                                  transform: "scale(1.05)",
+                                  boxShadow: "lg",
+                                }}
+                              >
+                                {rowItem.codCliente}
+                              </Text>{" "}
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="black"
+                                mb={2}
+                                display="flex"
+                                alignItems="center"
+                              >
+                                <Icon as={FaStore} mr={2} /> Loja:
+                              </Text>
+                              <Text
+                                ml="0px"
+                                color="black"
+                                mb={2}
+                                _hover={{
+                                  transform: "scale(1.05)",
+                                  boxShadow: "lg",
+                                }}
+                              >
+                                {rowItem.lojaCliente}
+                              </Text>
+                            </HStack>
                             <Text
                               fontSize="lg"
                               fontWeight="bold"
@@ -1142,7 +1160,6 @@ const Atendimento = () => {
                               <Icon as={FaCalendarDays} mr={2} /> Data do
                               Cadastro:
                             </Text>
-
                             {rowItem.dataCadastro === "  /  /  " ? (
                               <Text color="gray" ml="30px" mb={2}>
                                 Nenhuma data cadastrada
