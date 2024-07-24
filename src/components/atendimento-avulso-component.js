@@ -50,7 +50,7 @@ import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
-import { FaCalendarDays } from "react-icons/fa6";
+import { FaCalendarDays, FaShop } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
 import { FaUserTag } from "react-icons/fa6";
 import { IoEyeSharp } from "react-icons/io5";
@@ -84,6 +84,7 @@ import { FcComboChart } from "react-icons/fc";
 import { FaUserTie } from "react-icons/fa6";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
+import { FaCity } from "react-icons/fa";
 
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
@@ -123,7 +124,7 @@ const Atendimento1 = () => {
 
   const { globalToken, setGlobalToken } = useAppContext();
 
-  const { dateGlobal, setDateGlobal } = useAppContext();
+  const { dateGlobal, setDateGlobal, clienteCodigo } = useAppContext();
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
   const [dataInicial, setDataInicial] = useState("");
@@ -152,6 +153,7 @@ const Atendimento1 = () => {
   const storedVendedores = sessionStorage.getItem("vendedores");
 
   console.log("jc socorro", storedOperadores);
+  console.log("Cliente selecionado: codigo", clienteCodigo);
 
   const parsedTransportadoras = JSON.parse(storedTransportadoras);
   const parsedCondPagamentos = JSON.parse(storedCondPagamentos);
@@ -1030,7 +1032,6 @@ const Atendimento1 = () => {
                           >
                             <Icon as={FaUser} mr={2} /> Contato:
                           </Text>
-
                           <Text
                             color="black"
                             mb={2}
@@ -1066,7 +1067,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={MdPhone} mr={2} /> Celular:
+                            <Icon as={MdPhone} mr={2} /> Tel:
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1094,7 +1095,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={MdPhone} mr={2} /> Celular II:
+                            <Icon as={MdPhone} mr={2} /> Tel II:
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1139,7 +1140,7 @@ const Atendimento1 = () => {
                             ))
                           ) : (
                             <Text color="black" mb={2}>
-                              Nenhum email encontrado.
+                              Nenhum nome de cliente encontrado.
                             </Text>
                           )}
                           <Text
@@ -1150,7 +1151,7 @@ const Atendimento1 = () => {
                             display="flex"
                             alignItems="center"
                           >
-                            <Icon as={MdEmail} mr={2} /> Email:
+                            <Icon as={FaCity} mr={2} /> Município:
                           </Text>
                           {contatos.length > 0 ? (
                             contatos.map((contato, index) => (
@@ -1162,7 +1163,35 @@ const Atendimento1 = () => {
                                   boxShadow: "lg",
                                 }}
                               >
-                                {contato.email}
+                                {rowItem.municipio}
+                              </Text>
+                            ))
+                          ) : (
+                            <Text color="black" mb={2}>
+                              Nenhum email encontrado.
+                            </Text>
+                          )}
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            color="black"
+                            mb={2}
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Icon as={FaShop} mr={2} /> Loja:
+                          </Text>
+                          {contatos.length > 0 ? (
+                            contatos.map((contato, index) => (
+                              <Text
+                                color="black"
+                                mb={2}
+                                _hover={{
+                                  transform: "scale(1.05)",
+                                  boxShadow: "lg",
+                                }}
+                              >
+                                {rowItem["loja  "]}
                               </Text>
                             ))
                           ) : (
@@ -1180,24 +1209,16 @@ const Atendimento1 = () => {
                           >
                             <Icon as={FaBarcode} mr={2} /> Código Cliente:
                           </Text>
-                          {contatos.length > 0 ? (
-                            contatos.map((contato, index) => (
-                              <Text
-                                color="black"
-                                mb={2}
-                                _hover={{
-                                  transform: "scale(1.05)",
-                                  boxShadow: "lg",
-                                }}
-                              >
-                                {contato.codigo}
-                              </Text>
-                            ))
-                          ) : (
-                            <Text color="black" mb={2}>
-                              Nenhum codigo do cliente encontrado.
-                            </Text>
-                          )}
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem.codigo}
+                          </Text>
                         </Box>
                       )}
                     </GridItem>
