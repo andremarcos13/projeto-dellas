@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import Header from "../components/header";
+import { fetchToken } from "../apis/token-api";
 
 const AtendimentoAvulso = () => {
   const {
@@ -37,6 +38,7 @@ const AtendimentoAvulso = () => {
     setRowItem,
     clienteCodigo,
     setClienteCodigo,
+    setGlobalToken,
   } = useAppContext();
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
@@ -66,7 +68,7 @@ const AtendimentoAvulso = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await fetchClientes({
+      let data = await fetchClientes({
         search: search,
         token: globalToken.access_token,
       });
@@ -80,9 +82,39 @@ const AtendimentoAvulso = () => {
         setHasNext(false);
         setRemainingRecords(0);
       }
-      setIsLoading(false);
     } catch (error) {
       console.error("Erro ao buscar clientes", error);
+
+      if (error.response && error.response.status === 401) {
+        // Solicitar um novo token de acesso
+        try {
+          console.log("Tentando obter um novo token de acesso...");
+          const newToken = await fetchToken(username, password);
+          setGlobalToken(newToken);
+
+          console.log("Novo token obtido:", newToken.access_token);
+
+          // Tentar buscar os clientes novamente com o novo token
+          const data = await fetchClientes({
+            search: search,
+            token: newToken.access_token,
+          });
+
+          if (data.items) {
+            setClientes(data.items);
+            setHasNext(data.hasNext);
+            setRemainingRecords(data.remainingRecords);
+          } else {
+            setClientes([]);
+            setHasNext(false);
+            setRemainingRecords(0);
+          }
+        } catch (tokenError) {
+          console.error("Erro ao obter novo token de acesso:", tokenError);
+          // Lidar com o erro ao obter o novo token de acesso
+        }
+      }
+    } finally {
       setIsLoading(false);
     }
   };
