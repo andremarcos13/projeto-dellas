@@ -82,6 +82,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const { globalToken, setGlobalToken } = useAppContext();
   const { username, setUsername } = useAppContext();
   const { password, setPassword } = useAppContext();
+  const { clienteCodigo } = useAppContext();
 
   const [descriptionFilter, setDescriptionFilter] = useState("");
   const [codeFilter, setCodeFilter] = useState("");
@@ -253,7 +254,12 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     try {
       const produto = selectedItem.codigo;
       const qtd = quantidade;
+      const cliente = rowItem.codCliente || clienteCodigo;
+      const loja = rowItem.lojaCliente || rowItem["loja "];
+      console.log("loja", rowItem.codlojaCliente);
       const response = await fetchPrecoDeVenda({
+        loja,
+        cliente,
         produto,
         qtd,
         token: globalToken.access_token,
