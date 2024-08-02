@@ -467,7 +467,6 @@ const Atendimento1 = () => {
 
       setContatos(data.items);
       console.log("contatos ->", contatos);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -1129,24 +1128,17 @@ const Atendimento1 = () => {
                           >
                             <Icon as={IoStorefront} mr={2} /> Cliente
                           </Text>
-                          {contatos.length > 0 ? (
-                            contatos.map((contato, index) => (
-                              <Text
-                                color="black"
-                                mb={2}
-                                _hover={{
-                                  transform: "scale(1.05)",
-                                  boxShadow: "lg",
-                                }}
-                              >
-                                {rowItem.nome}
-                              </Text>
-                            ))
-                          ) : (
-                            <Text color="black" mb={2}>
-                              Nenhum nome de cliente encontrado.
-                            </Text>
-                          )}
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem.nome}
+                          </Text>
+
                           <Text
                             fontSize="lg"
                             fontWeight="bold"
@@ -1157,24 +1149,16 @@ const Atendimento1 = () => {
                           >
                             <Icon as={FaCity} mr={2} /> Município
                           </Text>
-                          {contatos.length > 0 ? (
-                            contatos.map((contato, index) => (
-                              <Text
-                                color="black"
-                                mb={2}
-                                _hover={{
-                                  transform: "scale(1.05)",
-                                  boxShadow: "lg",
-                                }}
-                              >
-                                {rowItem.municipio}
-                              </Text>
-                            ))
-                          ) : (
-                            <Text color="black" mb={2}>
-                              Nenhum email encontrado.
-                            </Text>
-                          )}
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem.municipio}
+                          </Text>
                           <Text
                             fontSize="lg"
                             fontWeight="bold"
@@ -1185,24 +1169,17 @@ const Atendimento1 = () => {
                           >
                             <Icon as={FaShop} mr={2} /> Loja
                           </Text>
-                          {contatos.length > 0 ? (
-                            contatos.map((contato, index) => (
-                              <Text
-                                color="black"
-                                mb={2}
-                                _hover={{
-                                  transform: "scale(1.05)",
-                                  boxShadow: "lg",
-                                }}
-                              >
-                                {rowItem["loja  "]}
-                              </Text>
-                            ))
-                          ) : (
-                            <Text color="black" mb={2}>
-                              Nenhum email encontrado.
-                            </Text>
-                          )}
+                          <Text
+                            color="black"
+                            mb={2}
+                            _hover={{
+                              transform: "scale(1.05)",
+                              boxShadow: "lg",
+                            }}
+                          >
+                            {rowItem["loja  "]}
+                          </Text>
+
                           <Text
                             fontSize="lg"
                             fontWeight="bold"
