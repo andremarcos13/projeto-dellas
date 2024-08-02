@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchTabPreco = async (token) => {
+const fetchTabPreco = async (codTabelaCliente, token) => {
   const useRestTest = localStorage.getItem("useRestTest");
 
   const baseUrl =
@@ -15,10 +15,10 @@ const fetchTabPreco = async (token) => {
   try {
     const response = await axios.get(apiUrl, {
       params: {
-        grupo_cli: "LUB3E5",
+        grupo_cli: codTabelaCliente,
       },
       headers: {
-        Authorization: `Basic ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     console.log(response.data);
