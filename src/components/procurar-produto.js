@@ -602,18 +602,6 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                   ) : (
                     <Text mt={4}>Nenhum resultado encontrado.</Text>
                   )}{" "}
-                  <Button
-                    mt={4}
-                    isDisabled={!hasNextPage || isLoading}
-                    variant="outline"
-                    bg="white"
-                    colorScheme="blue"
-                    leftIcon={<FaSearchPlus />} // Usando o ícone de busca da react-icons
-                  >
-                    {hasNextPage
-                      ? "Carregar mais resultados"
-                      : "Não há mais produtos com o código selecionado"}
-                  </Button>
                 </TabPanel>
               </TabPanels>
             </Tabs>
@@ -636,16 +624,17 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                         Detalhes do Item Selecionado:
                       </Text>
                       <Text mb={1}>
-                        Descrição: <strong>{selectedItem.descricao}</strong>
+                        Descrição: <strong>{selectedItem.desc_pro}</strong>
                       </Text>
                       <Text mb={1}>
-                        Código: <strong>{selectedItem.codigo}</strong>
+                        Código: <strong>{selectedItem.codigo_pro}</strong>
                       </Text>
                       <Text mb={1}>
-                        Tipo: <strong>{selectedItem.tipo}</strong>
+                        Tipo: <strong>{selectedItem.tipo_pro}</strong>
                       </Text>
                       <Text mb={1}>
-                        Unidade de Medida: <strong>{selectedItem.um}</strong>
+                        Unidade de Medida:{" "}
+                        <strong>{selectedItem.um_pro}</strong>
                       </Text>
                     </Box>
                     <Flex alignItems="center">
