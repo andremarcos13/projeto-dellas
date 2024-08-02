@@ -62,6 +62,7 @@ import { fetchToken } from "../apis/token-api";
 import { MdSearch, MdThumbUp } from "react-icons/md";
 import { format, subDays, subYears } from "date-fns";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
+import fetchTabPreco from "../apis/preco-produtos";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,6 +110,16 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
         rowItem.codCliente
       );
       try {
+        setIsLoading(true);
+        const data = await fetchTabPreco(
+          rowItem.codgrupovenda,
+          globalToken.access_token
+        );
+
+        setSearchResults(data);
+
+        console.log("datadata", data);
+
         const result = await fetchHistoricoProdutos(
           rowItem.codigo,
           oneYearAgo,
@@ -119,103 +130,28 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
         setData(result);
       } catch (error) {
         setError(error);
+        setIsLoading(false);
       }
     };
 
     fetchData();
+
+    setIsLoading(false);
   }, []);
 
-  const filteredResults = searchResults.filter(
-    (item) =>
-      item.descricao.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
-      item.codigo.toLowerCase().includes(codeFilter.toLowerCase())
-  );
+  // const filteredResults = searchResults.filter(
+  //   (item) =>
+  //     item.descricao.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
+  //     item.codigo.toLowerCase().includes(codeFilter.toLowerCase())
+  // );
 
-  const handleSearch = async () => {
+  const handleSearch = (event) => {
     setSelectedItem("");
     setPrecoTotal(0);
     setPrecoUnitario(0);
     setQuantidade(1);
-    try {
-      setIsLoading(true);
-      const data = await fetchProdutos({
-        search: searchTerm,
-        token: globalToken.access_token,
-      });
-      if (data && data.items) {
-        setSearchResults(data.items);
-        setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
-        setIsModalOpen(true);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar produtos:", error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
-        try {
-          const newToken = await fetchToken(username, password);
-          // Refazer a chamada à função fetchProdutos com o novo token de acesso
-          const newData = await fetchProdutos({
-            search: searchTerm,
-            token: newToken.access_token,
-          });
-          if (newData && newData.items) {
-            setSearchResults(newData.items);
-            setHasNextPage(newData.hasNext); // Definindo se há mais páginas disponíveis
-            setIsModalOpen(true);
-          }
-        } catch (error) {
-          console.error("Erro ao obter novo token de acesso:", error);
-          // Lidar com o erro ao obter o novo token de acesso
-        }
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const loadMoreResults = async () => {
-    console.log("token no more results", globalToken);
-    try {
-      setIsLoading(true);
-      const nextPage = currentPage + 1;
-      const data = await fetchProdutos({
-        search: searchTerm,
-        page: nextPage,
-        token: globalToken.access_token,
-      });
-      if (data && data.items) {
-        setSearchResults([...searchResults, ...data.items]); // Adicionando os novos resultados à lista existente
-        setHasNextPage(data.hasNext); // Definindo se há mais páginas disponíveis
-        setCurrentPage(nextPage); // Atualizando o número da página atual
-      }
-    } catch (error) {
-      console.error("Erro ao carregar mais produtos:", error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
-        try {
-          const newToken = await fetchToken(username, password);
-          // Refazer a chamada à função fetchProdutos com o novo token de acesso
-          const nextPage = currentPage + 1;
-          const newData = await fetchProdutos({
-            search: searchTerm,
-            page: nextPage,
-            token: newToken.access_token,
-          });
-          if (newData && newData.items) {
-            setSearchResults([...searchResults, ...newData.items]); // Adicionando os novos resultados à lista existente
-            setHasNextPage(newData.hasNext); // Definindo se há mais páginas disponíveis
-            setCurrentPage(nextPage); // Atualizando o número da página atual
-          }
-        } catch (error) {
-          console.error("Erro ao obter novo token de acesso:", error);
-          // Lidar com o erro ao obter o novo token de acesso
-        }
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setSearchTerm(event.target.value.toUpperCase());
   };
 
   const handleKeyPress = (event) => {
@@ -382,6 +318,39 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     });
   };
 
+  const handleDescriptionInputChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    setDescriptionFilter(value);
+  };
+
+  const handleCodeInputChange = (event) => {
+    const value = event.target.value.toUpperCase();
+    setCodeFilter(value);
+  };
+
+  const filteredResults = searchResults.filter(
+    (item) =>
+      item.desc_pro.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
+      item.codigo_pro.toLowerCase().includes(codeFilter.toLowerCase()) &&
+      (item.desc_pro.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.codigo_pro.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const highlightText = (text, highlight) => {
+    if (!highlight.trim()) return text;
+
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === highlight.toLowerCase() ? (
+        <span key={index} style={{ color: "red", fontWeight: "bold" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
     <>
       <Button
@@ -525,7 +494,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                       placeholder="Digite o nome do produto"
                       value={searchTerm}
                       bg="white"
-                      onChange={handleInputChange}
+                      onChange={handleSearch}
                       onKeyPress={handleKeyPress}
                       focusBorderColor="purple.700"
                       mb={2}
@@ -572,37 +541,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                             <Th color="white" fontWeight="semibold" width="40%">
                               <Flex direction="column">
                                 <span>Descrição</span>
-                                <Input
-                                  focusBorderColor="purple.200"
-                                  maxW="100%"
-                                  bg="white"
-                                  color="black"
-                                  placeholder="Filtrar"
-                                  size="sm"
-                                  value={descriptionFilter}
-                                  onChange={(e) =>
-                                    setDescriptionFilter(e.target.value)
-                                  }
-                                  mt={2}
-                                />
                               </Flex>
                             </Th>
                             <Th color="white" fontWeight="semibold" width="20%">
                               <Flex direction="column">
                                 <span>Código</span>
-                                <Input
-                                  focusBorderColor="purple.200"
-                                  maxW="100%"
-                                  bg="white"
-                                  color="black"
-                                  placeholder="Filtrar"
-                                  size="sm"
-                                  value={codeFilter}
-                                  onChange={(e) =>
-                                    setCodeFilter(e.target.value)
-                                  }
-                                  mt={2}
-                                />
                               </Flex>
                             </Th>
                             <Th color="white" fontWeight="semibold" width="20%">
@@ -614,82 +557,45 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {filteredResults.map((item, index) => (
-                            <Tr
-                              key={index}
-                              border="2px"
-                              borderColor={
-                                selectedItem === item ? "#6b3181" : "gray.200"
-                              }
-                              onClick={() => handleItemClick(item)}
-                              cursor="pointer"
-                              _hover={{
-                                transform: "scale(1.01)",
-                                boxShadow: "lg",
-                              }}
-                            >
-                              <Td width="40%">
-                                <Text
-                                  fontSize="md"
-                                  color="black"
-                                  borderRadius="10px"
-                                  p={1}
-                                >
-                                  {item.descricao.includes(
-                                    descriptionFilter
-                                  ) ? (
-                                    <>
-                                      {item.descricao
-                                        .split(descriptionFilter)
-                                        .map((part, index) => (
-                                          <span key={index}>
-                                            {part}
-                                            {index !==
-                                              item.descricao.split(
-                                                descriptionFilter
-                                              ).length -
-                                                1 && (
-                                              <span style={{ color: "red" }}>
-                                                <strong>
-                                                  {descriptionFilter}
-                                                </strong>
-                                              </span>
-                                            )}
-                                          </span>
-                                        ))}
-                                    </>
-                                  ) : (
-                                    item.descricao
-                                  )}
-                                </Text>
+                          {filteredResults.length > 0 ? (
+                            filteredResults.slice(0, 100).map((item, index) => (
+                              <Tr
+                                key={index}
+                                border="2px"
+                                borderColor={
+                                  selectedItem === item ? "#6b3181" : "gray.200"
+                                }
+                                onClick={() => handleItemClick(item)}
+                                cursor="pointer"
+                                _hover={{
+                                  transform: "scale(1.01)",
+                                  boxShadow: "lg",
+                                }}
+                              >
+                                <Td width="40%">
+                                  <Text
+                                    fontSize="md"
+                                    color="black"
+                                    borderRadius="10px"
+                                    p={1}
+                                  >
+                                    {highlightText(item.desc_pro, searchTerm)}
+                                  </Text>
+                                </Td>
+                                <Td width="20%">
+                                  {highlightText(item.codigo_pro, searchTerm)}
+                                </Td>
+                                <Td width="20%">{item.tipo_pro}</Td>
+                                <Td width="20%">{item.um_pro}</Td>
+                              </Tr>
+                            ))
+                          ) : (
+                            <Tr>
+                              <Td colSpan={4} textAlign="center">
+                                <strong>Nenhum resultado encontrado.</strong>
                               </Td>
-                              <Td width="20%">
-                                {item.codigo.includes(codeFilter) ? (
-                                  <>
-                                    {item.codigo
-                                      .split(codeFilter)
-                                      .map((part, index) => (
-                                        <span key={index}>
-                                          {part}
-                                          {index !==
-                                            item.codigo.split(codeFilter)
-                                              .length -
-                                              1 && (
-                                            <span style={{ color: "red" }}>
-                                              <strong>{codeFilter}</strong>
-                                            </span>
-                                          )}
-                                        </span>
-                                      ))}
-                                  </>
-                                ) : (
-                                  item.codigo
-                                )}
-                              </Td>
-                              <Td width="20%">{item.tipo}</Td>
-                              <Td width="20%">{item.um}</Td>
                             </Tr>
-                          ))}
+                          )}
                         </Tbody>
                       </Table>
                     </TableContainer>
@@ -698,7 +604,6 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                   )}{" "}
                   <Button
                     mt={4}
-                    onClick={loadMoreResults}
                     isDisabled={!hasNextPage || isLoading}
                     variant="outline"
                     bg="white"
