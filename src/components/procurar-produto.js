@@ -111,10 +111,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       );
       try {
         setIsLoading(true);
-        const data = await fetchTabPreco(
-          rowItem.codgrupovenda,
-          globalToken.access_token
-        );
+        const data = await fetchTabPreco("LUB3E5", globalToken.access_token);
 
         setSearchResults(data);
 
@@ -184,74 +181,151 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     setCalculado(false); // Redefine o estado para indicar que o cálculo não foi feito
   };
 
-  const handleCalculatePrice = async () => {
+  const handleCalculatePrice = () => {
     setIsCalculating(true);
-    setIsLoading2(true);
-    try {
-      const produto = selectedItem.codigo;
-      const qtd = quantidade;
-      const cliente = rowItem.codCliente || clienteCodigo;
-      const loja = rowItem.lojaCliente || rowItem["loja  "];
-      console.log("loja", rowItem.codlojaCliente);
-      const response = await fetchPrecoDeVenda({
-        loja,
-        cliente,
-        produto,
-        qtd,
-        token: globalToken.access_token,
-      });
 
-      if (response && response.preco >= 0 && response.quantidade) {
-        const precoTotal = response.preco * response.quantidade;
-        const precoUnit = response.preco;
-        setPrecoTotal(precoTotal);
-        setPrecoUnitario(precoUnit);
-        setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
-        setControlaAbrir(true);
-      } else {
-        console.error("Resposta da API inválida:", response);
-        // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
-        setPrecoTotal(0);
-        setPrecoUnitario(0);
-      }
-    } catch (error) {
-      console.error("Erro ao calcular o preço de venda:", error);
-      // Verificar se o erro é de autorização (401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        // Solicitar um novo token de acesso
-        try {
-          const newToken = await fetchToken(username, password);
-          // Refazer a chamada à função fetchPrecoDeVenda com o novo token de acesso
-          const produto = selectedItem.codigo;
-          const qtd = quantidade;
-          const newResponse = await fetchPrecoDeVenda({
-            produto,
-            qtd,
-            token: newToken.access_token,
-          });
-          if (newResponse && newResponse.preco >= 0 && newResponse.quantidade) {
-            const precoTotal = newResponse.preco * newResponse.quantidade;
-            const precoUnit = newResponse.preco;
-            setPrecoTotal(precoTotal);
-            setPrecoUnitario(precoUnit);
-            setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
-            setControlaAbrir(true);
+    console.log("skol - item clicado", selectedItem);
+
+    const pegaritem = searchResults.find(
+      (item) => selectedItem.desc_pro === item.desc_pro
+    );
+    console.log("skol - item achado", pegaritem);
+
+    if (pegaritem) {
+      // Filtra os itens pelo mesmo produto
+      const filteredItems = searchResults.filter(
+        (item) => item.desc_pro === pegaritem.desc_pro
+      );
+
+      // Ordena os itens pelas faixas de forma crescente
+      const sortedItems = filteredItems.sort((a, b) => a.faixa - b.faixa);
+      console.log(`skol - item sort`, sortedItems);
+
+      // Encontra a faixa mais próxima superior ou igual
+      // const item = sortedItems
+
+      let item = "JC";
+
+      for (let index = 0; index < sortedItems.length; index++) {
+        if (index + 1 <= sortedItems.length - 1) {
+          let current = sortedItems[index];
+          console.log("skol - current", current);
+
+          let next = sortedItems[index + 1];
+          console.log("skol - next", next);
+
+          // 3 - 4 = 2
+          // 2 > 2 ? NAO
+          if (quantidade > current.faixa) {
+            item = next;
+            console.log("skol - item recebendo next", item);
           } else {
-            console.error("Resposta da API inválida:", newResponse);
-            // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
-            setPrecoTotal(0);
-            setPrecoUnitario(0);
+            if (quantidade === current.faixa) {
+              item = current;
+              console.log("skol - item recebendo current", item);
+              break;
+            }
           }
-        } catch (error) {
-          console.error("Erro ao obter novo token de acesso:", error);
-          // Lidar com o erro ao obter o novo token de acesso
         }
       }
-    } finally {
-      setIsCalculating(false);
-      setIsLoading2(false);
+
+      console.log("skol - item fora do laco", item);
+
+      if (item.faixa === undefined) {
+        console.log("skol - entrou no if");
+
+        item = sortedItems[sortedItems.length - 1];
+      }
+
+      // [2, 4, 8, 12, 9999, 999999.999] --- 6
+
+      console.log("skol - pega preco", item);
+      console.log(`skol - faixa atual ${item.faixa} e qtd atual ${quantidade}`);
+
+      if (item) {
+        setPrecoUnitario(item.preco);
+        setPrecoTotal(item.preco * quantidade);
+      } else {
+        setPrecoUnitario(0);
+        setPrecoTotal(0);
+      }
+    } else {
+      setPrecoUnitario(0);
+      setPrecoTotal(0);
     }
+
+    setIsCalculating(false);
   };
+
+  // const handleCalculatePrice = async () => {
+  //   setIsCalculating(true);
+  //   setIsLoading2(true);
+
+  //   // try {
+  //   //   const produto = selectedItem.codigo;
+  //   //   const qtd = quantidade;
+  //   //   const cliente = rowItem.codCliente || clienteCodigo;
+  //   //   const loja = rowItem.lojaCliente || rowItem["loja  "];
+  //   //   console.log("loja", rowItem.codlojaCliente);
+  //   //   const response = await fetchPrecoDeVenda({
+  //   //     loja,
+  //   //     cliente,
+  //   //     produto,
+  //   //     qtd,
+  //   //     token: globalToken.access_token,
+  //   //   });
+
+  //   //   if (response && response.preco >= 0 && response.quantidade) {
+  //   //     const precoTotal = response.preco * response.quantidade;
+  //   //     const precoUnit = response.preco;
+  //   //     setPrecoTotal(precoTotal);
+  //   //     setPrecoUnitario(precoUnit);
+  //   //     setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
+  //   //     setControlaAbrir(true);
+  //   //   } else {
+  //   //     console.error("Resposta da API inválida:", response);
+  //   //     // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
+  //   //     setPrecoTotal(0);
+  //   //     setPrecoUnitario(0);
+  //   //   }
+  //   // } catch (error) {
+  //   //   console.error("Erro ao calcular o preço de venda:", error);
+  //   //   // Verificar se o erro é de autorização (401 Unauthorized)
+  //   //   if (error.response && error.response.status === 401) {
+  //   //     // Solicitar um novo token de acesso
+  //   //     try {
+  //   //       const newToken = await fetchToken(username, password);
+  //   //       // Refazer a chamada à função fetchPrecoDeVenda com o novo token de acesso
+  //   //       const produto = selectedItem.codigo;
+  //   //       const qtd = quantidade;
+  //   //       const newResponse = await fetchPrecoDeVenda({
+  //   //         produto,
+  //   //         qtd,
+  //   //         token: newToken.access_token,
+  //   //       });
+  //   //       if (newResponse && newResponse.preco >= 0 && newResponse.quantidade) {
+  //   //         const precoTotal = newResponse.preco * newResponse.quantidade;
+  //   //         const precoUnit = newResponse.preco;
+  //   //         setPrecoTotal(precoTotal);
+  //   //         setPrecoUnitario(precoUnit);
+  //   //         setCalculado(true); // Atualiza o estado para indicar que o cálculo foi feito
+  //   //         setControlaAbrir(true);
+  //   //       } else {
+  //   //         console.error("Resposta da API inválida:", newResponse);
+  //   //         // Se o preço retornado for zero ou negativo, definimos o preço unitário e total como zero
+  //   //         setPrecoTotal(0);
+  //   //         setPrecoUnitario(0);
+  //   //       }
+  //   //     } catch (error) {
+  //   //       console.error("Erro ao obter novo token de acesso:", error);
+  //   //       // Lidar com o erro ao obter o novo token de acesso
+  //   //     }
+  //   //   }
+  //   // } finally {
+  //     // }
+  //     setIsCalculating(false);
+  //     setIsLoading2(false);
+  // };
 
   const handleSalvar = () => {
     if (selectedItem && precoTotal !== null && precoUnitario !== null) {
@@ -699,11 +773,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                           shadow="lg"
                           size="md"
                         >
-                          {/* <CardHeader mt={0} p={0} ml={0} mr={0} mb={0}>
-                            <MdAttachMoney />
-                          </CardHeader> */}
                           <CardBody p={2}>
-                            {calculado && precoUnitario !== null ? (
+                            {precoUnitario !== null ? (
                               precoUnitario !== 0 ? (
                                 <Flex alignItems="center">
                                   <Text
@@ -725,7 +796,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                                       transform: "scale(1.25)",
                                     }}
                                   >
-                                    {precoUnitario.toFixed(2)}
+                                    {precoUnitario}
                                   </Text>
                                 </Flex>
                               ) : (
