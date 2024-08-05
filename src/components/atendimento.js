@@ -14,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -48,7 +49,7 @@ import {
 import { MdDone, MdPhone } from "react-icons/md";
 import { IoStorefront } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { FaStore, FaUser } from "react-icons/fa";
+import { FaCheckCircle, FaLuggageCart, FaStore, FaUser } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FaBarcode } from "react-icons/fa";
@@ -84,6 +85,7 @@ import { FcComboChart } from "react-icons/fc";
 
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
+import { GoHome } from "react-icons/go";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -127,6 +129,12 @@ const Atendimento = () => {
 
   const [historicoProdutos, setHistoricoProdutos] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [selectedOperador, setSelectedOperador] = useState("");
+  const [selectedVendedor, setSelectedVendedor] = useState("");
+  const [numeroAtendimento, setNumeroAtendimento] = useState(null);
 
   const navigate = useNavigate();
 
@@ -261,6 +269,11 @@ const Atendimento = () => {
     console.log("Finalizado no papito:", valores);
     // Faça o que quiser com os valores selecionados, como armazená-los no estado do componente pai
     setValoresSelecionados(valores);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate("/agenda");
   };
 
   const obterDataAtual = () => {
@@ -617,31 +630,34 @@ const Atendimento = () => {
     }),
   };
   const handleClickFinalizaAtendimento = async () => {
-    setIsLoading(true); // Alterado para true ao iniciar o login
+    setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      // Chama a função enviarRequisicao com o requestBody necessário
       const resposta = await enviarRequisicao(
         bodyApi,
         globalToken.access_token
       );
       console.log("Resposta da requisição:", resposta);
-      setIsLoading(false); // Alterado para false quando houver um erro
+      setIsLoading(false);
 
-      // Faça o que for necessário com a resposta da requisição...
+      const numeroAtendimento = resposta.numero_atendimento;
+      console.log("numeroAtendimento", numeroAtendimento);
+
+      if (numeroAtendimento !== "") {
+        setNumeroAtendimento(numeroAtendimento);
+        setIsModalOpen(true);
+      }
     } catch (error) {
-      // Verifique se a resposta contém a mensagem de erro
       if (error.response && error.response.data) {
-        setErrorMessage(error.response.data); // Define a mensagem de erro recebida da API
-        setIsLoading(false); // Alterado para false quando houver um erro
+        setErrorMessage(error.response.data);
       } else {
         setErrorMessage(
           "Ocorreu um erro ao finalizar o atendimento. Por favor, tente novamente mais tarde."
         );
-        setIsLoading(false); // Alterado para false quando houver um erro
       }
       console.error("Erro ao finalizar atendimento:", error);
-      setIsLoading(false); // Alterado para false quando houver um erro
+      setIsLoading(false);
     }
   };
   const [dataError, setDataError] = useState("");
@@ -661,6 +677,35 @@ const Atendimento = () => {
   const validarFormatoData = (data) => {
     const regex = /^\d{2}\/\d{2}\/\d{4}$/;
     return regex.test(data);
+  };
+
+  const isButtonDisabledF = () => {
+    let disabled = false;
+    let messages = [];
+
+    if (!condPagamentoSelecionado) {
+      messages.push("Condição de pagamento está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!operacaoSelecionada) {
+      messages.push("Operação está vazio ou indefinido.");
+      disabled = true;
+    }
+
+    if (!obsAtendimentoSelecionada) {
+      messages.push("Observação do atendimento está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!transportadoraSelecionado) {
+      messages.push("Transportadora está vazio ou indefinido.");
+      disabled = true;
+    }
+    if (!tipoFreteSelecionado) {
+      messages.push("Tipo do frete está vazio ou indefinido.");
+      disabled = true;
+    }
+
+    return { disabled, messages };
   };
 
   console.log("bodyApi", bodyApi);
@@ -767,6 +812,8 @@ const Atendimento = () => {
     setIsLoading3(false);
   };
 
+  const { disabled, messages } = isButtonDisabledF();
+
   return (
     <Box
       bg="rgba(0, 0, 0, 0.1)" // Cor de fundo cinza com opacidade
@@ -819,6 +866,12 @@ const Atendimento = () => {
                 <VscTools />
               </Box>
               <strong>Ferramentas</strong>
+            </Tab>
+            <Tab bg="white">
+              <Box mr="5px">
+                <FaLuggageCart />
+              </Box>
+              <strong>Produtos</strong>
             </Tab>
           </TabList>
           <TabPanels>
@@ -2018,142 +2071,155 @@ const Atendimento = () => {
                 </>
               )}
             </TabPanel>
+            <TabPanel>
+              {rowItem && (
+                <Box h="60vh">
+                  <Box mt={15} mb={15} ml={5}>
+                    <ProcurarProduto
+                      onFinalizarAddProdutos={handleFinalizarAddProdutos}
+                      onRemoveItem={handleRemoveItem}
+                      valoresSelecionados={valoresSelecionados}
+                    />
+                  </Box>
+
+                  <Table variant="simple" bg="white">
+                    <Thead
+                      Thead
+                      // position="sticky"
+                      top="0"
+                      bg="#822AA2"
+                      fontWeight="bold"
+                    >
+                      <Tr>
+                        <Th color="white" fontSize="sm">
+                          Produto
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Quantidade
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Desconto (%)
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Valor Unitário
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Total
+                        </Th>
+                        <Th color="white" fontSize="sm">
+                          Unidade de Medida
+                        </Th>{" "}
+                        {/* Nova coluna para UM */}
+                        <Th color="white" fontSize="sm">
+                          Data Faturamento
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {valoresSelecionados.map((produto, index) => (
+                        <Tr key={index}>
+                          <Td w={250}>{produto.descricao}</Td>
+                          <Td w={100}>{produto.quantidade}</Td>
+                          <Td w={150}>
+                            <Input
+                              focusBorderColor="purple.700"
+                              border="1px"
+                              borderColor="gray.300"
+                              type="number"
+                              mt={2}
+                              w="75px"
+                              p={6}
+                              value={produto.qtd}
+                              onChange={(e) =>
+                                handleDescontoChange(index, e.target.value)
+                              }
+                            />
+                          </Td>
+                          <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
+                          {/* Usando precoUnitario */}
+                          <Td w={150}>
+                            {calcularPrecoTotal(
+                              produto.quantidade,
+                              produto.precoUnitario,
+                              produto.desconto
+                            ).toFixed(2)}
+                          </Td>{" "}
+                          {/* Usando precoTotal */}
+                          <Td w={150}>{produto.um}</Td>
+                          <Td w={150}>
+                            <Input
+                              type="date"
+                              borderRadius="10px"
+                              focusBorderColor="purple.700"
+                              border="1px"
+                              borderColor="gray.300"
+                              mt={2}
+                              w="155px"
+                              p={6}
+                              value={dataAtualEstad}
+                              onChange={handleDataAtualChange}
+                              size="sm"
+                            />
+                          </Td>{" "}
+                          {/* Preenchendo com a data atual */}
+                        </Tr>
+                      ))}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr bg="white">
+                        <Td fontWeight="bold">TOTAL</Td>
+                        <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
+                        <Td></Td>
+                        {/* <Td>
+                      <Input
+                        focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
+                        border="1px"
+                        borderColor="gray.300"
+                        type="number"
+                        mt={2}
+                        w="75px"
+                        p={6}
+                        value={descontoTotal}
+                        onChange={handleDescontoTotalChange}
+                      />
+                    </Td> */}
+                        <Td></Td>
+                        <Td fontWeight="bold">
+                          {calcularPrecoTotalGeral().toFixed(2)}
+                        </Td>
+                        <Td></Td>
+                        <Td></Td>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </Box>
+              )}
+            </TabPanel>
           </TabPanels>
         </Tabs>
 
-        <Box mt={15} mb={15} ml={5}>
-          <ProcurarProduto
-            onFinalizarAddProdutos={handleFinalizarAddProdutos}
-            onRemoveItem={handleRemoveItem}
-            valoresSelecionados={valoresSelecionados}
-          />
-        </Box>
-
-        <Table variant="simple" bg="white">
-          <Thead
-            Thead
-            // position="sticky"
-            top="0"
-            bg="#822AA2"
-            fontWeight="bold"
-          >
-            <Tr>
-              <Th color="white" fontSize="sm">
-                Produto
-              </Th>
-              <Th color="white" fontSize="sm">
-                Quantidade
-              </Th>
-              <Th color="white" fontSize="sm">
-                Desconto (%)
-              </Th>
-              <Th color="white" fontSize="sm">
-                Valor Unitário
-              </Th>
-              <Th color="white" fontSize="sm">
-                Total
-              </Th>
-              <Th color="white" fontSize="sm">
-                Unidade de Medida
-              </Th>{" "}
-              {/* Nova coluna para UM */}
-              <Th color="white" fontSize="sm">
-                Data Faturamento
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {valoresSelecionados.map((produto, index) => (
-              <Tr key={index}>
-                <Td w={250}>{produto.descricao}</Td>
-                <Td w={100}>{produto.quantidade}</Td>
-                <Td w={150}>
-                  <Input
-                    focusBorderColor="purple.700"
-                    border="1px"
-                    borderColor="gray.300"
-                    type="number"
-                    mt={2}
-                    w="75px"
-                    p={6}
-                    value={produto.qtd}
-                    onChange={(e) =>
-                      handleDescontoChange(index, e.target.value)
-                    }
-                  />
-                </Td>
-                <Td w={200}>{produto.precoUnitario.toFixed(2)}</Td>{" "}
-                {/* Usando precoUnitario */}
-                <Td w={150}>
-                  {calcularPrecoTotal(
-                    produto.quantidade,
-                    produto.precoUnitario,
-                    produto.desconto
-                  ).toFixed(2)}
-                </Td>{" "}
-                {/* Usando precoTotal */}
-                <Td w={150}>{produto.um}</Td>
-                <Td w={150}>
-                  <Input
-                    type="date"
-                    borderRadius="10px"
-                    focusBorderColor="purple.700"
-                    border="1px"
-                    borderColor="gray.300"
-                    mt={2}
-                    w="155px"
-                    p={6}
-                    value={dataAtualEstad}
-                    onChange={handleDataAtualChange}
-                    size="sm"
-                  />
-                </Td>{" "}
-                {/* Preenchendo com a data atual */}
-              </Tr>
-            ))}
-          </Tbody>
-          <Tfoot>
-            <Tr bg="white">
-              <Td fontWeight="bold">TOTAL</Td>
-              <Td fontWeight="bold">{calcularTotalQuantidade()}</Td>
-              <Td></Td>
-              {/* <Td>
-                    <Input
-                      focusBorderColor="green.500" // Definindo a cor da borda quando em foco como verde
-                      border="1px"
-                      borderColor="gray.300"
-                      type="number"
-                      mt={2}
-                      w="75px"
-                      p={6}
-                      value={descontoTotal}
-                      onChange={handleDescontoTotalChange}
-                    />
-                  </Td> */}
-              <Td></Td>
-              <Td fontWeight="bold">{calcularPrecoTotalGeral().toFixed(2)}</Td>
-              <Td></Td>
-              <Td></Td>
-            </Tr>
-          </Tfoot>
-        </Table>
-
-        <Button
-          w="100%"
-          mt={5}
-          mb={2}
-          colorScheme="purple"
-          isDisabled={isButtonDisabled()}
-          onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
-          isLoading={isLoading} // Alterado para isLoading
-          spinner={<BeatLoader size={8} color="white" />}
-          variant="outline"
-          bg="#822AA2"
-          color="white"
-          _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+        <Tooltip
+          label={messages.map((msg, index) => (
+            <div key={index}>{msg}</div>
+          ))}
+          isDisabled={!disabled}
+          hasArrow
+          bg="red.300"
         >
-          Finaliza Atendimento
-        </Button>
+          <Button
+            w="100%"
+            mt={5}
+            mb={2}
+            colorScheme="green"
+            isDisabled={disabled}
+            onClick={handleClickFinalizaAtendimento} // Chama a função no onClick
+            isLoading={isLoading} // Alterado para isLoading
+            spinner={<BeatLoader size={8} color="white" />}
+            _hover={{ transform: "scale(1.02)", boxShadow: "lg" }}
+          >
+            Finaliza Atendimento
+          </Button>
+        </Tooltip>
         {errorMessage && (
           <Box mt={4}>
             <Alert status="error" borderRadius="md">
@@ -2165,6 +2231,29 @@ const Atendimento = () => {
             </Alert>
           </Box>
         )}
+        <Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader bg="#2C0E37" color="white">
+              <Flex align="center">
+                <FaCheckCircle />
+                <Text ml={3}>Atendimento Finalizado</Text>
+              </Flex>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text mt={3}>
+                Número de Atendimento: <strong>{numeroAtendimento}</strong>
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="green" mr={3} onClick={closeModal}>
+                <GoHome />
+                <Text ml={3}>Voltar para página inicial</Text>
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </>
     </Box>
   );

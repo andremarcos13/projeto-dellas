@@ -136,6 +136,37 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       } catch (error) {
         setError(error);
         setIsLoading(false);
+
+        console.error("Erro ao fazer a requisição:", error);
+      }
+      if (error.response && error.response.status === 401) {
+        console.log("Recebido status 401, tentando obter um novo token...");
+
+        try {
+          const newToken = await fetchToken(username, password);
+          setIsLoading(true);
+          const data = await fetchTabPreco(
+            rowItem.codgrupovenda,
+            newToken.access_token
+          );
+
+          setSearchResults(data);
+
+          console.log("datadata", data);
+
+          const result = await fetchHistoricoProdutos(
+            rowItem.codigo,
+            oneYearAgo,
+            thirtyDaysAgo,
+            newToken.access_token
+          );
+          console.log(" pegando historico,", result);
+          setData(result);
+        } catch (error) {
+          setError(error);
+          setIsLoading(false);
+          console.error("Erro ao fazer a requisição:", error);
+        }
       }
     };
 
