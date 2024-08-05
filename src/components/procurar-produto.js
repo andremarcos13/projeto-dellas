@@ -85,6 +85,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const { password, setPassword } = useAppContext();
   const { clienteCodigo } = useAppContext();
 
+  const [isCalculated, setIsCalculated] = useState(false);
+  const [lastQtd, setLastQtd] = useState(0);
   const [descriptionFilter, setDescriptionFilter] = useState("");
   const [codeFilter, setCodeFilter] = useState("");
 
@@ -168,25 +170,25 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   };
 
   const closeModal = () => {
-    setSearchResults([]);
     setSearchTerm("");
     setIsModalOpen(false);
     setSelectedItem("");
     setPrecoTotal(0);
     setPrecoUnitario(0);
+    setIsCalculated(false);
   };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
-    setPrecoTotal(0);
-    setPrecoUnitario(0);
+    setPrecoTotal(item.preco);
+    setPrecoUnitario(item.preco);
     setQuantidade(1);
-    setCalculado(false); // Redefine o estado para indicar que o cálculo não foi feito
+    setIsCalculated(false); // Redefine o estado para indicar que o cálculo não foi feito
   };
 
   const handleCalculatePrice = () => {
     setIsCalculating(true);
-
+    setIsCalculated(false);
     console.log("skol - item clicado", selectedItem);
 
     const pegaritem = searchResults.find(
@@ -248,6 +250,8 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       if (item) {
         setPrecoUnitario(item.preco);
         setPrecoTotal(item.preco * quantidade);
+        setIsCalculated(true);
+        setLastQtd(quantidade);
       } else {
         setPrecoUnitario(0);
         setPrecoTotal(0);
@@ -405,13 +409,42 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     setCodeFilter(value);
   };
 
-  const filteredResults = searchResults.filter(
-    (item) =>
-      item.desc_pro.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
-      item.codigo_pro.toLowerCase().includes(codeFilter.toLowerCase()) &&
-      (item.desc_pro.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.codigo_pro.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  // Função para filtrar e garantir que apenas objetos com codigo_pro únicos sejam renderizados
+  const getUniqueCodigoProResults = (results) => {
+    const seen = new Set();
+    return results.filter((item) => {
+      if (seen.has(item.codigo_pro)) {
+        return false;
+      } else {
+        seen.add(item.codigo_pro);
+        return true;
+      }
+    });
+  };
+
+  // Função principal de filtragem
+  const filterResults = () => {
+    const filteredResults = searchResults.filter(
+      (item) =>
+        item.desc_pro.toLowerCase().includes(descriptionFilter.toLowerCase()) &&
+        item.codigo_pro.toLowerCase().includes(codeFilter.toLowerCase()) &&
+        (item.desc_pro.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.codigo_pro.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    // Filtra para garantir que apenas objetos com codigo_pro únicos sejam incluídos
+    const uniqueFilteredResults = getUniqueCodigoProResults(filteredResults);
+
+    console.log(
+      "Filtered Results with Unique codigo_pro:",
+      uniqueFilteredResults
+    );
+
+    return uniqueFilteredResults;
+  };
+
+  // Chame a função para obter os resultados filtrados
+  const filteredResultsToRender = filterResults();
 
   const highlightText = (text, highlight) => {
     if (!highlight.trim()) return text;
@@ -427,6 +460,12 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       )
     );
   };
+
+  console.log("alex hunter", selectedItem);
+  useEffect(() => {
+    handleCalculatePrice();
+    // if (selectedItem !== null) setPrecoTotal(selectedItem.preco * quantidade);
+  }, [quantidade]);
 
   return (
     <>
@@ -634,38 +673,42 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {filteredResults.length > 0 ? (
-                            filteredResults.slice(0, 100).map((item, index) => (
-                              <Tr
-                                key={index}
-                                border="2px"
-                                borderColor={
-                                  selectedItem === item ? "#6b3181" : "gray.200"
-                                }
-                                onClick={() => handleItemClick(item)}
-                                cursor="pointer"
-                                _hover={{
-                                  transform: "scale(1.01)",
-                                  boxShadow: "lg",
-                                }}
-                              >
-                                <Td width="40%">
-                                  <Text
-                                    fontSize="md"
-                                    color="black"
-                                    borderRadius="10px"
-                                    p={1}
-                                  >
-                                    {highlightText(item.desc_pro, searchTerm)}
-                                  </Text>
-                                </Td>
-                                <Td width="20%">
-                                  {highlightText(item.codigo_pro, searchTerm)}
-                                </Td>
-                                <Td width="20%">{item.tipo_pro}</Td>
-                                <Td width="20%">{item.um_pro}</Td>
-                              </Tr>
-                            ))
+                          {filteredResultsToRender.length > 0 ? (
+                            filteredResultsToRender
+                              .slice(0, 100)
+                              .map((item, index) => (
+                                <Tr
+                                  key={index}
+                                  border="2px"
+                                  borderColor={
+                                    selectedItem === item
+                                      ? "#6b3181"
+                                      : "gray.200"
+                                  }
+                                  onClick={() => handleItemClick(item)}
+                                  cursor="pointer"
+                                  _hover={{
+                                    transform: "scale(1.01)",
+                                    boxShadow: "lg",
+                                  }}
+                                >
+                                  <Td width="40%">
+                                    <Text
+                                      fontSize="md"
+                                      color="black"
+                                      borderRadius="10px"
+                                      p={1}
+                                    >
+                                      {highlightText(item.desc_pro, searchTerm)}
+                                    </Text>
+                                  </Td>
+                                  <Td width="20%">
+                                    {highlightText(item.codigo_pro, searchTerm)}
+                                  </Td>
+                                  <Td width="20%">{item.tipo_pro}</Td>
+                                  <Td width="20%">{item.um_pro}</Td>
+                                </Tr>
+                              ))
                           ) : (
                             <Tr>
                               <Td colSpan={4} textAlign="center">
@@ -726,9 +769,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                           min={0}
                           w={100}
                           value={quantidade}
-                          onChange={(valueString) =>
-                            setQuantidade(parseInt(valueString))
-                          }
+                          onChange={(valueString) => {
+                            setQuantidade(parseInt(valueString));
+                            // handleCalculatePrice();
+                          }}
                         >
                           <NumberInputField />
                           <NumberInputStepper>
@@ -756,7 +800,11 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                         ml={3}
                         onClick={handleSalvar} // Chama a função para salvar os valores selecionados
                         leftIcon={<FaPlus />} // Usando o ícone de fechar da react-icons
-                        isDisabled={precoUnitario === 0 || precoTotal === 0}
+                        isDisabled={
+                          precoUnitario === 0 ||
+                          precoTotal === 0 ||
+                          isCalculated === false
+                        }
                         bg="white"
                       >
                         Adicionar
