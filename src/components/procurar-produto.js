@@ -111,7 +111,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
       );
       try {
         setIsLoading(true);
-        const data = await fetchTabPreco("LUB3E5", globalToken.access_token);
+        const data = await fetchTabPreco(
+          rowItem.codgrupovenda,
+          globalToken.access_token
+        );
 
         setSearchResults(data);
 
