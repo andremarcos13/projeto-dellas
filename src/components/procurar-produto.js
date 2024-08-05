@@ -63,6 +63,9 @@ import { MdSearch, MdThumbUp } from "react-icons/md";
 import { format, subDays, subYears } from "date-fns";
 import fetchHistoricoProdutos from "../apis/historico-pedidos-api";
 import fetchTabPreco from "../apis/preco-produtos";
+import { CgDetailsMore } from "react-icons/cg";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { GrCheckboxSelected } from "react-icons/gr";
 
 const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -337,10 +340,10 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
   const handleSalvar = () => {
     if (selectedItem && precoTotal !== null && precoUnitario !== null) {
       const newItem = {
-        descricao: selectedItem.descricao,
-        codigo: selectedItem.codigo,
-        tipo: selectedItem.tipo,
-        um: selectedItem.um,
+        descricao: selectedItem.desc_pro,
+        codigo: selectedItem.codigo_pro,
+        tipo: selectedItem.tipo_pro,
+        um: selectedItem.um_pro,
         quantidade: quantidade,
         precoTotal: precoTotal,
         precoUnitario: precoUnitario,
@@ -461,7 +464,7 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
     );
   };
 
-  console.log("alex hunter", selectedItem);
+  console.log("alex hunter", valoresSelecionados);
   useEffect(() => {
     handleCalculatePrice();
     // if (selectedItem !== null) setPrecoTotal(selectedItem.preco * quantidade);
@@ -727,9 +730,9 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
             </Tabs>
 
             <Flex justify="space-between">
-              <Box flexBasis="45%">
+              <Box flexBasis="50%">
                 {selectedItem && (
-                  <>
+                  <Flex alignItems="center">
                     <Box
                       mt={4}
                       bg="white"
@@ -739,113 +742,142 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                       border="2px"
                       borderRadius={10}
                       shadow="sm"
+                      w="100%"
                     >
-                      <Text fontWeight="bold" mb={2} as="u">
-                        Detalhes do Item Selecionado:
-                      </Text>
-                      <Text mb={1}>
-                        Descrição: <strong>{selectedItem.desc_pro}</strong>
-                      </Text>
-                      <Text mb={1}>
-                        Código: <strong>{selectedItem.codigo_pro}</strong>
-                      </Text>
-                      <Text mb={1}>
-                        Tipo: <strong>{selectedItem.tipo_pro}</strong>
-                      </Text>
-                      <Text mb={1}>
-                        Unidade de Medida:{" "}
-                        <strong>{selectedItem.um_pro}</strong>
-                      </Text>
-                    </Box>
-                    <Flex alignItems="center">
-                      <Text fontWeight="bold" mr={2}>
-                        Quantidade:
-                      </Text>
-                      <Box>
-                        <NumberInput
-                          focusBorderColor="purple.700"
-                          bg="white"
-                          defaultValue={1}
-                          min={0}
-                          w={100}
-                          value={quantidade}
-                          onChange={(valueString) => {
-                            setQuantidade(parseInt(valueString));
-                            // handleCalculatePrice();
-                          }}
-                        >
-                          <NumberInputField />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </Box>
-                      <Button
-                        ml={3}
-                        onClick={handleCalculatePrice}
-                        colorScheme="purple"
-                        loadingText="Calculando..."
-                        variant="outline"
-                        leftIcon={<MdCalculate />}
-                        disabled={isCalculating}
-                        bg="white"
-                        _hover={{ bg: "purple.100" }}
+                      <Stack
+                        direction="row"
+                        divider={<Divider orientation="vertical" />}
+                        spacing={4}
                       >
-                        Calcular
-                      </Button>
-                      <Button
-                        colorScheme="whatsapp"
-                        variant="outline"
-                        ml={3}
-                        onClick={handleSalvar} // Chama a função para salvar os valores selecionados
-                        leftIcon={<FaPlus />} // Usando o ícone de fechar da react-icons
-                        isDisabled={
-                          precoUnitario === 0 ||
-                          precoTotal === 0 ||
-                          isCalculated === false
-                        }
-                        bg="white"
-                      >
-                        Adicionar
-                      </Button>
-                    </Flex>
-                    {isLoading2 ? (
-                      <Center mt={3}>
-                        <Spinner size="sm" />
-                      </Center>
-                    ) : (
-                      <>
-                        <Card
-                          mt={3}
-                          p={1}
-                          w={250}
-                          h={120}
-                          shadow="lg"
-                          size="md"
+                        <Box flex={1} h="200px">
+                          <Box
+                            bg="#6B3181"
+                            color="white"
+                            p={2}
+                            borderTopRadius={8}
+                            mt={-4}
+                            ml={-4}
+                            mr={-10}
+                          >
+                            <Flex align="center">
+                              <GrCheckboxSelected />
+                              <Text ml="15px">
+                                Detalhes do Produto Selecionado
+                              </Text>
+                            </Flex>
+                          </Box>
+                          <Box p={2} textAlign="left">
+                            <Text mb={1}>
+                              Descrição:{" "}
+                              <strong>{selectedItem.desc_pro}</strong>
+                            </Text>
+                            <Text mb={1}>
+                              Código: <strong>{selectedItem.codigo_pro}</strong>
+                            </Text>
+                            <Text mb={1}>
+                              Tipo: <strong>{selectedItem.tipo_pro}</strong>
+                            </Text>
+                            <Text mb={1}>
+                              Unidade de Medida:{" "}
+                              <strong>{selectedItem.um_pro}</strong>
+                            </Text>
+                          </Box>
+                        </Box>
+
+                        <Box
+                          // flex={1}
+                          h="200px"
+                          display="flex"
+                          flexDirection="column"
+                          alignItems="center"
+                          justifyContent="center"
                         >
-                          <CardBody p={2}>
+                          <Box
+                            bg="#6B3181"
+                            color="white"
+                            p={2}
+                            // borderTopRadius={8}
+                            mt={-20}
+                          >
+                            <Flex align="center">
+                              <MdCalculate />
+                              <Text ml="15px">Quantidade</Text>
+                            </Flex>
+                          </Box>
+                          <NumberInput
+                            mt={3}
+                            allowMouseWheel
+                            focusBorderColor="#822AA2"
+                            size="lg"
+                            color="black"
+                            bg="white"
+                            defaultValue={1}
+                            min={0}
+                            w={125}
+                            value={quantidade}
+                            onChange={(valueString) => {
+                              setQuantidade(parseInt(valueString));
+                              handleCalculatePrice();
+                            }}
+                          >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                          <Button
+                            mt={3}
+                            colorScheme="whatsapp"
+                            variant="outline"
+                            onClick={handleSalvar}
+                            leftIcon={<FaPlus />}
+                            isDisabled={
+                              precoUnitario === 0 ||
+                              precoTotal === 0 ||
+                              isCalculated === false
+                            }
+                            bg="white"
+                          >
+                            Adicionar
+                          </Button>
+                        </Box>
+
+                        <Box flex={1} h="200px">
+                          <Box
+                            bg="#6B3181"
+                            color="white"
+                            p={2}
+                            borderTopRadius={8}
+                            mt={-4}
+                            ml={-10}
+                            mr={-4}
+                          >
+                            <Flex ml={10} align="center">
+                              <FaMoneyBillTrendUp />
+                              <Text ml="15px">Preço</Text>
+                            </Flex>
+                          </Box>
+                          <Box p={2} textAlign="left">
                             {precoUnitario !== null ? (
                               precoUnitario !== 0 ? (
                                 <Flex alignItems="center">
                                   <Text
                                     mt={4}
-                                    color="black"
+                                    color="#822AA2"
                                     borderRadius="10px"
                                     mb={1}
                                     mr={2}
                                     fontWeight="bold"
                                   >
-                                    Preço Unitário: R$
+                                    R$ Unid.:
                                   </Text>
                                   <Text
                                     mt={4}
                                     color="black"
                                     borderRadius="10px"
                                     mb={1}
-                                    _hover={{
-                                      transform: "scale(1.25)",
-                                    }}
+                                    _hover={{ transform: "scale(1.25)" }}
                                   >
                                     {precoUnitario}
                                   </Text>
@@ -867,32 +899,30 @@ const ProcurarProduto = ({ onFinalizarAddProdutos, onRemoveItem }) => {
                               <Flex alignItems="center">
                                 <Text
                                   mt={4}
-                                  color="black"
+                                  color="#822AA2"
                                   borderRadius="10px"
                                   mb={1}
                                   mr={2}
                                   fontWeight="bold"
                                 >
-                                  Preço total: R$
+                                  R$ Total:
                                 </Text>
                                 <Text
                                   mt={4}
                                   color="black"
                                   borderRadius="10px"
                                   mb={1}
-                                  _hover={{
-                                    transform: "scale(1.25)",
-                                  }}
+                                  _hover={{ transform: "scale(1.25)" }}
                                 >
                                   {precoTotal.toFixed(2)}
                                 </Text>
                               </Flex>
                             )}
-                          </CardBody>
-                        </Card>
-                      </>
-                    )}
-                  </>
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </Box>
+                  </Flex>
                 )}
               </Box>
 
