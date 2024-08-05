@@ -67,7 +67,7 @@ const AgendaPage = () => {
       const baseUrl =
         useRestTest === "2"
           ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
-          : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+          : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest_prd/";
 
       setIsLoading(true);
       let formattedDateToUse = ""; // Definir formattedDateToUse fora do bloco try-catch

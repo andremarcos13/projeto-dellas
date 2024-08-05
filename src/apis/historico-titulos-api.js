@@ -16,7 +16,7 @@ const historicoTitulos = async (
   const baseUrl =
     useRestTest === "2"
       ? "https://dellascomercio146177.protheus.cloudtotvs.com.br:1566/rest/"
-      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest/";
+      : "https://dellascomercio146176.protheus.cloudtotvs.com.br:4050/rest_prd/";
 
   // Configuração do cabeçalho com o token passado como argumento
   const config = {
