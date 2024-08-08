@@ -100,6 +100,7 @@ function LoginComponent() {
           color="white"
           bg="#2C0E37"
           type="submit" // Adiciona o tipo de botão como 'submit'
+          mt={5}
           isLoading={isLoading}
           spinner={<BeatLoader size={8} color="white" />}
           _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}

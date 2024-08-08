@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
+  Image,
   Modal,
   Spinner,
   Tab,
@@ -86,6 +87,7 @@ import { FcComboChart } from "react-icons/fc";
 import { fetchToken } from "../apis/token-api";
 import historicoTitulos from "../apis/historico-titulos-api";
 import { GoHome } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 const Atendimento = () => {
   // const [rowItem, setSelectedItem] = useState(null);
@@ -817,22 +819,35 @@ const Atendimento = () => {
   return (
     <Box
       bg="rgba(0, 0, 0, 0.1)" // Cor de fundo cinza com opacidade
-      py="10" // Adiciona um pouco de espaço acima e abaixo do texto
+      py="0" // Adiciona um pouco de espaço acima e abaixo do texto
       px="8" // Adiciona um pouco de espaço à esquerda e à direita do texto
       borderRadius="md" // Borda arredondada
     >
       <>
-        <Button
-          onClick={handleBackButtonClick}
-          mb="4"
-          colorScheme="red"
-          bg="white"
-          variant="outline"
-          ml={3}
-          mt={3}
-        >
-          Voltar
-        </Button>
+        <HStack>
+          <Tooltip label="NEXUS CONSULTORIA" fontSize="md" placement="top">
+            <Image
+              src="https://www.nexusconsultoriams.com.br/images/logo_nexus_consult.png"
+              alt="João Carlos"
+              borderRadius="full"
+              boxSize="115px"
+              style={{ objectFit: "contain" }}
+              _hover={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+
+          <Button
+            onClick={handleBackButtonClick}
+            mb="4"
+            colorScheme="red"
+            bg="white"
+            variant="outline"
+            ml={3}
+            mt={3}
+          >
+            Voltar
+          </Button>
+        </HStack>
         <Box
           bg="#2C0E37"
           color="white"

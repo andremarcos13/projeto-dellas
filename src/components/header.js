@@ -1,4 +1,13 @@
-import { Flex, Box, Heading, Spacer, Link } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Heading,
+  Spacer,
+  Link,
+  Tooltip,
+  Image,
+  HStack,
+} from "@chakra-ui/react";
 import { useAppContext } from "../context/AppContext";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { FaHeadphones } from "react-icons/fa";
@@ -18,15 +27,30 @@ function Header() {
 
   return (
     <Flex
-      p="4"
+      p="5"
       bg={headerBgColor}
       color="white"
       alignItems="center"
       position="relative"
+      h="60px"
     >
-      <Box>
-        <Heading size="md">{headerText}</Heading>
-      </Box>
+      <Tooltip label="NEXUS CONSULTORIA" fontSize="md" placement="top">
+        <Link
+          href="https://www.nexusconsultoriams.com.br/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src="https://www.nexusconsultoriams.com.br/images/logo_nexus_consult.png"
+            alt="João Carlos"
+            borderRadius="full"
+            boxSize="115px"
+            style={{ objectFit: "contain" }}
+            _hover={{ cursor: "pointer" }}
+          />
+        </Link>
+      </Tooltip>
+
       <Spacer />
       <Box
         position="absolute"
@@ -49,10 +73,14 @@ function Header() {
         </Box>
       </Box>
       <Box>
-        <RouterLink to="/home" style={{ marginRight: "16px" }}>
-          Página Inicial
-        </RouterLink>
-        <Link ml="4">{username}</Link>
+        <Box position="relative" display="flex" alignItems="center" p={3}>
+          <RouterLink to="/home" style={{ marginRight: "16px" }}>
+            <Heading size="md">{headerText}</Heading>
+          </RouterLink>
+        </Box>
+        {/* <RouterLink to="/home" style={{ marginRight: "16px" }}>
+            Página Inicial
+          </RouterLink> */}
       </Box>
     </Flex>
   );

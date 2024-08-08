@@ -1,8 +1,8 @@
-import { Box, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Image, Tooltip } from "@chakra-ui/react";
 import LoginComponent from "../components/login-inputs";
 import { CiUnlock } from "react-icons/ci";
 import imagelogo from "../images/205677077_207379361390501_3299387424663450272_n-removebg-preview.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
 const LoginPage = () => {
@@ -21,6 +21,7 @@ const LoginPage = () => {
       <Box
         bg="white"
         p="5"
+        h="500px"
         borderRadius="lg"
         // Adiciona uma animação na sombra
         animation="shadowAnimate 2s infinite alternate"
@@ -38,15 +39,34 @@ const LoginPage = () => {
             }
           `}
         </style>
-        <Image
-          src={imagelogo}
-          alt="Dellas Logo"
-          maxW="230px" // Defina o tamanho máximo da imagem
-          maxH="230px"
-          mb="2" // Adiciona margem na parte inferior da imagem
-          mx="auto" // Centraliza a imagem horizontalmente
-          onClick={() => navigate("/admin")}
-        />
+
+        <HStack spacing={2}>
+          <Tooltip label="NEXUS CONSULTORIA" fontSize="md" placement="top">
+            <Link
+              href="https://www.nexusconsultoriams.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="https://www.nexusconsultoriams.com.br/images/logo_nexus_consult.png"
+                alt="João Carlos"
+                borderRadius="full"
+                boxSize="175px"
+                style={{ objectFit: "contain" }}
+                _hover={{ cursor: "pointer" }}
+              />
+            </Link>
+          </Tooltip>
+          <Image
+            src={imagelogo}
+            alt="Dellas Logo"
+            maxW="230px" // Defina o tamanho máximo da imagem
+            maxH="230px"
+            mb="2" // Adiciona margem na parte inferior da imagem
+            mx="auto" // Centraliza a imagem horizontalmente
+            onClick={() => navigate("/admin")}
+          />
+        </HStack>
         {/* <Heading as="h1" size="lg" color="gray.800">
           Bem-vindo!
         </Heading> */}
